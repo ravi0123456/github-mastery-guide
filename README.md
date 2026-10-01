@@ -29,6 +29,8 @@ You do **not** need to finish everything in one day. Steady practice beats rushi
 | 3 | [03-office-team.md](03-office-team.md) | Issues, PRs, code review, merge, collaborators, forks, what “done” looks like |
 | 4 | [04-pro-tools.md](04-pro-tools.md) | Actions (CI), Releases, security (2FA, tokens), Projects, useful Settings |
 | 5 | [05-office-playbook.md](05-office-playbook.md) | Daily office checklist: branch → commit → PR → review → hotfix habits |
+| 6 | [06-idmc-cicd-picture.md](06-idmc-cicd-picture.md) | Our IDMC source control vs Jenkins CI/CD, org by org, in simple English |
+| 7 | [07-idmc-dev-to-sit-practice.md](07-idmc-dev-to-sit-practice.md) | Safe first steps to deploy a few tagged assets from DEV to SIT |
 | — | [glossary.md](glossary.md) | One-line definitions of every important term |
 
 ---
@@ -42,8 +44,9 @@ You do **not** need to finish everything in one day. Steady practice beats rushi
 | **Team ready** | 03 | 2–3 hours | Issues, PRs, reviews |
 | **Pro tools** | 04 | 2 hours | CI basics, security habits |
 | **Office day** | 05 | 1–2 hours | Reusable playbook every workday |
+| **IDMC admin** | 06 then 07 | 1–2 hours | See how our orgs deploy, then try one small DEV to SIT test |
 
-**Total:** about 10–14 hours of focused practice, spread over a week or two.
+**Total:** about 10–14 hours of focused practice, spread over a week or two. The IDMC chapters can be read after chapter 01 if you need them for work sooner.
 
 ---
 
@@ -76,6 +79,12 @@ Copy this into a note, or edit this file and tick boxes as you go:
 - [ ] 2FA is on (or I have a plan to enable it)
 - [ ] I can follow the office playbook for a new feature
 
+### IDMC at work
+- [ ] I can point to the on-prem repo URL and the YAML file that starts a deploy
+- [ ] I know source control in IDMC is not the same as the Jenkins deploy path
+- [ ] I know why PROD can have no source-control settings
+- [ ] I have a named test tag ready before I commit `flo_dev.yml`
+
 ---
 
 ## Your links (bookmark these)
@@ -83,11 +92,15 @@ Copy this into a note, or edit this file and tick boxes as you go:
 - This guide: https://github.com/ravi0123456/github-mastery-guide
 - Practice repo: https://github.com/ravi0123456/hello-world
 - Your profile: https://github.com/ravi0123456
+- IDMC picture: https://github.com/ravi0123456/github-mastery-guide/blob/main/06-idmc-cicd-picture.md
+- DEV to SIT practice: https://github.com/ravi0123456/github-mastery-guide/blob/main/07-idmc-dev-to-sit-practice.md
 
 ---
 
 ## A note before you start
 
 GitHub looks busy at first. That is normal. Every professional you will work with once felt the same. Follow the numbered steps, practise on `hello-world`, and ask for help with screenshots. You will get office-ready.
+
+The work deploy repo is on an on-prem server, not this github.com guide. Read chapter 06 before you commit anything there.
 
 **Start here →** [Chapter 01 — Foundations](01-foundations.md)
