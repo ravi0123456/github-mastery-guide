@@ -18,7 +18,7 @@ This repository is your complete, self-paced path from **GitHub beginner** to **
 
 You do **not** need to finish everything in one day. Steady practice beats rushing.
 
-If you are an IDMC admin and Git is new, start with chapter 00, then 06, then 07.
+If you are an IDMC admin who wants to practice the product, start at [idmc-meridian/README.md](idmc-meridian/README.md) and do one session per sitting. If Git is new and you need the work deploy path, do chapter 00, then the meridian path, then 06, then 07.
 
 ---
 
@@ -34,6 +34,7 @@ If you are an IDMC admin and Git is new, start with chapter 00, then 06, then 07
 | 5 | [05-office-playbook.md](05-office-playbook.md) | Daily office checklist: branch, commit, PR, review, hotfix habits |
 | 6 | [06-idmc-cicd-picture.md](06-idmc-cicd-picture.md) | Our IDMC source control vs Jenkins CI/CD, org by org |
 | 7 | [07-idmc-dev-to-sit-practice.md](07-idmc-dev-to-sit-practice.md) | Safe first steps to deploy a few tagged assets from DEV to SIT |
+| 8 | [idmc-meridian/README.md](idmc-meridian/README.md) | Meridian story as hands-on IDMC and MDM SaaS practice, one session at a time |
 | — | [glossary.md](glossary.md) | One-line definitions of every important term |
 
 ---
@@ -48,7 +49,8 @@ If you are an IDMC admin and Git is new, start with chapter 00, then 06, then 07
 | **Team ready** | 03 | 2–3 hours | Issues, PRs, reviews |
 | **Pro tools** | 04 | 2 hours | CI basics, security habits |
 | **Office day** | 05 | 1–2 hours | Reusable playbook every workday |
-| **IDMC admin** | 06 then 07 | 1–2 hours | See how our orgs deploy, then try one small DEV to SIT test |
+| **IDMC practice** | [idmc-meridian](idmc-meridian/README.md) sessions 0–14 | one sitting each | Understand IDMC and MDM by running jobs, not by reading only |
+| **IDMC admin** | 06 then 07, after meridian session 14 | 1–2 hours | See how our orgs deploy, then try one small DEV to SIT test |
 
 ---
 
@@ -85,11 +87,19 @@ If you are an IDMC admin and Git is new, start with chapter 00, then 06, then 07
 - [ ] 2FA is on (or I have a plan to enable it)
 - [ ] I can follow the office playbook for a new feature
 
+### Meridian practice (one session at a time)
+- [ ] Session 0: non-production org chosen, fake CSV files saved
+- [ ] Session 1: flat file connection test successful
+- [ ] Session 2: first mapping task succeeded in Monitor
+- [ ] Session 5: taskflow succeeded and the schedule is disabled
+- [ ] Session 10: one Ava master, two source rows, North phone wins for Noah
+
 ### IDMC at work
 - [ ] I can point to the on-prem repo URL and the YAML file that starts a deploy
 - [ ] I know source control in IDMC is not the same as the Jenkins deploy path
 - [ ] I know why PROD can have no source-control settings
 - [ ] I have a named test tag ready before I commit `flo_dev.yml`
+- [ ] I did not tag `MERIDIAN_PRACTICE` or edit a flow YAML for it
 
 ---
 
@@ -100,6 +110,7 @@ If you are an IDMC admin and Git is new, start with chapter 00, then 06, then 07
 - Practice repo: https://github.com/ravi0123456/hello-world
 - IDMC picture: https://github.com/ravi0123456/github-mastery-guide/blob/main/06-idmc-cicd-picture.md
 - DEV to SIT practice: https://github.com/ravi0123456/github-mastery-guide/blob/main/07-idmc-dev-to-sit-practice.md
+- Meridian practice (start here for IDMC/MDM hands-on): https://github.com/ravi0123456/github-mastery-guide/blob/main/idmc-meridian/README.md
 
 ---
 
