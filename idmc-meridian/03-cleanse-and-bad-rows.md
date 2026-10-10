@@ -49,7 +49,7 @@ A Filter would drop the bad row on the floor. A Router keeps it in an error file
 **Goal: good rows and bad rows leave on different pipes.**
 
 9. Drag **Router**. Connect Expression → Router.
-10. Add a group named `GOOD` with condition `dob_ok = 1`.
+10. Add a group named `GOOD`. In the condition type `DOB_OK = '1'` including the single quotes. `DOB_OK` arrives as text. `DOB_OK = 1` without quotes makes the mapping invalid: "cannot resolve operands of ambiguously mismatching types" and the validation arrow points at the `1`.
 11. Use the default group as `REJECT` (the rows that fail every condition). If the UI asks you to name the default group, name it `REJECT`.
 12. Drag a **second** Target onto the canvas.
 13. Connect Router group `GOOD` → Target 1. Name the target object `patients_north_clean.csv`. Map original fields plus `phone_digits`, `first_key`, `last_key`. You do not need `dob_ok` in the file.
@@ -79,7 +79,7 @@ Total 3 + 1 = 4. You did not lose a row. You sorted it.
 |---|---|
 | Expression will not validate | Function name differs. Use the function list. Do not guess a second name twice — read the help text in the picker. |
 | All 4 rows in clean | `dob_ok` is always 1. The test never fails `NOT_A_DATE`. |
-| All 4 rows in reject | Condition is inverted or `dob_ok` is a string `'1'` compared wrong. |
+| Router says mismatching types on `DOB_OK = 1` | The `1` is a number and `DOB_OK` is text. Change the condition to `DOB_OK = '1'`. |
 | Router has only one output | The default group is not connected. Connect it. |
 
 ## Write this in the session log
