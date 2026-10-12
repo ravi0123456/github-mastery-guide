@@ -131,25 +131,25 @@ Your canvas can already be `src_patient` → Lookup → Joiner → Target, Join 
     - **Advanced:** leave the cache on **Auto** and `$PMCacheDir`.
 36. Unchecking `city` and `state` is not enough. Validation can still say "lookup return fields: city, state" while those boxes are clear. `locations.csv` contains `city` and `state`, and the patient row already has those names, so the lookup object itself clashes.
 37. On Lookup_2, at the top of **Return Fields**, uncheck **Retain existing fields at runtime** if it is checked. Only `hospital_name` stays checked.
-38. Click the blue **Resolve Field Name Conflicts** link in the yellow box on Lookup_2. Let it rename the lookup copies (`city` and `state` from `locations.csv`). Do not rename the patient `city` or `state`. After it finishes, confirm `hospital_name` is still the only checked return field. The renamed `city` and `state` from the location file stay unchecked.
-39. **Lookup Condition** is still empty until you add a row. Lookup Field `hospital_code`, Operator `=`, Incoming Field `enc_hospital_code` (or `hospital_code` if you did not prefix Detail). Click the Operator cell and pick `=`.
+38. Click the blue **Resolve Field Name Conflicts** link on Lookup_2. The dialog lists **Fields From: Joiner** and **Bulk Rename Options: None**. None does nothing. Open the dropdown and choose **Prefix**. In **Specify** type `in_` (include the underscore). Click **OK**. Do not click OK while the option is still None. This renames every field coming out of the Joiner (`city` becomes `in_city`, `state` becomes `in_state`, `enc_hospital_code` becomes `in_enc_hospital_code`). The location file keeps its own `city` and `state`, so the clash is gone. Do not prefix the lookup return fields.
+39. **Lookup Condition** is still empty until you add a row. Lookup Field `hospital_code`, Operator `=`, Incoming Field `in_enc_hospital_code`. If you did not prefix Detail earlier, the incoming name is `in_hospital_code`. Click the Operator cell and pick `=`. After the dialog, confirm **Return Fields** still has only `hospital_name` checked.
 40. The other red rows are not this lookup. **Joiner** and **Target** still have duplicate names, usually `mrn`. On the Joiner, **Incoming Fields**, Detail rule, click **Rename...**, prefix `enc_`. Do not rename Master. Do not change the join condition. That clears the Joiner error and the Target error together.
 41. **Save.** Click the refresh icon on Validation. It should drop to 0. Mia has no encounter, so her `hospital_name` stays empty. That is correct. Do not drop her.
 
 **Goal: one summary row per patient.**
 
 42. Drag **Aggregator**. Connect the second Lookup → Aggregator. Disconnect the Target from the Joiner and connect it after the Aggregator. Change the target object from `patients_north_with_state.csv` to `episode_north_summary.csv`. Automap again. The old state-check file can stay on disk.
-43. Group by: `mrn`, `first_name`, `last_name`.
+43. Group by: `in_mrn`, `in_first_name`, `in_last_name`. Those names exist only after the Lookup_2 prefix in step 38. If you did not run that dialog, group by `mrn`, `first_name`, `last_name` instead.
 44. Add aggregate outputs:
 
 | Field | Expression |
 |---|---|
-| `encounter_count` | `COUNT(enc_encounter_id)` — use `COUNT(encounter_id)` only if you did not prefix Detail fields |
-| `hospital_count` | `COUNT(enc_hospital_code, true)` or the same name without the `enc_` prefix |
+| `encounter_count` | `COUNT(in_enc_encounter_id)` |
+| `hospital_count` | `COUNT(in_enc_hospital_code, true)` |
 
-45. If distinct count is awkward in your release, skip `hospital_count`. The required proof is `encounter_count`. For Ava it must be **3**. For Noah **1**. For Mia **0** or blank. If Mia shows 1 because `COUNT` counts a null, check that the function ignores nulls. `COUNT(enc_encounter_id)` usually does.
+45. If distinct count is awkward in your release, skip `hospital_count`. The required proof is `encounter_count`. For Ava it must be **3**. For Noah **1**. For Mia **0** or blank. If Mia shows 1 because `COUNT` counts a null, check that the function ignores nulls. `COUNT(in_enc_encounter_id)` usually does.
 
-46. On the Target, confirm the object is now `episode_north_summary.csv`. Map `mrn`, `first_name`, `last_name`, `state_name`, `encounter_count`, and `hospital_count` if you built it.
+46. On the Target, confirm the object is now `episode_north_summary.csv`. Map `in_mrn`, `in_first_name`, `in_last_name`, `in_state_name`, `hospital_name`, `encounter_count`, and `hospital_count` if you built it. `hospital_name` has no `in_` prefix. It comes from the lookup, not the Joiner.
 47. Validate. Save. Mapping task `mt_episode_north`. Same runtime as session 1. Run. No schedule.
 
 ## What you should see
@@ -168,7 +168,7 @@ This is the small version of "show the whole episode of care". The real program 
 | What you see | What it usually means |
 |---|---|
 | Ava count is 1 | You used Lookup for encounters. Rebuild that step as a Joiner. |
-| Lookup_2 still says city, state after those boxes are unchecked | Uncheck **Retain existing fields at runtime**, then click **Resolve Field Name Conflicts** on Lookup_2. Do not check `city` or `state` again. |
+| Lookup_2 still says city, state after those boxes are unchecked | Open **Resolve Field Name Conflicts**. The row is **Joiner**. Change **None** to **Prefix** and type `in_` in **Specify**. OK while it still says None does nothing. |
 | Validation lists Target and Joiner as well as Lookup_2 | The Joiner Detail fields were not prefixed. Detail rule → **Rename...** → prefix `enc_`. |
 | Mia is missing | Join Type is not Master Outer. Change it. Master must be Lookup, not the encounter source. |
 | Validation (3) all say Target | The Lookup is already fine. Click the Target. Set connection `FF_MERIDIAN_PRACTICE`, object `patients_north_with_state.csv`, then Automap. Do not change Lookup Advanced. |
