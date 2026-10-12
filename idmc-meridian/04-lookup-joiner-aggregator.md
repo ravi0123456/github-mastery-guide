@@ -92,37 +92,53 @@ Validation that says only this is the Target, not the Lookup. Do not go back and
 
 **Goal: attach every encounter. Joiner, not lookup.**
 
-23. Add Source 2 named `src_encounter`. Object `encounters.csv`.
-24. Drag **Joiner**. Connect Lookup output (the patient side, now with `state_name`) into the Joiner **master**. Connect `src_encounter` into the **detail**.
-25. Join type: **Master outer** (left outer / master outer). Master is the patient. Detail is the encounter. Patients with no visit survive.
-26. Join condition: `mrn` = `mrn`. If the joiner uses the same three columns as the lookup, set Master field `mrn`, Operator `=`, Detail field `mrn`.
-27. You now have one row per encounter, and Mia still appears once with empty encounter fields.
+Your canvas can already be `src_patient` → Lookup → Joiner → Target, Join Type **Master Outer**, and the mapping **Valid**. That is not finished. If the Detail dropdown says **Fields (0 of 0)**, the encounter file is not connected. Do not pick **New Input Parameter**.
+
+23. Drag a second **Source** onto the canvas. Name it `src_encounter`. Connection `FF_MERIDIAN_PRACTICE`. Object `encounters.csv`. It is not on the canvas yet. The Lookup is not a substitute for it.
+24. The Joiner has two input dots. One is already linked from Lookup. Connect `src_encounter` to the **other** input dot. Do not connect `src_encounter` to the Target.
+25. Click the Joiner → **Join Condition**.
+    - Join Type: **Master Outer**. Leave it. Master is the patient, so Mia survives with no visit.
+    - Join Condition: **Simple**.
+    - The Master dropdown must say **Lookup**. The Detail dropdown must say **src_encounter**. If they are swapped, swap them. Master is not the encounter file.
+26. One condition row:
+
+| Master | Operator | Detail |
+|---|---|---|
+| `mrn` | `=` | `mrn` |
+
+27. Click the **Operator** cell and pick `=`. It stays blank until you do.
+28. Open the **Detail** dropdown. It must list fields from `encounters.csv`, including `mrn`. Pick `mrn`.
+    - **Fields (0 of 0)** means step 24 missed the open input dot. Delete that link and connect `src_encounter` again.
+    - **New Input Parameter** is the wrong row. Do not create a parameter.
+29. Open **Incoming Fields**. Leave both rules as Include → All Fields. Expand **Included Fields**. You should see a Master group (about 18 fields, including `state_name`) and a Detail group (`encounter_id`, `mrn`, `hospital_code`, and the rest).
+30. If both sides expose `mrn` and the UI warns of a name clash, use **Rename** on the Detail rule only and rename that output to `enc_mrn`. The join condition stays Master `mrn` = Detail `mrn`. Do not join on the renamed name.
+31. Save. The mapping stays Valid. You now have one row per encounter. Mia still appears once, with empty encounter fields. Ava appears three times. Do not run the final summary yet if the Target is still `patients_north_with_state.csv`.
 
 **Goal: also name the hospital. Second lookup, after the joiner, because the hospital code is on the encounter.**
 
-28. Drag a second **Lookup**. Connect Joiner → this Lookup. Do not connect it to `src_patient`.
-29. Same tabs as the first lookup:
+32. Drag a second **Lookup**. Connect Joiner → this Lookup. Do not connect it to `src_patient`.
+33. Same tabs as the first lookup:
     - **Lookup Object:** `FF_MERIDIAN_PRACTICE` / `locations.csv`.
     - **Lookup Condition:** Simple. Lookup Field `hospital_code`, Operator `=`, Incoming Field `hospital_code`. The incoming `hospital_code` is the one that arrived from `encounters.csv` through the joiner.
     - **Return Fields:** check only `hospital_name`. Leave **Retain existing fields at runtime** unchecked.
     - **Advanced:** leave the cache on **Auto** and `$PMCacheDir`, same as the first lookup.
-30. Mia has no encounter, so her `hospital_code` is empty and `hospital_name` stays empty. That is correct. Do not drop her.
+34. Mia has no encounter, so her `hospital_code` is empty and `hospital_name` stays empty. That is correct. Do not drop her.
 
 **Goal: one summary row per patient.**
 
-31. Drag **Aggregator**. Connect the second Lookup → Aggregator. Disconnect the Target from the first Lookup and connect it after the Aggregator. Change the target object from `patients_north_with_state.csv` to `episode_north_summary.csv`. Automap again. The old state-check file can stay on disk.
-32. Group by: `mrn`, `first_name`, `last_name`.
-33. Add aggregate outputs:
+35. Drag **Aggregator**. Connect the second Lookup → Aggregator. Disconnect the Target from the Joiner and connect it after the Aggregator. Change the target object from `patients_north_with_state.csv` to `episode_north_summary.csv`. Automap again. The old state-check file can stay on disk.
+36. Group by: `mrn`, `first_name`, `last_name`.
+37. Add aggregate outputs:
 
 | Field | Expression |
 |---|---|
 | `encounter_count` | `COUNT(encounter_id)` |
 | `hospital_count` | `COUNT(hospital_code, true)` or distinct count if the function picker has `COUNT DISTINCT` style. If there is no distinct flag, use a nested approach the editor allows, often a second argument or a checkbox **Distinct**. |
 
-34. If distinct count is awkward in your release, skip `hospital_count`. The required proof is `encounter_count`. For Ava it must be **3**. For Noah **1**. For Mia **0** or blank. If Mia shows 1 because `COUNT` counts a null, check that the function ignores nulls. `COUNT(encounter_id)` usually does.
+38. If distinct count is awkward in your release, skip `hospital_count`. The required proof is `encounter_count`. For Ava it must be **3**. For Noah **1**. For Mia **0** or blank. If Mia shows 1 because `COUNT` counts a null, check that the function ignores nulls. `COUNT(encounter_id)` usually does.
 
-35. On the Target, confirm the object is now `episode_north_summary.csv`. Map `mrn`, `first_name`, `last_name`, `state_name`, `encounter_count`, and `hospital_count` if you built it.
-36. Validate. Save. Mapping task `mt_episode_north`. Same runtime as session 1. Run. No schedule.
+39. On the Target, confirm the object is now `episode_north_summary.csv`. Map `mrn`, `first_name`, `last_name`, `state_name`, `encounter_count`, and `hospital_count` if you built it.
+40. Validate. Save. Mapping task `mt_episode_north`. Same runtime as session 1. Run. No schedule.
 
 ## What you should see
 
@@ -140,7 +156,8 @@ This is the small version of "show the whole episode of care". The real program 
 | What you see | What it usually means |
 |---|---|
 | Ava count is 1 | You used Lookup for encounters. Rebuild that step as a Joiner. |
-| Mia is missing | Inner join. Change to master outer. |
+| Detail dropdown says Fields (0 of 0) | `encounters.csv` is not connected to the Joiner's open input. Add source `src_encounter` and link it. Do not choose New Input Parameter. |
+| Mia is missing | Join Type is not Master Outer. Change it. Master must be Lookup, not the encounter source. |
 | Validation (3) all say Target | The Lookup is already fine. Click the Target. Set connection `FF_MERIDIAN_PRACTICE`, object `patients_north_with_state.csv`, then Automap. Do not change Lookup Advanced. |
 | `state_name` empty | Operator points at the wrong fields, `state_name` is not checked on Return Fields, or `state_codes.csv` is not in the agent folder. |
 | Aggregator error on group by | Every non-aggregated output must be in the group by. Add `first_name` and `last_name` to the group. |
@@ -159,6 +176,7 @@ Mia present: yes/no
 
 1. Why is a lookup the wrong tool for encounters?
 2. Why must Mia survive a join even with zero visits?
+
 
 ## Stop
 
