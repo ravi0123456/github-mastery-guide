@@ -124,27 +124,29 @@ Your canvas can already be `src_patient` → Lookup → Joiner → Target, Join 
 
 34. Drag a second **Lookup**. Connect Joiner → this Lookup. Do not connect it to `src_patient`.
 35. Same tabs as the first lookup:
-    - **Lookup Object:** `FF_MERIDIAN_PRACTICE` / `locations.csv`.
-    - **Lookup Condition:** Simple. Lookup Field `hospital_code`, Operator `=`, Incoming Field `enc_hospital_code`. Use `hospital_code` here only if you did not prefix the Detail fields. The incoming name is whatever the Joiner output is called.
-    - **Return Fields:** check only `hospital_name`. Leave **Retain existing fields at runtime** unchecked.
-    - **Advanced:** leave the cache on **Auto** and `$PMCacheDir`, same as the first lookup.
-36. Mia has no encounter, so her hospital code is empty and `hospital_name` stays empty. That is correct. Do not drop her.
+    - **Lookup Object:** `FF_MERIDIAN_PRACTICE` / `locations.csv`. That file has `hospital_code`, `hospital_name`, `city`, `state`, `parent_code`.
+    - **Lookup Condition:** Simple. Add one row. Lookup Field `hospital_code`, Operator `=`, Incoming Field `enc_hospital_code`. Use incoming `hospital_code` only if you did not prefix the Detail fields. The condition row must not be left blank.
+    - **Return Fields:** check **only** `hospital_name`. Uncheck `hospital_code`, `city`, `state`, and `parent_code`. The patient row already has `city` and `state`. The encounter row already has the hospital code. Returning those again is the yellow warning "Field name conflicts detected" between incoming fields and return fields.
+    - Leave **Retain existing fields at runtime** unchecked.
+    - **Advanced:** leave the cache on **Auto** and `$PMCacheDir`.
+36. If the yellow line remains after only `hospital_name` is checked, click **Resolve Field Name Conflicts** on this lookup and rename the return copy, not the patient fields. Do not rename Master `state` or `city`.
+37. The red **Invalid** on the mapping is the **Joiner**, not this lookup, while Validation says Joiner. Finish the Detail prefix `enc_` from step 31, then Save. Mia has no encounter, so her hospital code is empty and `hospital_name` stays empty. That is correct. Do not drop her.
 
 **Goal: one summary row per patient.**
 
-37. Drag **Aggregator**. Connect the second Lookup → Aggregator. Disconnect the Target from the Joiner and connect it after the Aggregator. Change the target object from `patients_north_with_state.csv` to `episode_north_summary.csv`. Automap again. The old state-check file can stay on disk.
-38. Group by: `mrn`, `first_name`, `last_name`.
-39. Add aggregate outputs:
+38. Drag **Aggregator**. Connect the second Lookup → Aggregator. Disconnect the Target from the Joiner and connect it after the Aggregator. Change the target object from `patients_north_with_state.csv` to `episode_north_summary.csv`. Automap again. The old state-check file can stay on disk.
+39. Group by: `mrn`, `first_name`, `last_name`.
+40. Add aggregate outputs:
 
 | Field | Expression |
 |---|---|
 | `encounter_count` | `COUNT(enc_encounter_id)` — use `COUNT(encounter_id)` only if you did not prefix Detail fields |
 | `hospital_count` | `COUNT(enc_hospital_code, true)` or the same name without the `enc_` prefix |
 
-40. If distinct count is awkward in your release, skip `hospital_count`. The required proof is `encounter_count`. For Ava it must be **3**. For Noah **1**. For Mia **0** or blank. If Mia shows 1 because `COUNT` counts a null, check that the function ignores nulls. `COUNT(enc_encounter_id)` usually does.
+41. If distinct count is awkward in your release, skip `hospital_count`. The required proof is `encounter_count`. For Ava it must be **3**. For Noah **1**. For Mia **0** or blank. If Mia shows 1 because `COUNT` counts a null, check that the function ignores nulls. `COUNT(enc_encounter_id)` usually does.
 
-41. On the Target, confirm the object is now `episode_north_summary.csv`. Map `mrn`, `first_name`, `last_name`, `state_name`, `encounter_count`, and `hospital_count` if you built it.
-42. Validate. Save. Mapping task `mt_episode_north`. Same runtime as session 1. Run. No schedule.
+42. On the Target, confirm the object is now `episode_north_summary.csv`. Map `mrn`, `first_name`, `last_name`, `state_name`, `encounter_count`, and `hospital_count` if you built it.
+43. Validate. Save. Mapping task `mt_episode_north`. Same runtime as session 1. Run. No schedule.
 
 ## What you should see
 
