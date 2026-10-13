@@ -87,9 +87,9 @@ A schedule is not in the New Asset list. Do not look for it under Orchestration 
 
 ## What you should see
 
-- Taskflow header **Valid**, and one successful published run.
-- Child order: `mt_clean_north`, then `mt_episode_north`.
-- `sch_meridian_practice_DISABLED` exists and is **Disabled**.
+- Taskflow header **Valid**. The success line is labeled **Contains 1**, not Equals Success.
+- Open the taskflow instance in My Jobs. Two rows, both Success: `mt_clean_north` first (4 rows), then `mt_episode_north` (3 rows). The episode start time is after the clean end time. Those 3 rows are Ava, Noah, and Mia.
+- `sch_meridian_practice_DISABLED` exists and is **Disabled**. The chain is not finished until this is true.
 - No Linear Taskflow left in the project.
 
 ## If it fails
