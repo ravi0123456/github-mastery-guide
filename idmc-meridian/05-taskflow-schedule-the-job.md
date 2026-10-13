@@ -48,10 +48,10 @@ If **Linear Taskflow10** is open, click **Cancel** or close it without Save. If 
 3. Click empty canvas (not a step). In **General**, set the name to `tf_meridian_north`. Location `MERIDIAN_PRACTICE`. Save.
 4. Click **Data Task 1**. **Data Task** tab. It already shows `mt_clean_north`, type Mapping Task, location `MERIDIAN_PRACTICE/MERIDIAN_PRACTICE`. Leave it. Input Fields **None** is correct. Do not type a task name that does not exist.
 5. Your canvas is Start → Data Task 1 → Decision 1 → two empty curves → a merge diamond → End. It is **Invalid** because those two curves have no condition and the episode task is not on either curve.
-6. Click **Decision 1**. Open the **Decision** tab.
-   - Path 1 must use **Field**, not a typed word. Expand **Data Task 1** → **Output** → **Task Status**. Operator **Contains**. Value `1`. Success is the number 1. A warning is 2. The word `Success` never matches, so the flow takes Otherwise and the episode never starts. The path label will change from "Equals Success" to "Contains 1".
-   - Path 2: **Otherwise**. Leave it with no step. This is the fail path. Do not put a second copy of the same test here.
-   - Input Fields **None** and an empty Output Fields grid are normal. Task Status is built in. Do not add a row to that grid.
+6. Click **Decision 1**. Open the **Decision** tab. The screen you have is the right one. Do not change the **Field**. It must stay **Data Task 1 → Output Parameters → Task Status**.
+   - Path 1: open the **Condition** dropdown and change **Equals** to **Contains**. Delete `Success`, including any quotes. Type `1` and nothing else. Success is the number 1. A warning is 2. The word Success never matches, so the flow takes Otherwise and Data Task 2 never starts.
+   - Path 2 stays **Otherwise**. Do not type a value on Path 2.
+   - Click empty canvas. The line label changes from "Equals Success" to "Contains 1". If Contains is not in the dropdown, use Equals and the value `1`, still with no quotes.
 7. From the left palette, drag **Data Task** and drop it **on the Path 1 line** (the success curve), between Decision 1 and the merge diamond. Do not drop it on the Otherwise curve.
 8. Click that new step. **Data Task** tab → **Select** → `mt_episode_north`. Same project. If it is not in the list, the mapping task was never saved or it is still Invalid. Go back to session 4. Do not pick `mt_clean_north` again.
 9. Leave the Otherwise curve empty: Decision → merge → End, with no step on it. Both curves must still be connected to the merge, and the merge to End. An unconnected curve is why the header stays Invalid.
