@@ -49,19 +49,31 @@ If **Linear Taskflow10** is open, click **Cancel** or close it without Save. If 
 4. Click **Data Task 1**. **Data Task** tab. It already shows `mt_clean_north`, type Mapping Task, location `MERIDIAN_PRACTICE/MERIDIAN_PRACTICE`. Leave it. Input Fields **None** is correct. Do not type a task name that does not exist.
 5. Your canvas is Start → Data Task 1 → Decision 1 → two empty curves → a merge diamond → End. It is **Invalid** because those two curves have no condition and the episode task is not on either curve.
 6. Click **Decision 1**. Open the **Decision** tab.
-   - Path 1: open the formula editor. Expand **Data Task 1**. Pick **Task Status** (the label may be Status or Run Status). Set the condition to equals `Success`. If the only values are numbers, success is `1`.
-   - Path 2: choose **Otherwise** if that option is there. This is the fail path. Do not put a second copy of the same Success test here.
+   - Path 1 must use **Field**, not a typed word. Expand **Data Task 1** → **Output** → **Task Status**. Operator **Contains**. Value `1`. Success is the number 1. A warning is 2. The word `Success` never matches, so the flow takes Otherwise and the episode never starts. The path label will change from "Equals Success" to "Contains 1".
+   - Path 2: **Otherwise**. Leave it with no step. This is the fail path. Do not put a second copy of the same test here.
+   - Input Fields **None** and an empty Output Fields grid are normal. Task Status is built in. Do not add a row to that grid.
 7. From the left palette, drag **Data Task** and drop it **on the Path 1 line** (the success curve), between Decision 1 and the merge diamond. Do not drop it on the Otherwise curve.
 8. Click that new step. **Data Task** tab → **Select** → `mt_episode_north`. Same project. If it is not in the list, the mapping task was never saved or it is still Invalid. Go back to session 4. Do not pick `mt_clean_north` again.
 9. Leave the Otherwise curve empty: Decision → merge → End, with no step on it. Both curves must still be connected to the merge, and the merge to End. An unconnected curve is why the header stays Invalid.
 10. Do not add a Notification step unless mail is already set up. Do not email a distribution list.
-11. **Save.** The header must change from Invalid to Valid. Then click **Publish**. A saved taskflow that was never published does not run. **Run** stays disabled until Publish succeeds.
+11. **Save**, then **Publish**. Read the next section before you Run. A saved taskflow that was never published does not run. After you change the decision, Publish again. Run uses the last published copy, not the canvas you just saved.
+
+## Save and Publish
+
+| | Save | Publish |
+|---|---|---|
+| What it writes | The draft on the canvas | A frozen copy of that draft |
+| What Run uses | Nothing, if you only saved | The published copy |
+| What a schedule uses | Nothing | The published copy |
+| Valid / Invalid | Checked on the draft | Publish is refused while Invalid |
+
+Save stores your drawing so you can close the laptop. It does not change the job that already ran. Publish is the handoff: the agent executes that version, and a schedule can start only that version. If you fix the decision and only click Save, the next Run repeats the old published flow (one subtask, Otherwise path). Save, then Publish, then Run.
 
 **Goal: one manual run. No clock yet.**
 
-12. Click **Run**. Do not schedule first.
-13. Open **Monitor**. You should see the taskflow instance and two child tasks.
-14. The episode child must start **after** the clean child finishes. The timestamps are the proof. If only clean ran and the taskflow failed, the decision condition does not match the real status value. Open the clean task's output in Monitor, read the status text, and put that exact text in Path 1.
+12. Click **Run** only after Publish. Do not schedule first.
+13. Open **My Jobs**. The top row is the taskflow. **Subtasks** must say **2 tasks**, not 1 task. Click **View Subtasks**. You must see `mt_clean_north` and then `mt_episode_north` inside this instance.
+14. Older rows named `mt_episode_north-1` or `mt_clean_north-1` with earlier start times are manual runs from sessions 3 and 4. They are not children of this taskflow. Ignore them when you count subtasks. If Subtasks is still 1, the decision is still not Contains `1`, or you did not Publish after the change.
 
 **Goal: a schedule, then turn it off.**
 
@@ -87,7 +99,8 @@ A schedule is not in the New Asset list. Do not look for it under Orchestration 
 | Header stays Invalid, both curves empty | The episode Data Task is not on Path 1, or a curve does not reach End. |
 | Taskflow will not run | Not published. Publish, then Run. |
 | `mt_episode_north` is missing from Select | Session 4 mapping task was not saved, or that mapping is still Invalid. |
-| Only clean ran, flow says success, episode did not | Episode is on the Otherwise path, or Path 1 does not match the real status text. |
+| Subtasks says **1 task**, status Success | Otherwise ran. Decision is still "Equals Success". Change it to Task Status **Contains** `1`, then Save and **Publish** again. The older mapping-task rows in My Jobs are not this run. |
+| You changed the decision but the next run is identical | You Saved and did not Publish. Run still uses the previous published copy. |
 | Both ran, but episode started first | You ran the two mapping tasks by hand. Look at the taskflow instance in Monitor, not at old task runs. |
 | You are on a page titled Linear Taskflow | Wrong asset. Close it. Use `tf_meridian_north`. |
 | Schedule fired after you left | It was left enabled. Disable it now. Delete it if you cannot disable it. |
