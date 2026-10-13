@@ -1,25 +1,34 @@
-# Session 6 — Parameters: one mapping, many hospitals
+# Session 6 — Parameters: one mapping, two jobs
 
-**Time:** 45 minutes. **Requires:** session 3 expression skills. The taskflow can stay disabled.
+**Time:** 45 minutes. **Requires:** session 3 filter skills. Leave the taskflow schedule disabled.
 
 ## The idea in one minute
 
-Copying `m_clean_north` into `m_clean_nj` and `m_clean_ny` feels fast and becomes a mess. A **parameter** is a blank you fill when the **job** runs, not when the mapping is designed.
+A mapping is a recipe. A parameter is a blank in that recipe. You fill the blank when the **job** runs, not by copying the recipe.
 
-In-out and input parameters are the ones you will use:
+You will make **one** mapping and **two** tasks. One task keeps New Jersey. The other keeps New York. You will also make a counter that the mapping itself updates, so you can feel the difference.
 
-| Kind | Who fills it | Example |
+## Two kinds, in plain English
+
+Think of a hospital form.
+
+| | Input parameter | In-out parameter |
 |---|---|---|
-| Input parameter | The mapping task, or a person at run time | Which state code to keep |
-| In-out parameter | The engine, later, for MDM job instance id | Do not invent one today |
+| Plain meaning | A blank the job fills in. The mapping only **reads** it. | A blank the mapping can **change**, and the next run can see the new value. |
+| Who writes it | You, on the mapping task | The mapping, while it runs |
+| Does it remember what the mapping wrote? | No | Yes, if the run succeeds |
+| This session | `p_state` = `NJ` or `NY` | `p_kept_count` counts the rows that passed the filter |
+| What you should remember | The **task** says which state. | The **mapping** says how many rows it kept, and that number sticks. |
 
-The mapping says "filter to `$p_state`". The task says "`p_state` = NJ". Tomorrow a second task can say NY without a second mapping.
+Example. The filter says "keep the state I was given." It does not say "keep NJ." The NJ task writes `NJ` in `p_state`. The NY task writes `NY` in the same blank. If you had typed `NJ` inside the filter, the NY task would still return Ava.
+
+`p_kept_count` starts at 0. Each kept row adds 1. After a successful NJ run the job details show **3**. Run that same NJ task again and the details show **6**, because it remembered 3 and added 3 more. The output file still has only 3 people. The counter grew. The state blank did not.
+
+There is no button named **Set parameter**. If the mapping has no parameter, the task has nowhere to type one.
 
 ## Meridian example
 
-The real network has many hospitals. The practice file is all NJ, plus you will **add two NY rows** so the parameter has something to do. You are not changing Ava's story. You are proving the filter.
-
-Append these two rows to a **new** file `patients_multi_state.csv` on the agent. Keep the North file untouched.
+The North file stays untouched. Make a **new** file on the agent, in the same folder as `patients_north.csv`. Name it `patients_multi_state.csv`.
 
 ```csv
 source_system,source_pk,first_name,last_name,dob,gender,phone,address,city,state,zip,mrn
@@ -30,55 +39,90 @@ EPIC_NORTH,N9001,Ruth,Adler,1972-05-05,F,2125550170,1 5th Ave,New York,NY,10003,
 EPIC_NORTH,N9002,Omar,Hassan,1980-08-08,M,2125550171,2 6th Ave,New York,NY,10003,MRN9002
 ```
 
-No bad date in this file. This session is only about the parameter.
+Five data rows. Three NJ, two NY. No bad date. This session is only the blanks.
 
 ## Do this
 
-**Goal: a filter whose value is not hard-coded.**
+**Goal: the blanks live on the mapping.**
 
-1. New mapping `m_by_state` in `MERIDIAN_PRACTICE`.
-2. Source: `patients_multi_state.csv`.
-3. Open the mapping's **Parameters** panel (often a tab, or the parameters icon, not inside a transformation yet).
-4. New input parameter. Name: `p_state`. Type: string. Default: `NJ` if a default is required. Description: `Two-letter state to keep`.
-5. Drag **Filter**. Connect Source → Filter → Target.
-6. Filter condition: `state = $p_state` (the picker may insert the parameter token; use the token, do not type a quote around NJ inside the mapping).
-7. Target file: `patients_by_state.csv`. Pass the source fields through. Validate. Save.
+1. Data Integration → **New** → **Mappings** → **Mapping**. Name `m_by_state`. Location `MERIDIAN_PRACTICE`. Do not click **Switch to Advanced**. In advanced mode a text in-out parameter will not update. This mapping stays in the normal designer.
+2. **Source.** Connection: the existing `FF_MERIDIAN_PRACTICE`. Do not create a connection. Object: `patients_multi_state.csv`. Not `patients_north.csv`. If the file is missing from the list, it is not in the agent folder yet. Copy it there and refresh the object list.
+3. Open the **Parameters** panel from the mapping toolbar (the canvas toolbar, not a transformation, and not the mapping task). If you do not see it, click empty canvas and check the icons above the canvas for **Parameters**.
+4. Add an **input** parameter.
+   - Name: `p_state`
+   - Type: string. Precision 10.
+   - Default: `NJ` if the dialog requires one.
+   - Description: `State to keep`.
+5. Add an **in-out** parameter. Same panel, the in-out section, not a second input.
+   - Name: `p_kept_count`
+   - Type: integer
+   - Default: `0`
+   - Retention policy: **On success**
+   - Aggregation type: **Count**
+   - Description: `Rows that passed the filter`.
+6. **Save the mapping now**, before you look at a task. A task opened earlier will not grow a parameter section until this save exists.
 
-**Goal: two tasks, one mapping.**
+**Goal: the filter reads the input. The expression updates the in-out.**
 
-8. Mapping task `mt_by_state_nj`. Mapping `m_by_state`. Runtime as usual. Set parameter `p_state` to `NJ`. Run.
-9. Open the target. You want Ava, Noah, Mia. You do **not** want Ruth or Omar.
-10. Mapping task `mt_by_state_ny`. Same mapping. Set `p_state` to `NY`. Run.
-11. Open the target again (this task overwrites the same file). You want Ruth and Omar only.
+7. Drag **Filter**. Connect Source → Filter.
+8. Filter condition: pick field `state`, operator `=`, then pick parameter `p_state` from the expression list. The token looks like `$p_state`. Do not type `'NJ'` and do not put quotes around `$p_state`. If both runs later return all 5 rows, this condition is still hard-coded.
+9. Drag **Expression**. Connect Filter → Expression. You need it only to update the counter. In the expression, add an output field:
+   - Name: `kept_state`
+   - Expression: `$p_state`
+   This copies the input blank onto every output row so you can see it in the file.
+10. On that same Expression, set the in-out parameter with the variable function. Use the in-out section of the Expression if you see one. Otherwise add an output field you can ignore:
+    - Name: `count_step`
+    - Expression: `SetCountVariable($$p_kept_count)`
+    Two dollar signs. This function only works on an in-out parameter whose aggregation is **Count**. Put this Expression **immediately before** the Target. Do not put another `SetCountVariable` later.
+11. Drag **Target**. Connect Expression → Target. Connection: existing `FF_MERIDIAN_PRACTICE` again. Object: new file `patients_by_state.csv` (create it at runtime, same way as earlier targets). Format: flat file, comma, header row. Automap. `kept_state` should be mapped. Do not point this target at `patients_north_clean.csv` or `episode_north_summary.csv`.
+12. Validate. **Save.** Header must be Valid.
 
-If overwriting confuses you, set the NY task's target parameter instead — only if you already parameterized the target object. That is optional. The required proof is: NJ run keeps 3, NY run keeps 2, and you did **not** clone the mapping.
+**Goal: two tasks, one mapping. This is where you type the value.**
+
+13. **New** → **Mapping task** (Data Integration, not a taskflow). Name `mt_by_state_nj`. Location `MERIDIAN_PRACTICE`. Runtime: the same Secure Agent as session 1. Mapping: `m_by_state`. No schedule.
+14. **Sources.** Connection `FF_MERIDIAN_PRACTICE`. Object `patients_multi_state.csv`. You choose the existing connection and the existing file. A parameter does not replace the connection.
+15. **Targets.** Same connection. Object `patients_by_state.csv`.
+16. **Input Parameters.** This section is the "set parameter" place. It appears only after step 6. Type `NJ` for `p_state`. No quotes.
+17. **In-Out Parameters.** You should see `p_kept_count` with current value `0`. Do not type `3`. The mapping writes this one. Leave it.
+18. Save the task. Run it. Do not schedule it.
+19. Open `patients_by_state.csv`. You want Ava, Noah, Mia, and `kept_state` = `NJ`. You do not want Ruth or Omar.
+20. My Jobs → open that run → **In-Out Parameters**. `p_kept_count` should be **3**.
+21. New mapping task `mt_by_state_ny`. Same mapping, same connection, same source file, same target file. Input parameter `p_state` = `NY`. In-out starts at `0` because this is a different task. Save. Run.
+22. Open the target again. This task overwrites the file. You want Ruth and Omar only, `kept_state` = `NY`. Job details for **this** run: `p_kept_count` is **2**.
+23. Run `mt_by_state_nj` a second time. The file goes back to Ava, Noah, Mia (still 3 rows). Job details for this second NJ run: `p_kept_count` is **6**. It remembered 3 and counted 3 more. `p_state` is still just `NJ`. It did not become `NJNJ`. That is the whole difference.
 
 ## What you should see
 
-- One mapping.
-- Two tasks.
-- Different row counts.
+- One mapping, `m_by_state`. You did not clone it.
+- NJ task: 3 rows, `kept_state` NJ, in-out 3, then 6 on the second run.
+- NY task: 2 rows, `kept_state` NY, in-out 2.
+- Source and target both use `FF_MERIDIAN_PRACTICE`.
 
 ## If it fails
 
 | What you see | What it usually means |
 |---|---|
-| Both runs return all 5 rows | The filter still says `state = 'NJ'` as text, or the parameter is not in the condition. |
-| Task has no place to type NJ | The parameter was created inside a mapplet or not marked as available to the task. Create it on the mapping. |
-| NY run still shows Ava | You looked at the old NJ file and the NY task failed or wrote elsewhere. Check the run's target path in Monitor. |
+| The mapping task has no Input Parameters section | The parameter is not on the mapping, or the mapping was not saved, or you opened the task before the save. Save `m_by_state`, then open the task again. There is still no button named Set parameter. |
+| Both runs return all 5 rows | The filter says `state = 'NJ'` as text. Use `$p_state`. |
+| NY run still shows Ava | You opened an old file, or the NY task wrote somewhere else. Check the target path on that run in Monitor. |
+| In-out stays 0 | The Expression does not call `SetCountVariable($$p_kept_count)`, the aggregation is not Count, or you switched the mapping to Advanced. |
+| Second NJ run still shows 3, not 6 | Retention policy is not **On success**, or you clicked reset on the in-out parameter before the run. |
+| You created a new connection | You do not need one. Pick `FF_MERIDIAN_PRACTICE`. |
 
 ## Write this in the session log
 
 ```text
-NJ run id / rows:
-NY run id / rows:
+NJ run id / rows / in-out:
+NJ second run in-out (expect 6):
+NY run id / rows / in-out:
 Mapping cloned: no
 ```
 
 ## Answer before session 7
 
-1. Why is the state value on the task, not in the filter as the letters NJ?
-2. What would you duplicate by mistake if you copied the mapping instead?
+1. Why does the NY task return Ruth without a second mapping?
+2. Why did `p_kept_count` become 6 while the file still had 3 rows?
+3. What would you duplicate by mistake if you copied the mapping instead?
 
 ## Stop
 
