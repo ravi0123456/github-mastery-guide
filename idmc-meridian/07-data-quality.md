@@ -75,17 +75,21 @@ The rule statement is wrong, and that is why **Run Test** is gray. This row:
 
 asks whether the text contains the letters `YYYY-MM-DD`. `1984-03-12` does not. `NOT_A_DATE` does not. The else row says **Do Nothing**, so a bad date would return blank instead of Invalid. Test stays off until Validate succeeds and you Save.
 
-Do not click **Convert to Advanced**.
+Do not pick **contains**, **is within**, **is less than**, or **is greater than** for this rule. That list has no date pattern. **contains** looks for letters. **is** and **is not** compare one exact value. **is within** compares a list. The date check is the **func** box, not that operator list.
 
-13. Open **Rule Logic**. On the first row, change Operator from **contains** to **matches regular expression**. If the list says **matches**, use that. If it still shows `Anywhere`, you are still on contains.
-14. In Condition, delete `YYYY-MM-DD`. Type `^[0-9]{4}-[0-9]{2}-[0-9]{2}$`. Action stays **Valid**.
-15. On the second row, do not add another if. Click **Do Nothing** and change it to **Invalid**.
-16. Click **Validate**. Fix anything it marks. Then click **Save**. **Run Test** stays gray until both of those succeed.
-17. Open **Test**. Runtime: `CDIPC_APAC_Dev`. In the `dob` box type `1984-03-12`. Click **Run Test**. The output must be **Valid**. Clear the box, type `NOT_A_DATE`, run again. The output must be **Invalid**.
+13. Close the operator list. Set the operator to **is**.
+14. Leave the next dropdown as **func**. Click the pencil beside the value. Delete `YYYY-MM-DD`. In the function list, choose **Convert to date** or **Is date** if you see either. Format: `yyyy-MM-dd`. Year is lowercase `yyyy`. Month is uppercase `MM`. Day is lowercase `dd`.
+15. Action stays **Valid**. On the second row, click **Do Nothing** and change it to **Invalid**. Do not add another if.
+16. If the pencil list has no date function, click **Convert to Advanced**. Replace the logic with this expression and nothing else:
 
-If the Operator list has no matches or regular-expression choice, stop and say so. Do not invent a contains rule. A date pattern is not a dictionary.
+```
+IF IS_DATE(dob, 'YYYY-MM-DD') = 1 THEN 'Valid' ELSE 'Invalid'
+```
 
-18. Optional, only if it takes a few minutes: on `pf_patients_north` open the **Rules** tab, add `rl_dob_is_iso`, map its input to column `dob`, save, run the profile again. Then Results → View **Rules** shows pass and fail counts. If that screen is confusing, skip it. Step 17 is enough.
+17. Click **Validate**. Fix anything it marks. Then click **Save**. **Run Test** stays gray until both of those succeed.
+18. Open **Test**. Runtime: `CDIPC_APAC_Dev`. In the `dob` box type `1984-03-12`. Click **Run Test**. The output must be **Valid**. Clear the box, type `NOT_A_DATE`, run again. The output must be **Invalid**.
+
+19. Optional, only if it takes a few minutes: on `pf_patients_north` open the **Rules** tab, add `rl_dob_is_iso`, map its input to column `dob`, save, run the profile again. Then Results → View **Rules** shows pass and fail counts. If that screen is confusing, skip it. Step 18 is enough.
 
 Do not rebuild session 3 inside this session. Do not add a rule just to clear the empty Rules view. Change the view to Columns first.
 
@@ -105,7 +109,8 @@ Do not rebuild session 3 inside this session. Do not add a rule just to clear th
 | Results say `no data in the selected source`, banner says **0 Rows**, but Data Preview shows 4 rows | **View** is **Rules** and you have 0 rules. Change View to **Columns**. The preview is the file. The Rules view is empty until you add a rule. |
 | Profile says 5 rows | It counted the header. Fix the formatting (header present) and run again. |
 | **Run Test** is gray | The rule is not valid, or you have not saved after Validate. Fix the statement, click **Validate**, then **Save**. Selecting a runtime is not enough. |
-| Rule says `contains` and `YYYY-MM-DD` | That looks for those letters in the text. `1984-03-12` will not be Valid. Use **matches regular expression** and `^[0-9]{4}-[0-9]{2}-[0-9]{2}$`. Change the else action from **Do Nothing** to **Invalid**. |
+| Operator list is contains, is, is within, is less than, is greater than | None of those is a date pattern. Choose **is**, then set **func** to Convert to date or Is date with format `yyyy-MM-dd`. If that function is missing, use **Convert to Advanced** and `IS_DATE`. |
+| Rule says `contains` and `YYYY-MM-DD` | That looks for those letters in the text. `1984-03-12` will not be Valid. |
 | Rule test has no sample box | Open **Test** on `rl_dob_is_iso` after Validate and Save. Type one value in `dob`. |
 
 ## Write this in the session log
