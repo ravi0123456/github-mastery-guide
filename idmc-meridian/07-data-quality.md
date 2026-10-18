@@ -100,21 +100,18 @@ ELSE PrimaryRuleSet = 'INVALID' ENDIF
 
 `MM` is the month. Do not type `TO_DATE`. Do not type `Valid` or `Invalid`.
 21. Click **Validate**. If it says `= 1` is not allowed, delete ` = 1` and validate again. The condition is then `IF IS_DATE(dob, 'YYYY-MM-DD') THEN`. Then click **Save**. **Run Test** stays gray until both succeed.
-22. Do not test `rl_dob_is_iso`. That asset is still the basic rule. **Convert to Advanced** is still on its toolbar, and it has no Advanced badge. Its Test screen marks both `1984-03-12` and `NOT_A_DATE` as **VALID**. That is the old rule. Leave it.
-23. In the left list, open `rl_dob_is_iso_new`. Open **Configuration**. If the editor still says `IF dob = dob`, select all of it and replace it with only this:
+22. The expression on `rl_dob_is_iso_new` is already correct:
 
 ```
 IF IS_DATE(dob, 'YYYY-MM-DD') = 1 THEN PrimaryRuleSet = 'VALID'
 ELSE PrimaryRuleSet = 'INVALID' ENDIF
 ```
 
-24. Click **Validate**. If it rejects `= 1`, delete ` = 1` and validate again. Then click **Save**.
-25. Open **Test** on `rl_dob_is_iso_new`, not on `rl_dob_is_iso`. Runtime: `CDIPC_APAC_Dev`.
+There must be no period after `ENDIF`. A blue dot beside the name means it is not saved. Click **Validate**. If it rejects `= 1`, delete ` = 1` and validate again. Then click **Save**. The blue dot must disappear. Do not click `rl_dob_is_iso` in the left list.
+23. Stay on `rl_dob_is_iso_new`. The title must still say `rl_dob_is_iso_new` and the badge must still say **Advanced**. Open **Test** on that asset. Runtime: `CDIPC_APAC_Dev`.
     - `1984-03-12` must be **VALID**.
     - `NOT_A_DATE` must be **INVALID**.
-    If the second row is still **VALID**, the editor still contains `dob = dob`. Go back to step 23.
-
-26. Optional, only if it takes a few minutes: on `pf_patients_north` open the **Rules** tab, add `rl_dob_is_iso_new`, map its input to column `dob`, save, run the profile again. Then Results → View **Rules** shows pass and fail counts. If that screen is confusing, skip it. Step 25 is enough. Leave the old basic rule `rl_dob_is_iso` where it is. Do not delete it.
+24. If both rows are **VALID**, look at the title before you change the expression. A title of `rl_dob_is_iso` with **Convert to Advanced** still on the toolbar is the old rule. Its logic is `if dob is dob`, so every value is valid. Close it. Click `rl_dob_is_iso_new` in the left list and repeat step 23. Do not click **Convert to Advanced** again.
 
 Do not rebuild session 3 inside this session. Do not add a rule just to clear the empty Rules view. Change the view to Columns first.
 
