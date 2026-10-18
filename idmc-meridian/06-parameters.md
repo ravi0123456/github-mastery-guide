@@ -2,6 +2,20 @@
 
 **Time:** 45 minutes. **Requires:** session 3 filter skills. Leave the taskflow schedule disabled.
 
+## Fix the run that just failed
+
+`mt_by_state_nj` started, then failed with `TE_7002` and `invalid symbol reference` on `$p_state`. One dollar sign is not a parameter. Use two.
+
+1. Open mapping `m_by_state`.
+2. Open the Expression. On `kept_state`, set the type to **string** and the expression to `$$p_state`.
+3. On `count_step`, set the type to **Integer** and the expression to `SetCountVariable($$p_kept_count)`. If that row is missing, click **+** and add it.
+4. Open the Filter. Set the condition to `state = $$p_state`. Not `state = 'NJ'` and not `$p_state`.
+5. Save the mapping. Run the existing task `mt_by_state_nj`. Do not create a new task. On the task, `p_state` stays `NJ`.
+
+A good run writes Ava, Noah, and Mia, with `kept_state` equal to `NJ`, and the in-out value **3**. Then continue at step 21 for the NY task.
+
+Ignore these log lines. They are warnings, not the failure: Error Log DB Connection, Thousand Separator, Decimal Separator, Datetime Format, Output is repeatable, and "The value entered is not a valid integer."
+
 ## The idea in one minute
 
 A mapping is a recipe. A parameter is a blank in that recipe. You fill the blank when the **job** runs, not by copying the recipe.
