@@ -53,21 +53,27 @@ Menus differ by release (Data Quality vs Data Profiling as separate services). F
 
 **Goal: read the profile before you write a rule.**
 
-6. Open the results. Confirm row count 4.
-7. Open `dob`. Note the bad value.
-8. Open `phone`. Note more than one pattern.
-9. Open `state`. Note `ZZ`.
-10. Write those three observations in the log in your own words. If you cannot, you did not read the profile.
+The job succeeded. My Jobs shows **Fetching the source rows: 4** and **Success**. The warning `Profile run successful but no data in the selected source` is because **View** is set to **Rules**, and this profile has **0 rules**. Rules do not hold the column statistics. Data Preview at the bottom is a sample of the file. It is not the profile result.
+
+6. Open `pf_patients_north`. Stay on **Results**.
+7. Change **View** from **Rules** to **Columns**. Leave **with** as **All Statistics**. The warning goes away. You should see one row per column: value distribution, % null, # distinct.
+8. The banner should show **4** rows, not 0. If it still says **0 Rows** and the time is the old 12:43 AM run, click **Run** once more, wait until My Jobs is Success, then reopen Results and set View to **Columns**. **Fetching the source rows = 4** is the patient count. **Generating data profile = 0** only means there is no rule output yet. **Loading data from staging = 201** is the profiling warehouse, not 201 patients. Ignore 201.
+9. Scroll the results grid to `dob`. Open it. You want the value `NOT_A_DATE` and the real dates. That is the bad row you already see in Data Preview: `N1004`, first name `Bad`, last name `Date`.
+10. Open `phone`. Note more than one pattern.
+11. Open `state`. Note `ZZ` as well as `NJ`.
+12. Write those three observations in the log in your own words.
+
+The profile is not an input to the next asset. Nothing is wired automatically. You read `NOT_A_DATE`, then you build a rule that rejects that shape. A later job can call that rule. The profile itself stays a report.
 
 **Goal: one reusable rule, then stop.**
 
-11. In Data Quality, create a rule specification (or a cleanse asset, if that is what your release offers for a pattern check). Name: `rl_dob_is_iso`.
-12. Input: a string. Logic: valid when the value matches a date pattern `YYYY-MM-DD`. Invalid otherwise.
-13. If the UI wants a dictionary instead of a pattern: skip the dictionary. A date pattern is the right tool. A dictionary is the right tool for gender (`F`, `M`, `Female`, `Male`) — that is session extra, not required today.
-14. Save. If there is a **test** box, test `1984-03-12` (valid) and `NOT_A_DATE` (invalid).
-15. If you can attach the rule to a mapping as a Data Quality transformation, do that on a **copy** only if it takes under 15 minutes: source North file, DQ transformation, good output vs exception output. If the attachment is confusing, stop after the rule test. The profile plus a tested rule is a complete sitting.
+13. Switch to **Data Quality** (not the Rules tab on this profile). New → **Rule specification**. Name: `rl_dob_is_iso`. Location: `MERIDIAN_PRACTICE` if that folder exists there.
+14. One input, type string, name `dob`.
+15. Valid when the value matches date pattern `YYYY-MM-DD`. Anything else, including `NOT_A_DATE`, is invalid.
+16. Save. Use **Test** if you see it. `1984-03-12` must be valid. `NOT_A_DATE` must be invalid. That test is the proof you used the profile.
+17. Optional, only if it takes a few minutes: on `pf_patients_north` open the **Rules** tab, add `rl_dob_is_iso`, map its input to column `dob`, save, run the profile again. Then Results → View **Rules** shows pass and fail counts. If that screen is confusing, skip it. Step 16 is enough.
 
-Do not rebuild session 3 inside this session.
+Do not rebuild session 3 inside this session. Do not add a rule just to clear the empty Rules view. Change the view to Columns first.
 
 ## What you should see
 
@@ -82,6 +88,7 @@ Do not rebuild session 3 inside this session.
 | No Data Quality service | License. Write `NOT LICENSED`. Do not invent a workaround project in another org. |
 | Profile fails in about one second, 0 rows, `DTM process terminated unexpectedly` | The agent group is missing **Data Quality** or **Amazon S3 v2**. Rules being empty is not the cause. Follow the steps at the top. |
 | Profile runs forever | Wrong runtime, or the agent cannot read the file. Same checks as session 2. |
+| Results say `no data in the selected source`, banner says **0 Rows**, but Data Preview shows 4 rows | **View** is **Rules** and you have 0 rules. Change View to **Columns**. The preview is the file. The Rules view is empty until you add a rule. |
 | Profile says 5 rows | It counted the header. Fix the formatting (header present) and run again. |
 | Rule test has no sample box | Open the asset and use **Run** / **Test** with a single value. If there is truly no test, record the rule name and move on. |
 
