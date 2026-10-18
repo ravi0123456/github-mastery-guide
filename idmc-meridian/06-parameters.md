@@ -53,10 +53,11 @@ Five data rows. Three NJ, two NY. No bad date. This session is only the blanks.
    - Type: string. Precision 10.
    - Default: `NJ` if the dialog requires one.
    - Description: `State to keep`.
-5. Add an **in-out** parameter. Same panel, the in-out section, not a second input.
+5. Add an **in-out** parameter. Same panel, the in-out section, not a second input. The dialog often opens on **String** because `p_state` was a string. Change it. Count only accepts an integer.
    - Name: `p_kept_count`
-   - Type: integer
-   - Default: `0`
+   - Data type: **Integer**. Not String, not Text, not Decimal, not Number.
+   - Precision: 10. Scale: 0, or leave scale empty.
+   - Default value: `0` (the digit, not a word).
    - Retention policy: **On success**
    - Aggregation type: **Count**
    - Description: `Rows that passed the filter`.
@@ -70,10 +71,11 @@ Five data rows. Three NJ, two NY. No bad date. This session is only the blanks.
    - Name: `kept_state`
    - Expression: `$p_state`
    This copies the input blank onto every output row so you can see it in the file.
-10. On that same Expression, set the in-out parameter with the variable function. Use the in-out section of the Expression if you see one. Otherwise add an output field you can ignore:
+10. On that same Expression, add a second output field. This field's type is the usual reason the job dies with `Invalid datatype for aggregate COUNT for mapping variable $$p_kept_count`.
     - Name: `count_step`
+    - Type: **Integer**. Not String. Precision 10.
     - Expression: `SetCountVariable($$p_kept_count)`
-    Two dollar signs. This function only works on an in-out parameter whose aggregation is **Count**. Put this Expression **immediately before** the Target. Do not put another `SetCountVariable` later.
+    Two dollar signs, no quotes. This function only works when **both** the parameter and this field are Integer, and the parameter aggregation is **Count**. Put this Expression immediately before the Target. Do not add a second `SetCountVariable`.
 11. Drag **Target**. Connect Expression → Target. Connection: existing `FF_MERIDIAN_PRACTICE` again. Object: new file `patients_by_state.csv` (create it at runtime, same way as earlier targets). Format: flat file, comma, header row. Automap. `kept_state` should be mapped. Do not point this target at `patients_north_clean.csv` or `episode_north_summary.csv`.
 12. Validate. **Save.** Header must be Valid.
 
@@ -106,8 +108,22 @@ Five data rows. Three NJ, two NY. No bad date. This session is only the blanks.
 | Both runs return all 5 rows | The filter says `state = 'NJ'` as text. Use `$p_state`. |
 | NY run still shows Ava | You opened an old file, or the NY task wrote somewhere else. Check the target path on that run in Monitor. |
 | In-out stays 0 | The Expression does not call `SetCountVariable($$p_kept_count)`, the aggregation is not Count, or you switched the mapping to Advanced. |
+| Job **Failed** before any rows. Log says `Invalid datatype for aggregate COUNT for mapping variable $$p_kept_count`, then `Failed to Import: Mapping0`. The page says `Invalid mapping import`. | `p_kept_count` or the Expression field `count_step` is String (or Decimal). Count needs Integer on both. Fix it with the steps below. Do not create a new task. |
+| Log also says Error Log DB Connection, Thousand Separator, Decimal Separator, Datetime Format, or Output is repeatable | Ignore those. They are warnings. The job failed on the COUNT line above them. |
 | Second NJ run still shows 3, not 6 | Retention policy is not **On success**, or you clicked reset on the in-out parameter before the run. |
 | You created a new connection | You do not need one. Pick `FF_MERIDIAN_PRACTICE`. |
+
+## Fix the failed NJ run
+
+`mt_by_state_nj` failed at import. No rows were written. The only line that matters is `Invalid datatype for aggregate COUNT for mapping variable $$p_kept_count`. Count cannot run on a string.
+
+1. Open mapping `m_by_state`. Do not open the task yet.
+2. Parameters panel → in-out `p_kept_count`. Set data type to **Integer**, scale 0, default `0`, aggregation **Count**, retention **On success**. If the type dropdown will not change, delete this parameter and create it again with those settings. Save.
+3. Open the Expression. Click field `count_step`. Set its type to **Integer**. Expression stays `SetCountVariable($$p_kept_count)`. If that field does not exist, add it. Do not leave it as String.
+4. Validate. Save the mapping. The header must say Valid.
+5. Open the existing task `mt_by_state_nj`. Do not create another one. Confirm input `p_state` is `NJ`. Run it again.
+
+A successful rerun shows 3 rows (Ava, Noah, Mia) and in-out value 3. Then continue at step 21 for the NY task.
 
 ## Write this in the session log
 
