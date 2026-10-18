@@ -67,15 +67,16 @@ Five data rows. Three NJ, two NY. No bad date. This session is only the blanks.
 
 7. Drag **Filter**. Connect Source → Filter.
 8. Filter condition: pick field `state`, operator `=`, then pick parameter `p_state` from the expression list. The token looks like `$p_state`. Do not type `'NJ'` and do not put quotes around `$p_state`. If both runs later return all 5 rows, this condition is still hard-coded.
-9. Drag **Expression**. Connect Filter → Expression. You need it only to update the counter. In the expression, add an output field:
+9. Drag **Expression**. Connect Filter → Expression. Add one output field for the state you were given. Do not put the count function on this field.
    - Name: `kept_state`
+   - Type: **string**. Precision 10.
    - Expression: `$p_state`
-   This copies the input blank onto every output row so you can see it in the file.
-10. On that same Expression, add a second output field. This field's type is the usual reason the job dies with `Invalid datatype for aggregate COUNT for mapping variable $$p_kept_count`.
+   This copies the input blank onto every output row so you can see NJ or NY in the file.
+10. On that same Expression, click **+** and add a **second** row. This is the field that updates the counter. The canvas can say Valid while this row is still wrong. The agent rejects it later.
     - Name: `count_step`
-    - Type: **Integer**. Not String. Precision 10.
+    - Type: **Integer**. Not string. Precision 10. Scale 0.
     - Expression: `SetCountVariable($$p_kept_count)`
-    Two dollar signs, no quotes. This function only works when **both** the parameter and this field are Integer, and the parameter aggregation is **Count**. Put this Expression immediately before the Target. Do not add a second `SetCountVariable`.
+    Two dollar signs, no quotes. `kept_state` stays `$p_state`. Do not replace that expression with `SetCountVariable`. A string field cannot hold a count, and that is the import error `Invalid datatype for aggregate COUNT`.
 11. Drag **Target**. Connect Expression → Target. Connection: existing `FF_MERIDIAN_PRACTICE` again. Object: new file `patients_by_state.csv` (create it at runtime, same way as earlier targets). Format: flat file, comma, header row. Automap. `kept_state` should be mapped. Do not point this target at `patients_north_clean.csv` or `episode_north_summary.csv`.
 12. Validate. **Save.** Header must be Valid.
 
@@ -119,7 +120,10 @@ Five data rows. Three NJ, two NY. No bad date. This session is only the blanks.
 
 1. Open mapping `m_by_state`. Do not open the task yet.
 2. Parameters panel → in-out `p_kept_count`. Set data type to **Integer**, scale 0, default `0`, aggregation **Count**, retention **On success**. If the type dropdown will not change, delete this parameter and create it again with those settings. Save.
-3. Open the Expression. Click field `count_step`. Set its type to **Integer**. Expression stays `SetCountVariable($$p_kept_count)`. If that field does not exist, add it. Do not leave it as String.
+3. Open the Expression. You need **two** rows.
+   - `kept_state`: type **string**, expression `$p_state`. If this row currently says `SetCountVariable($$p_kept_count)`, replace that expression with `$p_state`. Leave the type as string.
+   - `count_step`: click **+**. Type **Integer**, precision 10, scale 0, expression `SetCountVariable($$p_kept_count)`.
+   The header can say Valid before this change. Valid does not check the count type. The agent does, when the task runs.
 4. Validate. Save the mapping. The header must say Valid.
 5. Open the existing task `mt_by_state_nj`. Do not create another one. Confirm input `p_state` is `NJ`. Run it again.
 
