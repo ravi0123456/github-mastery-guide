@@ -80,19 +80,29 @@ You already did the right start. `rl_dob_is_iso` exists. Input `dob` is String, 
 15. On the second row, `No rule statement is valid`, set the action to status **Invalid**. The action box must not stay empty.
 16. Click **Validate**. Both red messages must be gone. Then click **Save**.
 17. Click **Convert to Advanced**. That opens a new Advanced rule. The badge **Advanced** next to the name means this part worked.
-18. Do not click **Save** yet. The name `rl_dob_is_iso` is already used by the basic rule, so the red message says `An object with this name already exists at this location`. Change **Name** to `rl_dob_is_iso_adv`. Leave Location as it is. Leave Dimension as **None**.
+18. Do not click **Save** yet. The name `rl_dob_is_iso` is already used by the basic rule, so the red message says `An object with this name already exists at this location`. Change **Name** to `rl_dob_is_iso_new`. Leave Location as it is. Leave Dimension as **None**.
 19. Open the **Configuration** tab. Confirm the input `dob` is still there and is a String. Do not add a second input.
-20. In the rule logic editor, select everything and replace it with only this:
+20. The editor already contains a generated rule:
 
 ```
-IF IS_DATE(dob, 'YYYY-MM-DD') = 1 THEN 'Valid' ELSE 'Invalid'
+IF dob = dob THEN PrimaryRuleSet = 'VALID'
+ELSE PrimaryRuleSet = 'INVALID' ENDIF
 ```
 
-Do not leave `1984-03-12`. Do not type `TO_DATE`. `MM` is the month.
-21. Click **Validate**. The name error must be gone. Then click **Save**. **Run Test** stays gray until both succeed.
-22. Open **Test**. Runtime: `CDIPC_APAC_Dev`. In the `dob` box type `1984-03-12`. Click **Run Test**. The output must be **Valid**. Clear the box, type `NOT_A_DATE`, run again. The output must be **Invalid**.
+`dob = dob` is true for every value, so that rule would mark `NOT_A_DATE` as valid. Do not save it. The earlier expression `THEN 'Valid'` is also wrong for this screen. Advanced mode does not return a word. It assigns the rule set, and the status words are `VALID` and `INVALID`.
 
-23. Optional, only if it takes a few minutes: on `pf_patients_north` open the **Rules** tab, add `rl_dob_is_iso_adv`, map its input to column `dob`, save, run the profile again. Then Results → View **Rules** shows pass and fail counts. If that screen is confusing, skip it. Step 22 is enough. Leave the old basic rule `rl_dob_is_iso` where it is. Do not delete it.
+Select all three lines and replace them with only this:
+
+```
+IF IS_DATE(dob, 'YYYY-MM-DD') = 1 THEN PrimaryRuleSet = 'VALID'
+ELSE PrimaryRuleSet = 'INVALID' ENDIF
+```
+
+`MM` is the month. Do not type `TO_DATE`. Do not type `Valid` or `Invalid`.
+21. Click **Validate**. If it says `= 1` is not allowed, delete ` = 1` and validate again. The condition is then `IF IS_DATE(dob, 'YYYY-MM-DD') THEN`. Then click **Save**. **Run Test** stays gray until both succeed.
+22. Open **Test**. Runtime: `CDIPC_APAC_Dev`. In the `dob` box type `1984-03-12`. Click **Run Test**. The output must be **VALID**. Clear the box, type `NOT_A_DATE`, run again. The output must be **INVALID**.
+
+23. Optional, only if it takes a few minutes: on `pf_patients_north` open the **Rules** tab, add `rl_dob_is_iso_new`, map its input to column `dob`, save, run the profile again. Then Results → View **Rules** shows pass and fail counts. If that screen is confusing, skip it. Step 22 is enough. Leave the old basic rule `rl_dob_is_iso` where it is. Do not delete it.
 
 Do not rebuild session 3 inside this session. Do not add a rule just to clear the empty Rules view. Change the view to Columns first.
 
@@ -112,7 +122,7 @@ Do not rebuild session 3 inside this session. Do not add a rule just to clear th
 | Results say `no data in the selected source`, banner says **0 Rows**, but Data Preview shows 4 rows | **View** is **Rules** and you have 0 rules. Change View to **Columns**. The preview is the file. The Rules view is empty until you add a rule. |
 | Profile says 5 rows | It counted the header. Fix the formatting (header present) and run again. |
 | **Run Test** is gray | The rule is not valid, or you have not saved after Validate. Fix the statement, click **Validate**, then **Save**. Selecting a runtime is not enough. |
-| `An object with this name already exists at this location` after **Convert to Advanced** | The basic rule still owns the name `rl_dob_is_iso`. Rename this new rule to `rl_dob_is_iso_adv`, then open **Configuration** and paste the `IS_DATE` expression. Do not delete the old rule. |
+| `An object with this name already exists at this location` after **Convert to Advanced** | The basic rule still owns the name `rl_dob_is_iso`. Rename this new rule to `rl_dob_is_iso_new`, then open **Configuration**. |
 | Second row says **expre** and the box is empty | That else action must be status **Invalid**. You will not need this row after you switch to Advanced, because the expression already has `ELSE 'Invalid'`. |
 | Rule test has no sample box | Open **Test** on `rl_dob_is_iso` after Validate and Save. Type one value in `dob`. |
 
