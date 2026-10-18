@@ -69,27 +69,28 @@ The profile is not an input to the next asset. Nothing is wired automatically. Y
 
 You already did the right start. `rl_dob_is_iso` exists. Input `dob` is String, length 50. Leave that. Do not add a second input. On Input Management, click **OK**.
 
-The red message `An input data type does not match the data type that a condition specifies` is this row:
+**Convert to Advanced** failed because the rule is not valid. The message `Can't convert the rule specification` means the blank row is still there. Validate says `a rule statement with no action` and `a rule statement with no operator`. Informatica will not open Advanced until this screen is valid and saved. A blank row cannot be saved.
 
-`if dob is TO_DATE(dob,'yyyy-mm-dd') then 'Valid'`
-
-`dob` is text. `TO_DATE` returns a date. **is** cannot compare those two types. Changing `mm` to `MM` does not fix it. Do not edit this function. Delete the row.
-
-The else row can say **Invalid**. You will not use it. Advanced mode replaces both rows.
-
-13. Click the trash can on the `TO_DATE` row. Confirm delete. Leave the screen empty if that removes both rows.
-14. Click **Convert to Advanced**. Continue if it says you cannot switch back. Do this even if the else row already says Invalid.
-15. Replace the logic with this expression and nothing else:
+13. Click **OK** on that message.
+14. Stay on **Configuration** → **Rule Logic**. Fill the blank first row. This row is only a key to open Advanced. It is not the date rule.
+    - Input: `dob`
+    - Operator: **is**
+    - Condition: click **+ Add Input**, choose **Value**, type `1984-03-12`. Do not choose **func**.
+    - Action: change **func** to **status**, then choose **Valid**.
+15. On the second row, `No rule statement is valid`, set the action to status **Invalid**. The action box must not stay empty.
+16. Click **Validate**. Both red messages must be gone. Then click **Save**.
+17. Click **Convert to Advanced**. Continue if it says you cannot switch back.
+18. Select everything in the editor and replace it with only this:
 
 ```
 IF IS_DATE(dob, 'YYYY-MM-DD') = 1 THEN 'Valid' ELSE 'Invalid'
 ```
 
-`MM` is the month. Do not type `mm`. Do not type `TO_DATE`.
-16. Click **Validate**. The red type message must be gone. Then click **Save**. **Run Test** stays gray until both succeed.
-17. Open **Test**. Runtime: `CDIPC_APAC_Dev`. In the `dob` box type `1984-03-12`. Click **Run Test**. The output must be **Valid**. Clear the box, type `NOT_A_DATE`, run again. The output must be **Invalid**.
+Do not leave the `1984-03-12` statement. `MM` is the month. Do not type `TO_DATE`.
+19. Click **Validate**. Then click **Save**. **Run Test** stays gray until both succeed.
+20. Open **Test**. Runtime: `CDIPC_APAC_Dev`. In the `dob` box type `1984-03-12`. Click **Run Test**. The output must be **Valid**. Clear the box, type `NOT_A_DATE`, run again. The output must be **Invalid**.
 
-18. Optional, only if it takes a few minutes: on `pf_patients_north` open the **Rules** tab, add `rl_dob_is_iso`, map its input to column `dob`, save, run the profile again. Then Results → View **Rules** shows pass and fail counts. If that screen is confusing, skip it. Step 17 is enough.
+21. Optional, only if it takes a few minutes: on `pf_patients_north` open the **Rules** tab, add `rl_dob_is_iso`, map its input to column `dob`, save, run the profile again. Then Results → View **Rules** shows pass and fail counts. If that screen is confusing, skip it. Step 20 is enough.
 
 Do not rebuild session 3 inside this session. Do not add a rule just to clear the empty Rules view. Change the view to Columns first.
 
@@ -109,7 +110,7 @@ Do not rebuild session 3 inside this session. Do not add a rule just to clear th
 | Results say `no data in the selected source`, banner says **0 Rows**, but Data Preview shows 4 rows | **View** is **Rules** and you have 0 rules. Change View to **Columns**. The preview is the file. The Rules view is empty until you add a rule. |
 | Profile says 5 rows | It counted the header. Fix the formatting (header present) and run again. |
 | **Run Test** is gray | The rule is not valid, or you have not saved after Validate. Fix the statement, click **Validate**, then **Save**. Selecting a runtime is not enough. |
-| Red message `An input data type does not match the data type that a condition specifies`, condition is `TO_DATE(dob,'yyyy-mm-dd')` | Text cannot equal a date. Do not edit the format. Trash that row and use **Convert to Advanced** with `IS_DATE`. |
+| `Can't convert the rule specification` and the row is blank | Advanced is locked until the basic rule is valid. Fill Input `dob`, operator **is**, value `1984-03-12`, action **Valid**, else **Invalid**. Validate, Save, then convert and replace the logic with `IS_DATE`. |
 | Second row says **expre** and the box is empty | That else action must be status **Invalid**. You will not need this row after you switch to Advanced, because the expression already has `ELSE 'Invalid'`. |
 | Rule test has no sample box | Open **Test** on `rl_dob_is_iso` after Validate and Save. Type one value in `dob`. |
 
