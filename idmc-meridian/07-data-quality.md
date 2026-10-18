@@ -100,9 +100,21 @@ ELSE PrimaryRuleSet = 'INVALID' ENDIF
 
 `MM` is the month. Do not type `TO_DATE`. Do not type `Valid` or `Invalid`.
 21. Click **Validate**. If it says `= 1` is not allowed, delete ` = 1` and validate again. The condition is then `IF IS_DATE(dob, 'YYYY-MM-DD') THEN`. Then click **Save**. **Run Test** stays gray until both succeed.
-22. Open **Test**. Runtime: `CDIPC_APAC_Dev`. In the `dob` box type `1984-03-12`. Click **Run Test**. The output must be **VALID**. Clear the box, type `NOT_A_DATE`, run again. The output must be **INVALID**.
+22. Do not test `rl_dob_is_iso`. That asset is still the basic rule. **Convert to Advanced** is still on its toolbar, and it has no Advanced badge. Its Test screen marks both `1984-03-12` and `NOT_A_DATE` as **VALID**. That is the old rule. Leave it.
+23. In the left list, open `rl_dob_is_iso_new`. Open **Configuration**. If the editor still says `IF dob = dob`, select all of it and replace it with only this:
 
-23. Optional, only if it takes a few minutes: on `pf_patients_north` open the **Rules** tab, add `rl_dob_is_iso_new`, map its input to column `dob`, save, run the profile again. Then Results → View **Rules** shows pass and fail counts. If that screen is confusing, skip it. Step 22 is enough. Leave the old basic rule `rl_dob_is_iso` where it is. Do not delete it.
+```
+IF IS_DATE(dob, 'YYYY-MM-DD') = 1 THEN PrimaryRuleSet = 'VALID'
+ELSE PrimaryRuleSet = 'INVALID' ENDIF
+```
+
+24. Click **Validate**. If it rejects `= 1`, delete ` = 1` and validate again. Then click **Save**.
+25. Open **Test** on `rl_dob_is_iso_new`, not on `rl_dob_is_iso`. Runtime: `CDIPC_APAC_Dev`.
+    - `1984-03-12` must be **VALID**.
+    - `NOT_A_DATE` must be **INVALID**.
+    If the second row is still **VALID**, the editor still contains `dob = dob`. Go back to step 23.
+
+26. Optional, only if it takes a few minutes: on `pf_patients_north` open the **Rules** tab, add `rl_dob_is_iso_new`, map its input to column `dob`, save, run the profile again. Then Results → View **Rules** shows pass and fail counts. If that screen is confusing, skip it. Step 25 is enough. Leave the old basic rule `rl_dob_is_iso` where it is. Do not delete it.
 
 Do not rebuild session 3 inside this session. Do not add a rule just to clear the empty Rules view. Change the view to Columns first.
 
@@ -121,7 +133,7 @@ Do not rebuild session 3 inside this session. Do not add a rule just to clear th
 | Profile runs forever | Wrong runtime, or the agent cannot read the file. Same checks as session 2. |
 | Results say `no data in the selected source`, banner says **0 Rows**, but Data Preview shows 4 rows | **View** is **Rules** and you have 0 rules. Change View to **Columns**. The preview is the file. The Rules view is empty until you add a rule. |
 | Profile says 5 rows | It counted the header. Fix the formatting (header present) and run again. |
-| **Run Test** is gray | The rule is not valid, or you have not saved after Validate. Fix the statement, click **Validate**, then **Save**. Selecting a runtime is not enough. |
+| Test on `rl_dob_is_iso` shows **VALID** for both `1984-03-12` and `NOT_A_DATE` | You tested the old basic rule. **Convert to Advanced** is still on that toolbar. Open `rl_dob_is_iso_new`, replace `dob = dob` with `IS_DATE`, save, and test that asset. |
 | `An object with this name already exists at this location` after **Convert to Advanced** | The basic rule still owns the name `rl_dob_is_iso`. Rename this new rule to `rl_dob_is_iso_new`, then open **Configuration**. |
 | Second row says **expre** and the box is empty | That else action must be status **Invalid**. You will not need this row after you switch to Advanced, because the expression already has `ELSE 'Invalid'`. |
 | Rule test has no sample box | Open **Test** on `rl_dob_is_iso` after Validate and Save. Type one value in `dob`. |
@@ -133,7 +145,7 @@ Profile run:
 dob observation:
 phone observation:
 state observation:
-Rule name: rl_dob_is_iso
+Rule name: rl_dob_is_iso_new
 Test NOT_A_DATE: invalid / not tested
 ```
 
