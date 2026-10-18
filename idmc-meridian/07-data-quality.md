@@ -69,22 +69,24 @@ The profile is not an input to the next asset. Nothing is wired automatically. Y
 
 You already did the right start. `rl_dob_is_iso` exists. Input `dob` is String, length 50. Leave that. Do not add a second input. On Input Management, click **OK**.
 
-The rule statement is wrong, and that is why **Run Test** is gray. The red message `String type expected in Input 1 within function TO_DATE` is the first row, not the second.
+The red message `An input data type does not match the data type that a condition specifies` is this row:
 
-`if dob is TO_DATE('yyyy-mm-dd')` does not look at `dob`. `TO_DATE` must be given the date text first and a format second. You gave it only the format. `mm` is minutes, not the month. Month is `MM`. A string cannot be **is** a date, so this row cannot be repaired. Delete it.
+`if dob is TO_DATE(dob,'yyyy-mm-dd') then 'Valid'`
 
-The second row is also unfinished. The action says **expre** and the box is empty. That else row must be the status **Invalid**, not an expression.
+`dob` is text. `TO_DATE` returns a date. **is** cannot compare those two types. Changing `mm` to `MM` does not fix it. Do not edit this function. Delete the row.
 
-13. On the first row, click the trash can. Confirm delete. Do not click the pencil to edit `TO_DATE('yyyy-mm-dd')`.
-14. Click **Convert to Advanced**. If it warns that you cannot go back, continue.
+The else row can say **Invalid**. You will not use it. Advanced mode replaces both rows.
+
+13. Click the trash can on the `TO_DATE` row. Confirm delete. Leave the screen empty if that removes both rows.
+14. Click **Convert to Advanced**. Continue if it says you cannot switch back. Do this even if the else row already says Invalid.
 15. Replace the logic with this expression and nothing else:
 
 ```
 IF IS_DATE(dob, 'YYYY-MM-DD') = 1 THEN 'Valid' ELSE 'Invalid'
 ```
 
-`MM` is the month. Do not type `mm`.
-16. Click **Validate**. The red TO_DATE message must be gone. Then click **Save**. **Run Test** stays gray until both succeed.
+`MM` is the month. Do not type `mm`. Do not type `TO_DATE`.
+16. Click **Validate**. The red type message must be gone. Then click **Save**. **Run Test** stays gray until both succeed.
 17. Open **Test**. Runtime: `CDIPC_APAC_Dev`. In the `dob` box type `1984-03-12`. Click **Run Test**. The output must be **Valid**. Clear the box, type `NOT_A_DATE`, run again. The output must be **Invalid**.
 
 18. Optional, only if it takes a few minutes: on `pf_patients_north` open the **Rules** tab, add `rl_dob_is_iso`, map its input to column `dob`, save, run the profile again. Then Results → View **Rules** shows pass and fail counts. If that screen is confusing, skip it. Step 17 is enough.
@@ -107,7 +109,7 @@ Do not rebuild session 3 inside this session. Do not add a rule just to clear th
 | Results say `no data in the selected source`, banner says **0 Rows**, but Data Preview shows 4 rows | **View** is **Rules** and you have 0 rules. Change View to **Columns**. The preview is the file. The Rules view is empty until you add a rule. |
 | Profile says 5 rows | It counted the header. Fix the formatting (header present) and run again. |
 | **Run Test** is gray | The rule is not valid, or you have not saved after Validate. Fix the statement, click **Validate**, then **Save**. Selecting a runtime is not enough. |
-| Red message `String type expected in Input 1 within function TO_DATE` | The condition is `TO_DATE('yyyy-mm-dd')`. That is only a format, `mm` means minutes, and a string cannot equal a date. Delete that row. Use **Convert to Advanced** and `IS_DATE(dob, 'YYYY-MM-DD')`. |
+| Red message `An input data type does not match the data type that a condition specifies`, condition is `TO_DATE(dob,'yyyy-mm-dd')` | Text cannot equal a date. Do not edit the format. Trash that row and use **Convert to Advanced** with `IS_DATE`. |
 | Second row says **expre** and the box is empty | That else action must be status **Invalid**. You will not need this row after you switch to Advanced, because the expression already has `ELSE 'Invalid'`. |
 | Rule test has no sample box | Open **Test** on `rl_dob_is_iso` after Validate and Save. Type one value in `dob`. |
 
