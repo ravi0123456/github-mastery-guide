@@ -67,11 +67,25 @@ The profile is not an input to the next asset. Nothing is wired automatically. Y
 
 **Goal: one reusable rule, then stop.**
 
-13. Switch to **Data Quality** (not the Rules tab on this profile). New → **Rule specification**. Name: `rl_dob_is_iso`. Location: `MERIDIAN_PRACTICE` if that folder exists there.
-14. One input, type string, name `dob`.
-15. Valid when the value matches date pattern `YYYY-MM-DD`. Anything else, including `NOT_A_DATE`, is invalid.
-16. Save. Use **Test** if you see it. `1984-03-12` must be valid. `NOT_A_DATE` must be invalid. That test is the proof you used the profile.
-17. Optional, only if it takes a few minutes: on `pf_patients_north` open the **Rules** tab, add `rl_dob_is_iso`, map its input to column `dob`, save, run the profile again. Then Results → View **Rules** shows pass and fail counts. If that screen is confusing, skip it. Step 16 is enough.
+You already did the right start. `rl_dob_is_iso` exists. Input `dob` is String, length 50. Leave that. Do not add a second input. On Input Management, click **OK**.
+
+The rule statement is wrong, and that is why **Run Test** is gray. This row:
+
+`if dob contains Value('YYYY-MM-DD', Anywhere) then Valid`
+
+asks whether the text contains the letters `YYYY-MM-DD`. `1984-03-12` does not. `NOT_A_DATE` does not. The else row says **Do Nothing**, so a bad date would return blank instead of Invalid. Test stays off until Validate succeeds and you Save.
+
+Do not click **Convert to Advanced**.
+
+13. Open **Rule Logic**. On the first row, change Operator from **contains** to **matches regular expression**. If the list says **matches**, use that. If it still shows `Anywhere`, you are still on contains.
+14. In Condition, delete `YYYY-MM-DD`. Type `^[0-9]{4}-[0-9]{2}-[0-9]{2}$`. Action stays **Valid**.
+15. On the second row, do not add another if. Click **Do Nothing** and change it to **Invalid**.
+16. Click **Validate**. Fix anything it marks. Then click **Save**. **Run Test** stays gray until both of those succeed.
+17. Open **Test**. Runtime: `CDIPC_APAC_Dev`. In the `dob` box type `1984-03-12`. Click **Run Test**. The output must be **Valid**. Clear the box, type `NOT_A_DATE`, run again. The output must be **Invalid**.
+
+If the Operator list has no matches or regular-expression choice, stop and say so. Do not invent a contains rule. A date pattern is not a dictionary.
+
+18. Optional, only if it takes a few minutes: on `pf_patients_north` open the **Rules** tab, add `rl_dob_is_iso`, map its input to column `dob`, save, run the profile again. Then Results → View **Rules** shows pass and fail counts. If that screen is confusing, skip it. Step 17 is enough.
 
 Do not rebuild session 3 inside this session. Do not add a rule just to clear the empty Rules view. Change the view to Columns first.
 
@@ -90,7 +104,9 @@ Do not rebuild session 3 inside this session. Do not add a rule just to clear th
 | Profile runs forever | Wrong runtime, or the agent cannot read the file. Same checks as session 2. |
 | Results say `no data in the selected source`, banner says **0 Rows**, but Data Preview shows 4 rows | **View** is **Rules** and you have 0 rules. Change View to **Columns**. The preview is the file. The Rules view is empty until you add a rule. |
 | Profile says 5 rows | It counted the header. Fix the formatting (header present) and run again. |
-| Rule test has no sample box | Open the asset and use **Run** / **Test** with a single value. If there is truly no test, record the rule name and move on. |
+| **Run Test** is gray | The rule is not valid, or you have not saved after Validate. Fix the statement, click **Validate**, then **Save**. Selecting a runtime is not enough. |
+| Rule says `contains` and `YYYY-MM-DD` | That looks for those letters in the text. `1984-03-12` will not be Valid. Use **matches regular expression** and `^[0-9]{4}-[0-9]{2}-[0-9]{2}$`. Change the else action from **Do Nothing** to **Invalid**. |
+| Rule test has no sample box | Open **Test** on `rl_dob_is_iso` after Validate and Save. Type one value in `dob`. |
 
 ## Write this in the session log
 
