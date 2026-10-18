@@ -133,7 +133,7 @@ Do not rebuild session 3 inside this session. Do not add a rule just to clear th
 | Profile runs forever | Wrong runtime, or the agent cannot read the file. Same checks as session 2. |
 | Results say `no data in the selected source`, banner says **0 Rows**, but Data Preview shows 4 rows | **View** is **Rules** and you have 0 rules. Change View to **Columns**. The preview is the file. The Rules view is empty until you add a rule. |
 | Profile says 5 rows | It counted the header. Fix the formatting (header present) and run again. |
-| Test on `rl_dob_is_iso` shows **VALID** for both `1984-03-12` and `NOT_A_DATE` | You tested the old basic rule. **Convert to Advanced** is still on that toolbar. Open `rl_dob_is_iso_new`, replace `dob = dob` with `IS_DATE`, save, and test that asset. |
+| Test on `rl_dob_is_iso` shows **VALID** for both `1984-03-12` and `NOT_A_DATE` | The basic rule says `if dob is dob`. A value always equals itself, so the else row never runs. Do not edit it and do not click **Convert to Advanced** again. Open `rl_dob_is_iso_new` and use `IS_DATE`. |
 | `An object with this name already exists at this location` after **Convert to Advanced** | The basic rule still owns the name `rl_dob_is_iso`. Rename this new rule to `rl_dob_is_iso_new`, then open **Configuration**. |
 | Second row says **expre** and the box is empty | That else action must be status **Invalid**. You will not need this row after you switch to Advanced, because the expression already has `ELSE 'Invalid'`. |
 | Rule test has no sample box | Open **Test** on `rl_dob_is_iso` after Validate and Save. Type one value in `dob`. |
