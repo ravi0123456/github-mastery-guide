@@ -45,11 +45,11 @@ In the MDM org, start at step 1. You do not need the mappings. You also do not c
 1. Leave the org where you built the mappings. Log into the org from the service list that shows **Business 360**, **Customer 360**, and **Data Quality**. That is the MDM org. Do not import `MERIDIAN_PRACTICE`. Do not recreate `m_land_north`, the taskflow, or `rl_dob_is_iso_new`.
 2. In that org, open **My Services**. Open **Business 360**. Do not open Customer 360 unless Business 360 is absent. Do not open Data Integration.
 3. If Business 360 is not in this org either, write `MDM NOT LICENSED` and stop. Do not build a fake MDM in CDI.
-4. The project `Test_Pract` is the folder for this org. Do not create `MERIDIAN_PRACTICE` here, and do not rename `Test_Pract`. If a save dialog asks for a project, pick `Test_Pract`. If **New** does not ask for a project, that is normal for source systems and entities. Leave `Test_Pract` empty of mappings.
+4. The project `Test_Pract` is the folder for this org. An empty page that says **Nothing to display** is correct. Do not click **New folder**. Do not create `MERIDIAN_PRACTICE` here, and do not rename `Test_Pract`. If a save dialog asks for a project, pick `Test_Pract`. If **New** does not ask for a project, that is normal for source systems and entities. Leave `Test_Pract` empty of mappings.
 
 **Goal: three source systems, before records exist.**
 
-5. Find **Source systems** (Explore, or New, or the model section). If it asks where to save, choose `Test_Pract`.
+5. Stay inside `Test_Pract`. Do not click the green **New folder** button. Open **New** (the asset menu, not New folder). If you only see **New folder**, use the **Explore** menu or the asset-type list and choose **Source system**. Create the source system in `Test_Pract`.
 6. Create `EPIC_NORTH`, `EPIC_SOUTH`, and `CRED`. Display names can match the codes. Save each. These names must match the `source_system` values in the CSV later, same spelling, same case.
 
 **Goal: the Patient entity, flat.**
