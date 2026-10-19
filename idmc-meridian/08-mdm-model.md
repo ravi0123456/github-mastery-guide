@@ -24,6 +24,20 @@ Customer 360 is a **prebuilt** application on the same MDM base, aimed at custom
 | Provider | The doctor on the encounter | `npi` |
 | Location | The hospital, later a hierarchy | `hospital_code` |
 
+## Which org
+
+Do not migrate sessions 1–7 into the org that has Business 360. Do not rebuild the mappings, the taskflow, or `rl_dob_is_iso_new` there. Those assets run on the runtime in the org where you already saved them. An export would make you repeat the same clicks.
+
+Use both orgs:
+
+| Work | Where |
+|---|---|
+| Sessions 1–7 | The org that already has `MERIDIAN_PRACTICE` |
+| Sessions 8–11 | The org whose service list contains **Business 360**. Customer 360 is allowed only if Business 360 is missing. |
+| Session 12, the connector job | Only if that MDM org also has Data Integration and a Secure Agent. If it does not, use the file-only finish in session 12. Do not move the CDI project to force the connector. |
+
+In the MDM org, start at step 1. You do not need the mappings. Session 9 loads the same CSV from your laptop with a file import.
+
 ## Do this
 
 **Goal: open the right console.**

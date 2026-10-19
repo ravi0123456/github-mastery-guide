@@ -65,9 +65,31 @@ Epic North is not a CSV in real life. It is a connection named something like th
 | What you see | What it usually means |
 |---|---|
 | Agent not running | Wrong runtime, or the agent service is down. Do not switch to Production's agent. |
+| **Process Server** says **Restart Required** | Application Integration is waiting for a restart. Mappings, tasks, profiles, and rule tests do not use it. **Data Integration Server** must say **Up and Running**. Leave Process Server until session 13, or until a session 12 job is started by a process. |
 | Directory not found | The path is your laptop path, or a typo. The path must exist on the agent host. |
 | Permission denied | The agent OS user cannot read the folder. |
 | No Flat File type | Your org may use a different file connector. Use the file connector the team already uses in DEV, same folder, same column names. Write the connector type in the log. |
+
+## Process Server says Restart Required
+
+On the agent page, read the service name before you restart anything.
+
+| Service | What it runs | What to do |
+|---|---|---|
+| **Data Integration Server** | Mappings, mapping tasks, taskflows, profiles, rule tests | It must say **Up and Running**. If it does, sessions 2–7 are fine. |
+| **Process Server** | Application Integration processes, and the process that can start an MDM ingress job | **Restart Required** is not the same as Stopped. Leave it for sessions 2–11. Restart only this service before session 13, or before a session 12 job that a process must start. |
+
+The other rows can show today's date while Process Server still shows an older date. That does not mean the agent is down.
+
+Restart **only** Process Server:
+
+1. Confirm nothing is running on this agent.
+2. **Administrator** → **Runtime Environments** → open the agent, for example `euneu-lappxb7uq`.
+3. On the **Process Server** row, open the action menu and click **Restart**. Do not restart the whole agent when a one-service restart is there.
+4. If the row has no Restart, use Secure Agent Manager on that machine and restart only Process Server.
+5. Click **Refresh Status**. Wait until Process Server says **Up and Running**. Check that Data Integration Server still says **Up and Running**.
+
+Restarting this agent does nothing to a job on another runtime. `CDIPC_APAC_Dev` in the org where you built the mappings is a different agent.
 
 ## Write this in the session log
 
