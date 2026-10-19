@@ -106,7 +106,9 @@ To make `last_name` searchable: select that field, click **Search and Reports** 
 
 Leave the text length alone. Do not add a picklist for gender. `F` and `M` are plain text.
 
-9. Click **Save**. The header must still say **Valid**. If it says invalid, read the message, fix that one field, and save again. There is no separate Publish button on this canvas. Save is the publish for the model.
+9. Click **Save**. The header must still say **Valid**, and a green bar says **The business entity was saved successfully.** There is no separate Publish button on this canvas. Save is the publish for the model.
+
+A yellow bar may say **Ensure that you configure survivorship before you start to use the business entity.** Close it. Do not open the **Survivorship** tab. Survivorship decides which source wins when two hospitals disagree. You have no second source yet, so there is nothing to rank. That work is session 10, after the load. The same yellow bar will appear on Provider and Location. Ignore it there too.
 
 **Goal: Provider and Location, still flat, still no match rules.**
 
@@ -137,7 +139,7 @@ Do not import the CSV in this sitting. Do not open Match.
 | No MDM in My Services | License or a different org. Stop. |
 | Entity saved but Create does not show fields | Entity is not on the application, or the page layout was not updated. Add it to the layout, not only to the model. |
 | Cannot publish | A required system field or privilege. You need a role that can configure the model. Admin usually can. Read the red message; do not create a second entity with a near name. |
-| You started adding match rules | Stop. That is session 10. Rules before data make failures harder to read. |
+| Yellow bar about survivorship | Expected. Close it. Do not configure survivorship in this sitting. Session 10 does that after two sources exist. |
 
 ## Write this in the session log
 
