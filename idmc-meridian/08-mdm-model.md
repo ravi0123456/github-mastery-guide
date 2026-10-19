@@ -133,7 +133,7 @@ A yellow bar may say **Ensure that you configure survivorship before you start t
 
 16. A blank page opens. On the left, open **Page Components**. Drag **Page Header** into the header area. Then drag each Patient field onto the page: `first_name`, `last_name`, `birth_date`, `gender`, `phone`, `address`, `city`, `state`, `postal_code`, `mrn`. If a component is named **Basic Fields** or **Field Group** and it can hold all of them, use that once instead of ten drags.
 17. Click the checkmark (**Validate**). Fix any red field. Click **Save**. The page must say valid.
-18. Repeat steps 14–17 for a second page. Display Name `Patient View`, Internal ID `patient_view`, Page Type **View and Edit**, same entity and location. Drag the same fields. Validate and save.
+18. Repeat steps 14–17 for a second page. Display Name `Patient View`, Internal ID `patient_view`, Page Type **View and edit**. Open the **Business Entity** dropdown and select `Patient`. Do not select `Provider` or `Location`. The red **Enter a value** goes away only after `Patient` is selected. Location stays `Test_Pract`. Click **OK**, then drag the same Patient fields. Validate and save.
 
 **Goal: search can show a row.**
 
