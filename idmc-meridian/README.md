@@ -2,7 +2,7 @@
 
 Study the Hackensack Meridian Health story by **doing one session in an IDMC org**, then stopping. Do not read ahead and do not run two sessions in one sitting.
 
-The session files are the buttons. [15-concepts-admin-developer.md](15-concepts-admin-developer.md) is the meaning: what each object is, why a ticket fails, and what an administrator checks before a developer changes a mapping. Read the matching chapter in that file before you treat a session as understood.
+The session files are the buttons. [15-concepts-admin-developer.md](15-concepts-admin-developer.md) is the full explanation, written for someone new to IDMC and to MDM. Read it from the top even if you already clicked the sessions. It uses Ava to show how Administrator, Data Integration, Data Quality, and MDM SaaS are one path, not four products.
 
 You have admin access. Sessions 1–7 stay in the org where you already created them, even if that org has no Business 360. Sessions 8–11 start in the other org, the one whose service list shows **Business 360**. Do not export the CDI project into that org.
 
