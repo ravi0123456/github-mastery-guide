@@ -2,7 +2,7 @@
 
 Study the Hackensack Meridian Health story by **doing one session in an IDMC org**, then stopping. Do not read ahead and do not run two sessions in one sitting.
 
-You have admin access. That is enough for every session in this folder. You do **not** need a new login, a new org, or the work CI/CD pipeline.
+You have admin access. Sessions 1–7 stay in the org where you already created them, even if that org has no Business 360. Sessions 8–11 start in the other org, the one whose service list shows **Business 360**. Do not export the CDI project into that org.
 
 The full labs live here:
 
@@ -32,10 +32,10 @@ https://github.com/ravi0123456/github-mastery-guide/tree/main/idmc-meridian
 
 1. One file per sitting. If a job is still running, wait. Do not start the next file.
 2. Project name in every session: `MERIDIAN_PRACTICE`.
-3. Org: a DEV or training org only. Never Production.
+3. Sessions 1–7: the org that already has the jobs. Sessions 8–11: the org that has **Business 360**. Never Production. Do not copy the jobs across.
 4. Data: only the fake rows in session 00. No real patient, member, or employee data.
 5. Do not tag these assets. Do not edit `flo_dev.yml` or any work YAML.
-6. If a service is missing under **My Services**, write `NOT LICENSED` in your session log and go to the next **required** session. Sessions 1 through 6 and 8 through 11 are the core. 7, 12, and 13 can be skipped when the license is missing.
+6. If Business 360 is missing in the job org, do not write `NOT LICENSED` and skip sessions 8–11. Log into the org that has it and start [08-mdm-model.md](08-mdm-model.md). Skip a session only when **no** org you admin has that service.
 7. Button names move between releases. Each step says the **goal** first. If the button is not where the text says, use the top search and type the asset name.
 
 ## Where this sits next to the other notes

@@ -41,9 +41,9 @@ A **mapping** is a drawing of the data flow. It does not run. A **mapping task**
 
 ## Which org
 
-Use a DEV or training org where you are an admin. Write the org name in the log below.
+Sessions 1–7 can stay in a DEV org that has Data Integration and no MDM. That is a valid place for the jobs you already built.
 
-Do **not** use Production. Do **not** use the org that feeds the work Jenkins pipeline for a first run. This project must never be tagged for deploy.
+Sessions 8–11 need a second login: the DEV org whose **My Services** list contains **Business 360**. Do not move or rebuild the mappings there. Write both org names in the log. Do **not** use Production. Do **not** use the org that feeds the work Jenkins pipeline.
 
 ## Create the files on your computer
 
@@ -112,7 +112,8 @@ Count rows before you continue: North 4 data rows, South 3, providers 2, locatio
 ## Session log (copy this into a note)
 
 ```text
-Org (not Production):
+Org for sessions 1–7 (no MDM is fine):
+Org for sessions 8–11 (must have Business 360):
 Runtime name (fill in session 1):
 Flat file directory on the agent:
 Project: MERIDIAN_PRACTICE
