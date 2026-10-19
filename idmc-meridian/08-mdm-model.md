@@ -176,12 +176,12 @@ Adding Patient would not rewrite those five entities. It would still change the 
 
 **Goal: one code list in Reference 360, then stop.**
 
-25. Close the Customer 360 designer if it is still open. Do not click **Save**.
-26. **My Services** → **Reference 360**. It is the orange tile. Do not click a grey tile.
-27. Click **New**. If the list says **Code List**, choose that. If it says **Reference Data Set**, choose that. Do not open an existing list.
-28. Name `gender_practice`. Internal ID `gender_practice` if the dialog asks. Location `Test_Pract` if the picker allows it. If the only locations are shared folders, click **Cancel** and write `SKIP` in the log. Do not save into a shared folder.
-29. Add two values only. Code `F`, name `Female`. Code `M`, name `Male`. Do not add a third value.
-30. Save. Do not edit any list that already existed, including country, state, or gender lists other projects use. Do not attach `gender_practice` to the Patient entity.
+25. You are on Reference 360 **Home**. The **Create Reference Data** card is a video, not a button. Do not click **Reference Data Sets**, **Code Lists**, or **Crosswalks** inside that card. Do not click **Create Hierarchies** or **Onboard Reference Data**.
+26. Click **Explore** in the left menu. **New** is on that page, not on Home. If Explore has no **New**, stop and write `SKIP`. You do not have the designer role. Do not edit an existing list.
+27. Click **New** → **Reference Data Set**. Name `gender_practice`. Internal ID `gender_practice`. Leave Domain, Confidentiality, and Priority at their defaults. Do not open the **Definition** tab. Do not add an attribute. Save. A code list cannot be created until this set exists. Reference 360 has no `Test_Pract` folder. The unique name is what keeps this separate.
+28. Click **New** → **Code List**. When it asks for a reference data set, pick `gender_practice` only. Do not pick a set that already existed. Name the code list `gender_practice_codes`. Internal ID `gender_practice_codes`. Save.
+29. On that code list, click **Add Code Value**. Name `Female`, code `F`. Save. Add a second value. Name `Male`, code `M`. Save. Do not add a third value. Do not send it for approval if a workflow button appears. A draft is enough.
+30. Close the tab. Do not open any other code list. Do not attach this list to the Patient entity.
 
 Do not import the CSV. Do not open Match. Do not configure survivorship. Do not open sessions 9, 10, 11, or 12.
 
@@ -191,7 +191,7 @@ Do not import the CSV. Do not open Match. Do not configure survivorship. Do not 
 - Three entities, two pages, and `Patient Search` in `Test_Pract`.
 - Customer 360 still lists only its original five entities.
 - No test patient.
-- Code list `gender_practice` with `F` and `M`, or `SKIP` if Reference 360 would not save it into `Test_Pract`.
+- Reference data set `gender_practice` and code list `gender_practice_codes` with `F` and `M`, or `SKIP` if Explore has no **New**.
 
 ## If it fails
 
