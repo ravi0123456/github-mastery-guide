@@ -153,25 +153,40 @@ Save Patient. A green bar that says **The business entity was saved successfully
 
 Then check the three fields, not only `mrn`. Click `first_name` and confirm **Searchable** is on. Click `birth_date` and confirm the same. `mrn` already shows **Searchable** on. Close Patient. Reopen **Patient Search**, click the **Basic Fields** box, select `first_name`, `birth_date`, and `mrn`, click **Apply**, then the blue **Save**. Do not add a hierarchy filter.
 
-**Goal: add your entities to Customer 360.**
+**Goal: use the entities you already created. Do not create them again.**
 
-This org has no **Business Application** under **User Interface**. Do not create one, and do not create another business entity. **Customer 360** is the application.
+These assets already exist in `Test_Pract`. Stop if you are about to click **New** → **Business Entity**.
 
-22. The screen at `/app/c360/home` with **Build your dashboard** is the user app. Do not click **New Dashboard** or **Add Existing Dashboard**. Do not use **New**, **Search**, or **File Import** yet. Click the application name at the top left and switch back to **Business 360 Console**. Then **Explore**, search `Customer 360`, and open the **business application** asset. The design screen has tabs named **Model**, **Pages**, and **Search**. Leave every predefined entity (Person, Organization, Claim, and the rest) where it is. Do not edit them.
-23. Open the **Model** tab. In **Business Entities**, click **Add Business Entity**. The asset picker opens. Select `Patient` from `Test_Pract`. Do not select a predefined Person or Organization. Click **Select**.
-24. For the display field, pick `last_name`. Click **Done**. If it asks for a URL field, click **Done** without choosing one.
-25. Add `Provider` the same way. Display field `full_name`. Add `Location`. Display field `hospital_name`.
-26. Open the **Pages** tab. In the left list, select **Patient**. It will not be there until step 23 is saved, so click **Save** on the application first if Patient is missing.
-27. On the **Create** row, click **Add Page**. Pick `Patient Create`. On the **View and edit** row, click **Add Page** and pick `Patient View`. Assign each page to your login role. The list usually includes **Admin**, **MDM Business User**, and **Customer 360 Data Steward**. If you are not sure which role you use, select every role in the list.
-28. Open the **Search** tab. Select **Patient**. Click **Add Search Result Layout**. Pick `Patient Search`. Assign the same role. Click **Save**.
-29. Provider and Location do not need pages in this sitting. You will not create those records by hand.
+| Already created | Do not create another |
+|---|---|
+| Source systems `EPIC_NORTH`, `EPIC_SOUTH`, `CRED` | a fourth source system |
+| Business entities `Patient`, `Provider`, `Location` | a second Patient |
+| Pages `Patient Create` and `Patient View` | a third page |
+| Component `Patient Search` | a second search layout |
+
+This org has no **Business Application** item under **New** → **User Interface**. That is normal here. **Customer 360** is the application. You attach the assets above to it. You do not build a new application named Meridian Practice.
+
+**Goal: open the designer, not the dashboard.**
+
+22. If the page says **Build your dashboard**, you are in the user app. Do not click **New Dashboard**. Click **Customer 360** at the top left and choose **Business 360 Console**.
+23. In Business 360 Console, click **Explore**. In the search box, type `Customer 360`. Open the asset whose type is **Business Application**. Do not open a dashboard, a page, or a business entity.
+24. You are in the designer only when the top of the page has three tabs: **Model**, **Pages**, and **Search**. Person, Organization, and Claim are already on this application. Leave them. Do not delete them and do not edit them.
+
+**Goal: put your three entities on that application.**
+
+25. Stay on **Model**. In **Business Entities**, click **Add Business Entity**. Select `Patient` from project `Test_Pract`. Do not select Person or Organization. Click **Select**.
+26. Display field: `last_name`. Click **Done**. If a URL field is asked, click **Done** with nothing selected.
+27. Click **Add Business Entity** again. Add `Provider` from `Test_Pract`. Display field `full_name`. Add `Location` from `Test_Pract`. Display field `hospital_name`. Click **Save**.
+28. Open the **Pages** tab. Select **Patient** in the left list. If Patient is not listed, the Model save did not finish. Go back to step 27.
+29. On the **Create** row, click **Add Page** and pick `Patient Create`. On the **View and edit** row, click **Add Page** and pick `Patient View`. For each page, assign your login role. The names are usually **Admin**, **MDM Business User**, and **Customer 360 Data Steward**. If you do not know your role, select every role in the list.
+30. Open the **Search** tab. Select **Patient**. Click **Add Search Result Layout**. Pick `Patient Search`. Assign the same roles. Click **Save**. Provider and Location do not need pages today.
 
 **Goal: one throwaway patient proves the page.**
 
-30. Open **Customer 360** the way a user opens it, from **My Services**, not from the design canvas.
-31. **New** → **Patient** → **Create**. You must see first name, last name, birth date, and mrn. If Patient is not in the New menu, the page was not assigned to your role. Go back to step 27.
-32. Enter first name `Test`, last name `DeleteMe`, birth date `2000-01-01`, mrn `MRNTEST`. Leave the other fields blank. Save.
-33. Search `DeleteMe`. Open the row. Confirm last name `DeleteMe` and mrn `MRNTEST`. Delete the record if the screen allows. If it does not, leave it and remember it is not Ava.
+31. Switch the top-left menu back to **Customer 360**. This time the dashboard is the right screen.
+32. Click **New** → **Patient** → **Create**. The form must show first name, last name, birth date, and mrn. If Patient is missing from **New**, the page is not assigned to your role. Return to step 29.
+33. Enter first name `Test`, last name `DeleteMe`, birth date `2000-01-01`, mrn `MRNTEST`. Leave the other fields blank. Save.
+34. Search `DeleteMe`. Open the row. Confirm last name `DeleteMe` and mrn `MRNTEST`. Delete the record if the screen allows. If delete is missing, leave it. This person is not Ava.
 
 Do not import the CSV in this sitting. Do not open Match. Do not configure survivorship.
 
@@ -187,7 +202,7 @@ Do not import the CSV in this sitting. Do not open Match. Do not configure survi
 | What you see | What it usually means |
 |---|---|
 | No MDM in My Services | License or a different org. Stop. |
-| Create shows no fields | The Create page is not on Customer 360, or it is not assigned to your role. Repeat steps 27 and 28. Do not add the fields again on the entity. |
+| Create shows no fields | The Create page is not on Customer 360, or it is not assigned to your role. Repeat steps 29 and 30. Do not add the fields again on the entity. |
 | Cannot publish | A required system field or privilege. You need a role that can configure the model. Admin usually can. Read the red message; do not create a second entity with a near name. |
 | Yellow bar about survivorship | Expected. Close it. Do not configure survivorship in this sitting. Session 10 does that after two sources exist. |
 | Green bar says a reindex job started | Expected after you turn **Searchable** on. Do not cancel it. Go back to Patient Search. |
