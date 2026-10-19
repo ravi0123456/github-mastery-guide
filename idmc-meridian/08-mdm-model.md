@@ -155,7 +155,7 @@ Then check the three fields, not only `mrn`. Click `first_name` and confirm **Se
 
 **Goal: one application that uses those pages.**
 
-22. **New** → **Business Application** → **Create**. Display Name `Meridian Practice`. Internal ID `meridian_practice`. Location `Test_Pract`. Description blank. Click **OK**. If **New** has no Business Application, do not invent one. Open the existing **Customer 360** application and use that name in the log.
+22. Click **New**. The New Asset dialog opens on **Model**. Do not click **Create** while **Business Entity** is highlighted. You already have Patient, Provider, and Location. On the left of that same dialog, click **User Interface**. Select **Business Application**, then **Create**. Display Name `Meridian Practice`. Internal ID `meridian_practice`. Location `Test_Pract`. Description blank. Click **OK**. If **User Interface** lists Page and Component but no Business Application, click **Cancel**. Open the existing **Customer 360** application from Explore and use that name in the log. Do not create another business entity.
 23. Open the **Model** tab. Click **Add Business Entity**. Pick `Patient`. For the display field, pick `last_name`. Click **Done**. If it asks for a URL field, click **Done** without choosing one.
 24. Add `Provider` with display field `full_name`. Add `Location` with display field `hospital_name`.
 25. Open the **Pages** tab. Select **Patient**. **Add Page**. Pick `Patient Create` for the create row and `Patient View` for the view row. Assign the page to your role. The role list usually includes **Admin**, **MDM Business User**, or **Customer 360 Data Steward**. Pick the role you log in with. If you are unsure, pick every role in the list for this practice app.
