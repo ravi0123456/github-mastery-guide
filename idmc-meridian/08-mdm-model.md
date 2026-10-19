@@ -36,7 +36,7 @@ Use both orgs:
 | Sessions 8–11 | The org whose service list contains **Business 360**. Customer 360 is allowed only if Business 360 is missing. |
 | Session 12, the connector job | Only if that MDM org also has Data Integration and a Secure Agent. If it does not, use the file-only finish in session 12. Do not move the CDI project to force the connector. |
 
-In the MDM org, start at step 1. You do not need the mappings. Session 9 loads the same CSV from your laptop with a file import.
+In the MDM org, start at step 1. You do not need the mappings. You also do not copy any CSV onto this org's Secure Agent for sessions 8 or 9. Session 8 is typed on the screen. Session 9 uploads `patients_north_for_mdm.csv` from your laptop in the file-import dialog. The agent folder matters only in session 12, and only if you build the Business 360 connector. Skip that copy until then.
 
 ## Do this
 
