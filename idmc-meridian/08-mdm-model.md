@@ -116,14 +116,48 @@ A yellow bar may say **Ensure that you configure survivorship before you start t
 11. Repeat for `Location`. Internal ID `location`. Subscribed Record Type: `Custom Domain`. The product lists locations as a custom domain, not as a customer. Fields: `hospital_code`, `hospital_name`, `city`, `state`, `parent_code`. Make `hospital_name` searchable.
 12. Save each. Publish if the button is there. Do not create the test patient until all three entities are saved. The record type locks on the first record.
 
-**Goal: an application so you can click Create.**
+**Goal: a Create page, or the screen has no form.**
 
-13. New **Business application** (or add to the existing sandbox application if you are not allowed to create one). Name: `Meridian Practice`. Location: `Test_Pract` if asked.
-14. Add Patient, Provider, and Location to it.
-15. Open the application as a user would. Open **Create** on Patient. You should see first name, last name, birth date, and the other fields.
-16. Create **one** patient by hand: first name `Test`, last name `DeleteMe`, birth date `2000-01-01`, mrn `MRNTEST`. Save. Search `DeleteMe` and find it. Then delete that record if the UI allows, or leave it and remember it is not Ava.
+13. Do not open Match or Survivorship. Close Patient if it is still open.
+14. **New** → **User Interface** → **Page** → **Create**. If the menu says **Business Application** instead of **User Interface**, use that, then **Page**.
+15. Fill the dialog and click **OK**.
 
-Do not import the CSV in this sitting. Do not open Match.
+| Field | Value |
+|---|---|
+| Display Name | `Patient Create` |
+| Internal ID | `patient_create` |
+| Description | blank |
+| Business Entity | `Patient` |
+| Page Type | **Create** |
+| Location | `Test_Pract` |
+
+16. A blank page opens. On the left, open **Page Components**. Drag **Page Header** into the header area. Then drag each Patient field onto the page: `first_name`, `last_name`, `birth_date`, `gender`, `phone`, `address`, `city`, `state`, `postal_code`, `mrn`. If a component is named **Basic Fields** or **Field Group** and it can hold all of them, use that once instead of ten drags.
+17. Click the checkmark (**Validate**). Fix any red field. Click **Save**. The page must say valid.
+18. Repeat steps 14–17 for a second page. Display Name `Patient View`, Internal ID `patient_view`, Page Type **View and Edit**, same entity and location. Drag the same fields. Validate and save.
+
+**Goal: search can show a row.**
+
+19. **New** → **User Interface** → **Component** → **Create**. Pick **Search Layout** (it may be named **Search Result Layout**).
+20. Business entity `Patient`. Location `Test_Pract`. Display Name `Patient Search`. Internal ID `patient_search`.
+21. Title field: `last_name`. Basic fields: `first_name`, `birth_date`, `mrn`. Save.
+
+**Goal: one application that uses those pages.**
+
+22. **New** → **Business Application** → **Create**. Display Name `Meridian Practice`. Internal ID `meridian_practice`. Location `Test_Pract`. Description blank. Click **OK**. If **New** has no Business Application, do not invent one. Open the existing **Customer 360** application and use that name in the log.
+23. Open the **Model** tab. Click **Add Business Entity**. Pick `Patient`. For the display field, pick `last_name`. Click **Done**. If it asks for a URL field, click **Done** without choosing one.
+24. Add `Provider` with display field `full_name`. Add `Location` with display field `hospital_name`.
+25. Open the **Pages** tab. Select **Patient**. **Add Page**. Pick `Patient Create` for the create row and `Patient View` for the view row. Assign the page to your role. The role list usually includes **Admin**, **MDM Business User**, or **Customer 360 Data Steward**. Pick the role you log in with. If you are unsure, pick every role in the list for this practice app.
+26. Open the **Search** tab. Select **Patient**. **Add Search Result Layout**. Pick `Patient Search`. Assign the same role. Click **Save**.
+27. Provider and Location do not need pages in this sitting. You will not create those records by hand.
+
+**Goal: one throwaway patient proves the page.**
+
+28. Open `Meridian Practice` the way a user opens it (the application icon, or **Open** on the application). Do not stay in the design canvas.
+29. **New** → **Patient** → **Create**. You must see first name, last name, birth date, and mrn. If the list is empty, the page was not assigned to your role. Go back to step 25.
+30. Enter first name `Test`, last name `DeleteMe`, birth date `2000-01-01`, mrn `MRNTEST`. Leave the other fields blank. Save.
+31. Search `DeleteMe`. Open the row. Confirm last name `DeleteMe` and mrn `MRNTEST`. Delete the record if the screen allows. If it does not, leave it and remember it is not Ava.
+
+Do not import the CSV in this sitting. Do not open Match. Do not configure survivorship.
 
 ## What you should see
 
@@ -137,7 +171,7 @@ Do not import the CSV in this sitting. Do not open Match.
 | What you see | What it usually means |
 |---|---|
 | No MDM in My Services | License or a different org. Stop. |
-| Entity saved but Create does not show fields | Entity is not on the application, or the page layout was not updated. Add it to the layout, not only to the model. |
+| Create shows no fields | The Create page is not on the application, or it is not assigned to your role. Repeat steps 25 and 26. Do not add the fields again on the entity. |
 | Cannot publish | A required system field or privilege. You need a role that can configure the model. Admin usually can. Read the red message; do not create a second entity with a near name. |
 | Yellow bar about survivorship | Expected. Close it. Do not configure survivorship in this sitting. Session 10 does that after two sources exist. |
 
