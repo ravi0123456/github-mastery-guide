@@ -69,36 +69,47 @@ In the MDM org, start at step 1. You do not need the mappings. You also do not c
 
 The yellow warning only means the record type locks after you add a record. That is expected. Click **OK**.
 
-8. On the blank canvas, add fields. Use text unless noted. Mark `first_name` and `last_name` required. Make `last_name` searchable if the field properties have a search checkbox. Without a searchable field, search in session 9 finds nothing.
+8. You are on the Patient canvas. The green **Valid** mark is correct. Stay on **Model** → **Attributes**. Do not open **Data Quality**, **Match**, **Survivorship**, or **Events**.
 
-| Field | Notes |
-|---|---|
-| `first_name` | Required |
-| `last_name` | Required |
-| `birth_date` | Date, not string, if the type exists |
-| `gender` | Text or picklist: F, M |
-| `phone` | Text |
-| `address` | Text |
-| `city` | Text |
-| `state` | Text |
-| `postal_code` | Text |
-| `mrn` | Text. This is the hospital number, **not** the MDM id |
+The left list is **Basic Fields**. It shows **Text** and **Integer** first. Scroll that list until you see **Date**. Do not use **Date and Time**.
 
-9. Do **not** add a field called source primary key if the product already has a system field for it. MDM keeps source system and source primary key as system values on the cross-reference. You will supply them at load time in session 9.
-10. Save the entity. If the release has **Publish** on the model, publish. An unpublished model often lets you save and then fails on import.
+For each field below, double-click the type so it drops on the canvas. Click the new box. The **Properties** panel at the bottom becomes active. Set **Display Name** to the name in the table. Leave the generated **Internal ID** if it matches that name. If it does not match, change it before you save. Click **Save** after every two or three fields so a mistake does not wipe the canvas.
+
+| Display Name | Double-click | Required | Search |
+|---|---|---|---|
+| `first_name` | Text | yes | no |
+| `last_name` | Text | yes | yes |
+| `birth_date` | Date | no | no |
+| `gender` | Text | no | no |
+| `phone` | Text | no | no |
+| `address` | Text | no | no |
+| `city` | Text | no | no |
+| `state` | Text | no | no |
+| `postal_code` | Text | no | no |
+| `mrn` | Text | no | no |
+
+To mark required, select the field and turn on **Required** (or **Mandatory**) in Properties. Leave the text length at the default.
+
+To make `last_name` searchable: select that field, open **Search** inside Properties, and turn on **Searchable**. One searchable field is enough. Do not turn on Facetable or Reportable.
+
+`mrn` is the hospital number. It is not the MDM id. Do not add a field named source primary key, source system, or business ID. MDM already stores those.
+
+Leave the text length alone. Do not add a picklist for gender. `F` and `M` are plain text.
+
+9. Click **Save**. The header must still say **Valid**. If it says invalid, read the message, fix that one field, and save again. There is no separate Publish button on this canvas. Save is the publish for the model.
 
 **Goal: Provider and Location, still flat, still no match rules.**
 
-11. Repeat the same dialog for `Provider`. Internal ID `provider`. Subscribed Record Type: `Healthcare Professional`. Same blank description, same location `Test_Pract`, Error Remediation unchecked. Fields: `npi`, `full_name`, `specialty`, `hospital_code`. Make `full_name` searchable.
-12. Repeat for `Location`. Internal ID `location`. Subscribed Record Type: `Custom Domain`. The product lists locations as a custom domain, not as a customer. Fields: `hospital_code`, `hospital_name`, `city`, `state`, `parent_code`. Make `hospital_name` searchable.
-13. Save each. Publish if the button is there. Do not create the test patient until all three entities are saved. The record type locks on the first record.
+10. Repeat the same dialog for `Provider`. Internal ID `provider`. Subscribed Record Type: `Healthcare Professional`. Same blank description, same location `Test_Pract`, Error Remediation unchecked. Fields: `npi`, `full_name`, `specialty`, `hospital_code`. Make `full_name` searchable.
+11. Repeat for `Location`. Internal ID `location`. Subscribed Record Type: `Custom Domain`. The product lists locations as a custom domain, not as a customer. Fields: `hospital_code`, `hospital_name`, `city`, `state`, `parent_code`. Make `hospital_name` searchable.
+12. Save each. Publish if the button is there. Do not create the test patient until all three entities are saved. The record type locks on the first record.
 
 **Goal: an application so you can click Create.**
 
-14. New **Business application** (or add to the existing sandbox application if you are not allowed to create one). Name: `Meridian Practice`. Location: `Test_Pract` if asked.
-15. Add Patient, Provider, and Location to it.
-16. Open the application as a user would. Open **Create** on Patient. You should see first name, last name, birth date, and the other fields.
-17. Create **one** patient by hand: first name `Test`, last name `DeleteMe`, birth date `2000-01-01`, mrn `MRNTEST`. Save. Search `DeleteMe` and find it. Then delete that record if the UI allows, or leave it and remember it is not Ava.
+13. New **Business application** (or add to the existing sandbox application if you are not allowed to create one). Name: `Meridian Practice`. Location: `Test_Pract` if asked.
+14. Add Patient, Provider, and Location to it.
+15. Open the application as a user would. Open **Create** on Patient. You should see first name, last name, birth date, and the other fields.
+16. Create **one** patient by hand: first name `Test`, last name `DeleteMe`, birth date `2000-01-01`, mrn `MRNTEST`. Save. Search `DeleteMe` and find it. Then delete that record if the UI allows, or leave it and remember it is not Ava.
 
 Do not import the CSV in this sitting. Do not open Match.
 
