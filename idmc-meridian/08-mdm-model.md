@@ -14,7 +14,7 @@ A **field** is a simple attribute (first name). A **field group** is a repeating
 
 A **business application** is the screen set a user opens (search, create, view). An entity that is not in an application is easy to "lose" even when it saved.
 
-Customer 360 is a **prebuilt** application on the same MDM base, aimed at customers. You are modeling a **patient** in Business 360. Do not shove Ava into Customer 360 unless that is the only MDM UI your org has. If your org only licensed Customer 360, use it as the console but name the practice clearly and still use fake people.
+Customer 360 is a **prebuilt** application. On a shared org it already holds live entities such as Person, Policy, and Claim. Do not add Patient to it. Use **Multidomain MDM** when that service is in My Services. If it is not, leave the practice assets in `Test_Pract` and do not attach them.
 
 ## Meridian example
 
@@ -164,45 +164,39 @@ These assets already exist in `Test_Pract`. Stop if you are about to click **New
 | Pages `Patient Create` and `Patient View` | a third page |
 | Component `Patient Search` | a second search layout |
 
-This org has no **Business Application** item under **New** → **User Interface**. That is normal here. **Customer 360** is the application. You attach the assets above to it. You do not build a new application named Meridian Practice.
+This org cannot create a second application from **New**. The licensed application is what you open. **Customer 360** on this screen already has Person, Organization, Policy, Claim, and Commercial Client. Those are in use. Do not add Patient to that list.
 
-**Goal: open the designer, not the dashboard.**
+Adding Patient would not rewrite those five entities. It would still change the live application the moment you click **Save**: Patient would appear in **New** and **Search** for every role you assign, and a test record would be stored in the Customer 360 master. Do not do that in this org.
 
-22. If the page says **Build your dashboard**, you are in the user app. Do not click **New Dashboard**. Click **Customer 360** at the top left and choose **Business 360 Console**.
-23. In Business 360 Console, click **Explore**. In the search box, type `Customer 360`. Open the asset whose type is **Business Application**. Do not open a dashboard, a page, or a business entity.
-24. You are in the designer only when the top of the page has three tabs: **Model**, **Pages**, and **Search**. Person, Organization, and Claim are already on this application. Leave them. Do not delete them and do not edit them.
+**Goal: leave Customer 360 untouched.**
 
-**Goal: put your three entities on that application.**
+22. You are on the right designer (tabs **Model**, **Pages**, **Search**). Do not click **+** next to **Business Entities (5)**. Do not click **Save**. Close the Customer 360 tab.
+23. Open **My Services**. Look for **Multidomain MDM**. That is the separate application. Its records use source system `b360.default.system`, not `c360.default.system`. Customer 360, Supplier 360, and Product 360 are not substitutes.
+24. If **Multidomain MDM** is not in My Services, stop. Session 8 is complete. The assets in `Test_Pract` are the practice. Do not attach them to Customer 360, and do not create a test patient.
 
-25. Stay on **Model**. In **Business Entities**, click **Add Business Entity**. Select `Patient` from project `Test_Pract`. Do not select Person or Organization. Click **Select**.
-26. Display field: `last_name`. Click **Done**. If a URL field is asked, click **Done** with nothing selected.
-27. Click **Add Business Entity** again. Add `Provider` from `Test_Pract`. Display field `full_name`. Add `Location` from `Test_Pract`. Display field `hospital_name`. Click **Save**.
-28. Open the **Pages** tab. Select **Patient** in the left list. If Patient is not listed, the Model save did not finish. Go back to step 27.
-29. On the **Create** row, click **Add Page** and pick `Patient Create`. On the **View and edit** row, click **Add Page** and pick `Patient View`. For each page, assign your login role. The names are usually **Admin**, **MDM Business User**, and **Customer 360 Data Steward**. If you do not know your role, select every role in the list.
-30. Open the **Search** tab. Select **Patient**. Click **Add Search Result Layout**. Pick `Patient Search`. Assign the same roles. Click **Save**. Provider and Location do not need pages today.
+**Goal: only if Multidomain MDM exists, attach the entities there.**
 
-**Goal: one throwaway patient proves the page.**
-
-31. Switch the top-left menu back to **Customer 360**. This time the dashboard is the right screen.
-32. Click **New** → **Patient** → **Create**. The form must show first name, last name, birth date, and mrn. If Patient is missing from **New**, the page is not assigned to your role. Return to step 29.
-33. Enter first name `Test`, last name `DeleteMe`, birth date `2000-01-01`, mrn `MRNTEST`. Leave the other fields blank. Save.
-34. Search `DeleteMe`. Open the row. Confirm last name `DeleteMe` and mrn `MRNTEST`. Delete the record if the screen allows. If delete is missing, leave it. This person is not Ava.
+25. From **My Services**, open **Multidomain MDM**. If you land on a home page, switch the top-left menu to **Business 360 Console**, click **Explore**, search `Multidomain`, and open the asset whose type is **Business Application**.
+26. On **Model**, click **Add Business Entity**. Select `Patient` from `Test_Pract`. Display field `last_name`. Skip the URL field. Add `Provider` with `full_name` and `Location` with `hospital_name`. Click **Save**.
+27. **Pages** → **Patient**. **Create** row → `Patient Create`. **View and edit** row → `Patient View`. Assign only your own role. Do not select every role.
+28. **Search** → **Patient** → **Add Search Result Layout** → `Patient Search` → same single role. Click **Save**.
+29. Open **Multidomain MDM** as a user. **New** → **Patient** → **Create**. Enter first name `Test`, last name `DeleteMe`, birth date `2000-01-01`, mrn `MRNTEST`. Save, search `DeleteMe`, open the row, and delete it if the screen allows. This person is not Ava.
 
 Do not import the CSV in this sitting. Do not open Match. Do not configure survivorship.
 
 ## What you should see
 
 - Source systems `EPIC_NORTH`, `EPIC_SOUTH`, `CRED`.
-- Three entities.
-- A create page that shows your fields.
-- One hand-entered test patient you can search, or a deleted one.
+- Three entities, two pages, and `Patient Search` in `Test_Pract`.
+- Customer 360 still lists only its original five entities.
+- A test patient only if Multidomain MDM exists. If it does not, no test patient is expected.
 
 ## If it fails
 
 | What you see | What it usually means |
 |---|---|
 | No MDM in My Services | License or a different org. Stop. |
-| Create shows no fields | The Create page is not on Customer 360, or it is not assigned to your role. Repeat steps 29 and 30. Do not add the fields again on the entity. |
+| Create shows no fields | You attached Patient to Multidomain MDM, but the page is not assigned to your role. Repeat steps 27 and 28 there. Do not add the fields again on the entity, and do not switch to Customer 360. |
 | Cannot publish | A required system field or privilege. You need a role that can configure the model. Admin usually can. Read the red message; do not create a second entity with a near name. |
 | Yellow bar about survivorship | Expected. Close it. Do not configure survivorship in this sitting. Session 10 does that after two sources exist. |
 | Green bar says a reindex job started | Expected after you turn **Searchable** on. Do not cancel it. Go back to Patient Search. |
