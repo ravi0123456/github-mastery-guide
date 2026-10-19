@@ -147,7 +147,11 @@ A yellow bar may say **Ensure that you configure survivorship before you start t
 | Basic Fields | `first_name`, `birth_date`, `mrn`. Separator **Comma**. Click **Apply**. |
 | Hierarchy Filter, Facets, Thumbnail, System Fields, Additional Fields | Leave empty. Do not open them. |
 
-If **Basic Fields** has no names except `last_name`, the other fields are not searchable yet. Close this layout. Open the **Patient** entity. Select `first_name`, open **Search and Reports**, turn on **Searchable**. Do the same for `birth_date` and `mrn`. Leave Facetable and Reportable off. Save Patient. Reopen **Patient Search**, click the **Basic Fields** box, select those three, click **Apply**, then the blue **Save**. Do not add a hierarchy filter.
+If **Basic Fields** has no names except `last_name`, the other fields are not searchable yet. Close this layout. Open the **Patient** entity. Select `first_name`, open **Search and Reports**, turn on **Searchable**. Do the same for `birth_date` and `mrn`. `last_name` is already searchable. Leave **Auto Suggest**, **Facetable**, and **Reportable** off on every field. Do not open **Match**, **Survivorship**, **Data Quality**, or **Events**.
+
+Save Patient. A green bar that says **The business entity was saved successfully, and the reindex job ... has started** is correct. Do not cancel that job and do not open **My Jobs** unless the bar is still there after several minutes. There are no patient records yet, so the job is only rebuilding an empty index.
+
+Then check the three fields, not only `mrn`. Click `first_name` and confirm **Searchable** is on. Click `birth_date` and confirm the same. `mrn` already shows **Searchable** on. Close Patient. Reopen **Patient Search**, click the **Basic Fields** box, select `first_name`, `birth_date`, and `mrn`, click **Apply**, then the blue **Save**. Do not add a hierarchy filter.
 
 **Goal: one application that uses those pages.**
 
@@ -182,6 +186,7 @@ Do not import the CSV in this sitting. Do not open Match. Do not configure survi
 | Create shows no fields | The Create page is not on the application, or it is not assigned to your role. Repeat steps 25 and 26. Do not add the fields again on the entity. |
 | Cannot publish | A required system field or privilege. You need a role that can configure the model. Admin usually can. Read the red message; do not create a second entity with a near name. |
 | Yellow bar about survivorship | Expected. Close it. Do not configure survivorship in this sitting. Session 10 does that after two sources exist. |
+| Green bar says a reindex job started | Expected after you turn **Searchable** on. Do not cancel it. Go back to Patient Search. |
 
 ## Write this in the session log
 
