@@ -139,7 +139,15 @@ A yellow bar may say **Ensure that you configure survivorship before you start t
 
 19. **New** → **User Interface** → **Component** → **Create**. Pick **Search Layout** (it may be named **Search Result Layout**).
 20. Business entity `Patient`. Location `Test_Pract`. Display Name `Patient Search`. Internal ID `patient_search`.
-21. Title field: `last_name`. Basic fields: `first_name`, `birth_date`, `mrn`. Save.
+21. The layout has several boxes. Click a box, set it in the **Properties** panel on the right, then click **Apply**. The blue **Save** is last, after every Apply.
+
+| Box | What to set |
+|---|---|
+| Title | **Title Field** = `last_name`. Click **Apply**. |
+| Basic Fields | `first_name`, `birth_date`, `mrn`. Separator **Comma**. Click **Apply**. |
+| Hierarchy Filter, Facets, Thumbnail, System Fields, Additional Fields | Leave empty. Do not open them. |
+
+If **Basic Fields** has no names except `last_name`, the other fields are not searchable yet. Close this layout. Open the **Patient** entity. Select `first_name`, open **Search and Reports**, turn on **Searchable**. Do the same for `birth_date` and `mrn`. Leave Facetable and Reportable off. Save Patient. Reopen **Patient Search**, click the **Basic Fields** box, select those three, click **Apply**, then the blue **Save**. Do not add a hierarchy filter.
 
 **Goal: one application that uses those pages.**
 
