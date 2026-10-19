@@ -153,21 +153,25 @@ Save Patient. A green bar that says **The business entity was saved successfully
 
 Then check the three fields, not only `mrn`. Click `first_name` and confirm **Searchable** is on. Click `birth_date` and confirm the same. `mrn` already shows **Searchable** on. Close Patient. Reopen **Patient Search**, click the **Basic Fields** box, select `first_name`, `birth_date`, and `mrn`, click **Apply**, then the blue **Save**. Do not add a hierarchy filter.
 
-**Goal: one application that uses those pages.**
+**Goal: add your entities to Customer 360.**
 
-22. Click **New**. The New Asset dialog opens on **Model**. Do not click **Create** while **Business Entity** is highlighted. You already have Patient, Provider, and Location. On the left of that same dialog, click **User Interface**. Select **Business Application**, then **Create**. Display Name `Meridian Practice`. Internal ID `meridian_practice`. Location `Test_Pract`. Description blank. Click **OK**. If **User Interface** lists Page and Component but no Business Application, click **Cancel**. Open the existing **Customer 360** application from Explore and use that name in the log. Do not create another business entity.
-23. Open the **Model** tab. Click **Add Business Entity**. Pick `Patient`. For the display field, pick `last_name`. Click **Done**. If it asks for a URL field, click **Done** without choosing one.
-24. Add `Provider` with display field `full_name`. Add `Location` with display field `hospital_name`.
-25. Open the **Pages** tab. Select **Patient**. **Add Page**. Pick `Patient Create` for the create row and `Patient View` for the view row. Assign the page to your role. The role list usually includes **Admin**, **MDM Business User**, or **Customer 360 Data Steward**. Pick the role you log in with. If you are unsure, pick every role in the list for this practice app.
-26. Open the **Search** tab. Select **Patient**. **Add Search Result Layout**. Pick `Patient Search`. Assign the same role. Click **Save**.
-27. Provider and Location do not need pages in this sitting. You will not create those records by hand.
+This org has no **Business Application** under **User Interface**. Do not create one, and do not create another business entity. **Customer 360** is the application.
+
+22. You must be in the design screen, not the end-user search screen. The design screen has tabs named **Model**, **Pages**, and **Search**. If you only see a search box, go back to **Business 360 Console** → **Explore** → open **Customer 360**. Leave every predefined entity (Person, Organization, and the rest) where it is. Do not edit them.
+23. Open the **Model** tab. In **Business Entities**, click **Add Business Entity**. The asset picker opens. Select `Patient` from `Test_Pract`. Do not select a predefined Person or Organization. Click **Select**.
+24. For the display field, pick `last_name`. Click **Done**. If it asks for a URL field, click **Done** without choosing one.
+25. Add `Provider` the same way. Display field `full_name`. Add `Location`. Display field `hospital_name`.
+26. Open the **Pages** tab. In the left list, select **Patient**. It will not be there until step 23 is saved, so click **Save** on the application first if Patient is missing.
+27. On the **Create** row, click **Add Page**. Pick `Patient Create`. On the **View and edit** row, click **Add Page** and pick `Patient View`. Assign each page to your login role. The list usually includes **Admin**, **MDM Business User**, and **Customer 360 Data Steward**. If you are not sure which role you use, select every role in the list.
+28. Open the **Search** tab. Select **Patient**. Click **Add Search Result Layout**. Pick `Patient Search`. Assign the same role. Click **Save**.
+29. Provider and Location do not need pages in this sitting. You will not create those records by hand.
 
 **Goal: one throwaway patient proves the page.**
 
-28. Open `Meridian Practice` the way a user opens it (the application icon, or **Open** on the application). Do not stay in the design canvas.
-29. **New** → **Patient** → **Create**. You must see first name, last name, birth date, and mrn. If the list is empty, the page was not assigned to your role. Go back to step 25.
-30. Enter first name `Test`, last name `DeleteMe`, birth date `2000-01-01`, mrn `MRNTEST`. Leave the other fields blank. Save.
-31. Search `DeleteMe`. Open the row. Confirm last name `DeleteMe` and mrn `MRNTEST`. Delete the record if the screen allows. If it does not, leave it and remember it is not Ava.
+30. Open **Customer 360** the way a user opens it, from **My Services**, not from the design canvas.
+31. **New** → **Patient** → **Create**. You must see first name, last name, birth date, and mrn. If Patient is not in the New menu, the page was not assigned to your role. Go back to step 27.
+32. Enter first name `Test`, last name `DeleteMe`, birth date `2000-01-01`, mrn `MRNTEST`. Leave the other fields blank. Save.
+33. Search `DeleteMe`. Open the row. Confirm last name `DeleteMe` and mrn `MRNTEST`. Delete the record if the screen allows. If it does not, leave it and remember it is not Ava.
 
 Do not import the CSV in this sitting. Do not open Match. Do not configure survivorship.
 
@@ -183,7 +187,7 @@ Do not import the CSV in this sitting. Do not open Match. Do not configure survi
 | What you see | What it usually means |
 |---|---|
 | No MDM in My Services | License or a different org. Stop. |
-| Create shows no fields | The Create page is not on the application, or it is not assigned to your role. Repeat steps 25 and 26. Do not add the fields again on the entity. |
+| Create shows no fields | The Create page is not on Customer 360, or it is not assigned to your role. Repeat steps 27 and 28. Do not add the fields again on the entity. |
 | Cannot publish | A required system field or privilege. You need a role that can configure the model. Admin usually can. Read the red message; do not create a second entity with a near name. |
 | Yellow bar about survivorship | Expected. Close it. Do not configure survivorship in this sitting. Session 10 does that after two sources exist. |
 | Green bar says a reindex job started | Expected after you turn **Searchable** on. Do not cancel it. Go back to Patient Search. |
