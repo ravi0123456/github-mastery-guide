@@ -171,8 +171,8 @@ Adding Patient would not rewrite those five entities. It would still change the 
 **Goal: leave Customer 360 untouched.**
 
 22. You are on the right designer (tabs **Model**, **Pages**, **Search**). Do not click **+** next to **Business Entities (5)**. Do not click **Save**. Close the Customer 360 tab.
-23. Open **My Services**. Look for **Multidomain MDM**. That is the separate application. Its records use source system `b360.default.system`, not `c360.default.system`. Customer 360, Supplier 360, and Product 360 are not substitutes.
-24. If **Multidomain MDM** is not in My Services, stop. Session 8 is complete. The assets in `Test_Pract` are the practice. Do not attach them to Customer 360, and do not create a test patient.
+23. Open **My Services**. **Multidomain MDM** is present but grey, with a lock. A lock means this user cannot open it. Do not click it. The same lock is on **Product 360**, **Supplier 360**, and **Human Tasks**. Do not click those either. Orange tiles you may open later are **Business 360 Console** and **Reference 360**. Do not open **Customer 360**.
+24. Session 8 is complete. The assets in `Test_Pract` are the practice. Do not attach them to Customer 360, and do not create a test patient. Sessions 9, 10, 11, and 12 stay closed until an administrator enables **Multidomain MDM**. Those sittings load and match records, and the only open application that can hold them is the live Customer 360.
 
 **Goal: only if Multidomain MDM exists, attach the entities there.**
 
@@ -204,18 +204,31 @@ Do not import the CSV in this sitting. Do not open Match. Do not configure survi
 ## Write this in the session log
 
 ```text
-MDM console used:
+MDM console used: Business 360 Console
 Project: Test_Pract
-Source systems created:
-Patient entity published: yes/no
-Test record searched: yes/no
+Source systems created: EPIC_NORTH, EPIC_SOUTH, CRED
+Patient entity published: yes
+Customer 360 changed: no
+Multidomain MDM: locked
+Test record searched: no
 ```
 
-## Answer before session 9
+## Answer before the next sitting
 
 1. What is the difference between `mrn` and the MDM system's own id?
 2. Why are we not matching yet?
+3. Why was Patient not added to Customer 360?
 
 ## Stop
 
-Next sitting loads the files and searches: [09-mdm-load-and-search.md](09-mdm-load-and-search.md).
+Do not open [09-mdm-load-and-search.md](09-mdm-load-and-search.md) while Multidomain MDM is locked.
+
+Next sitting, only if you want more practice today: **Reference 360**, a new code list that nothing else uses.
+
+1. Close the Customer 360 designer if it is still open. Do not save it.
+2. **My Services** → **Reference 360**. Do not click a grey tile.
+3. **New**. If the list says **Code List**, choose that. If it says **Reference Data Set**, choose that. Do not open an existing list.
+4. Name `gender_practice`. Internal ID `gender_practice` if asked. Location `Test_Pract` if the picker allows it. If it forces a shared folder, click **Cancel** and write `SKIP` in the log.
+5. Add two values only. Code `F`, name `Female`. Code `M`, name `Male`. Do not add a third value.
+6. Save. Do not edit any list that already existed, including country, state, or gender lists other projects use.
+7. Write `gender_practice created` in the log. Stop. Do not connect this list to the Patient entity in this sitting.
