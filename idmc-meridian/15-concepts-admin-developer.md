@@ -267,7 +267,7 @@ Search does not read the database row by row in front of you. It reads an index 
 
 ### Hierarchy is not match, and it is not a relationship
 
-A **hierarchy** is a tree of "belongs to." Meridian Health sits at the top. Hospital North and Hospital South sit underneath. You use this when the question is "which hospitals are in this system?" You do not match Hospital North and Hospital South. They are not the same place.
+A **hierarchy** is a tree of "belongs to." Meridian Health sits at the top. Hospital North and Hospital South sit underneath. You use this when the question is "which hospitals are in this system?" You do not match Hospital North to Hospital South. They are not the same place.
 
 A **relationship** links two masters of different kinds. Ava is a patient of Dr Kim Alvarez. Both already exist as masters. The relationship is the link. It is not a column you typed on the Patient form, and it is not a CDI lookup.
 
