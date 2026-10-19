@@ -225,3 +225,5 @@ Code list: gender_practice or SKIP
 ## Stop
 
 Do not open [09-mdm-load-and-search.md](09-mdm-load-and-search.md). The license cannot be added on this org. The next clicks are steps 25 to 30 above, then stop.
+
+Leaving the lock in place is safe. It does not finish the story. The finish line in [00-start-here.md](00-start-here.md) is one Ava, with both hospitals, after match. That needs sessions 9 through 12, and those need Multidomain MDM. The `gender_practice` list does not replace that. Come back only in an org where Multidomain MDM is already orange. Do not use Customer 360 to force it.
