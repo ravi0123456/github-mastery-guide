@@ -2,6 +2,8 @@
 
 Study the Hackensack Meridian Health story by **doing one session in an IDMC org**, then stopping. Do not read ahead and do not run two sessions in one sitting.
 
+The session files are the buttons. [15-concepts-admin-developer.md](15-concepts-admin-developer.md) is the meaning: what each object is, why a ticket fails, and what an administrator checks before a developer changes a mapping. Read the matching chapter in that file before you treat a session as understood.
+
 You have admin access. Sessions 1–7 stay in the org where you already created them, even if that org has no Business 360. Sessions 8–11 start in the other org, the one whose service list shows **Business 360**. Do not export the CDI project into that org.
 
 The full labs live here:
@@ -20,13 +22,14 @@ https://github.com/ravi0123456/github-mastery-guide/tree/main/idmc-meridian
 | 5 | [05-taskflow-schedule-the-job.md](05-taskflow-schedule-the-job.md) | 60 min | One taskflow run is green, schedule is **not** left running |
 | 6 | [06-parameters.md](06-parameters.md) | 45 min | Same mapping writes NJ rows or NY rows based on a parameter |
 | 7 | [07-data-quality.md](07-data-quality.md) | 60 min | You have a profile (or you wrote NOT LICENSED and moved on) |
-| 8 | [08-mdm-model.md](08-mdm-model.md) | 70 min | Patient, Provider, and Location exist and you can open a create page |
-| 9 | [09-mdm-load-and-search.md](09-mdm-load-and-search.md) | 60 min | Search finds Ava from a file import |
-| 10 | [10-match-merge-survivorship.md](10-match-merge-survivorship.md) | 80 min | Two Ava source rows, **one** master, North phone wins for Noah |
-| 11 | [11-hierarchy-relationship.md](11-hierarchy-relationship.md) | 60 min | Two hospitals sit under one system node |
-| 12 | [12-ingress-egress-jobs.md](12-ingress-egress-jobs.md) | 90 min | A golden-record file leaves MDM, or you stopped at the license gap |
+| 8 | [08-mdm-model.md](08-mdm-model.md) | 70 min | Patient, Provider, and Location exist in `Test_Pract`. Customer 360 was not changed. Reference 360 was closed because Explore has no **New**. |
+| 9 | [09-mdm-load-and-search.md](09-mdm-load-and-search.md) | closed | Multidomain MDM is locked. Do not start. |
+| 10 | [10-match-merge-survivorship.md](10-match-merge-survivorship.md) | closed | Same license gap. Read the concept. Do not click. |
+| 11 | [11-hierarchy-relationship.md](11-hierarchy-relationship.md) | closed | Same license gap. Read the concept. Do not click. |
+| 12 | [12-ingress-egress-jobs.md](12-ingress-egress-jobs.md) | closed | Same license gap. Read the concept. Do not click. |
 | 13 | [13-other-idmc-services.md](13-other-idmc-services.md) | one service only | You practiced **one** extra service, or skipped it on purpose |
 | 14 | [14-do-not-mix-with-work-cicd.md](14-do-not-mix-with-work-cicd.md) | 20 min | You can say what this practice is **not** allowed to touch |
+| 15 | [15-concepts-admin-developer.md](15-concepts-admin-developer.md) | read with each session | You can explain the object in the ticket without opening the designer |
 
 ## Rules
 

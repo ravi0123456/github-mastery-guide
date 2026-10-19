@@ -2,6 +2,8 @@
 
 **Time:** 30 minutes. **Next file is locked** until the checklist at the bottom is done.
 
+The click-by-click files teach the buttons. The meaning of those buttons, and how an admin or a developer reads a ticket, is in [15-concepts-admin-developer.md](15-concepts-admin-developer.md). Read that chapter for a session before you repeat the clicks. This file is still the story.
+
 ## The idea in one minute
 
 Hackensack Meridian Health grew by joining many hospitals. Each hospital kept its own electronic medical record (EMR), especially Epic. The same person existed more than once. A doctor in one hospital could not see the visit, the lab, and the follow-up that happened in another hospital.

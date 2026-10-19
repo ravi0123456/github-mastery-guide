@@ -174,14 +174,10 @@ Adding Patient would not rewrite those five entities. It would still change the 
 23. Open **My Services**. **Multidomain MDM** is grey, with a lock. The license is not on this org, and it cannot be assigned from **Administrator**. Do not click the tile. The same lock is on **Product 360**, **Supplier 360**, and **Human Tasks**. Do not click those either. Do not accept a trial. Do not open **Customer 360**.
 24. Session 8 is complete. The assets in `Test_Pract` are the practice. Do not attach them to Customer 360, and do not create a test patient. Sessions 9, 10, 11, and 12 stay closed. Those sittings load and match records, and the only open application that can hold them is the live Customer 360.
 
-**Goal: one code list in Reference 360, then stop.**
+**Goal: do not create reference data. This org will not let you, and the lists on screen are live.**
 
-25. You are on Reference 360 **Home**. The **Create Reference Data** card is a video, not a button. Do not click **Reference Data Sets**, **Code Lists**, or **Crosswalks** inside that card. Do not click **Create Hierarchies** or **Onboard Reference Data**.
-26. Click **Explore** in the left menu. **New** is on that page, not on Home. If Explore has no **New**, stop and write `SKIP`. You do not have the designer role. Do not edit an existing list.
-27. Click **New** → **Reference Data Set**. Name `gender_practice`. Internal ID `gender_practice`. Leave Domain, Confidentiality, and Priority at their defaults. Do not open the **Definition** tab. Do not add an attribute. Save. A code list cannot be created until this set exists. Reference 360 has no `Test_Pract` folder. The unique name is what keeps this separate.
-28. Click **New** → **Code List**. When it asks for a reference data set, pick `gender_practice` only. Do not pick a set that already existed. Name the code list `gender_practice_codes`. Internal ID `gender_practice_codes`. Save.
-29. On that code list, click **Add Code Value**. Name `Female`, code `F`. Save. Add a second value. Name `Male`, code `M`. Save. Do not add a third value. Do not send it for approval if a workflow button appears. A draft is enough.
-30. Close the tab. Do not open any other code list. Do not attach this list to the Patient entity.
+25. You are on Reference 360 **Explore**. There is no **New** button. The left list already contains live assets such as `AccountStatus`, `AddressType`, and `BusinessType`. Do not open them. Do not click the three-dot menu. Do not search for a gender list and edit it.
+26. Close Reference 360. Write `SKIP` in the log. A missing **New** means this user can look, not create. Creating a practice code list here is not required for the model you already built, and it is not a substitute for loading patients.
 
 Do not import the CSV. Do not open Match. Do not configure survivorship. Do not open sessions 9, 10, 11, or 12.
 
@@ -191,7 +187,7 @@ Do not import the CSV. Do not open Match. Do not configure survivorship. Do not 
 - Three entities, two pages, and `Patient Search` in `Test_Pract`.
 - Customer 360 still lists only its original five entities.
 - No test patient.
-- Reference data set `gender_practice` and code list `gender_practice_codes` with `F` and `M`, or `SKIP` if Explore has no **New**.
+- Reference 360 left closed. No code list created. `SKIP`.
 
 ## If it fails
 
@@ -213,7 +209,7 @@ Patient entity published: yes
 Customer 360 changed: no
 Multidomain MDM: cannot enable
 Test record searched: no
-Code list: gender_practice or SKIP
+Code list: SKIP, Explore has no New
 ```
 
 ## Answer before the next sitting
@@ -226,4 +222,4 @@ Code list: gender_practice or SKIP
 
 Do not open [09-mdm-load-and-search.md](09-mdm-load-and-search.md). The license cannot be added on this org. The next clicks are steps 25 to 30 above, then stop.
 
-Leaving the lock in place is safe. It does not finish the story. The finish line in [00-start-here.md](00-start-here.md) is one Ava, with both hospitals, after match. That needs sessions 9 through 12, and those need Multidomain MDM. The `gender_practice` list does not replace that. Come back only in an org where Multidomain MDM is already orange. Do not use Customer 360 to force it.
+Leaving the lock in place is safe. It does not finish the story. The finish line in [00-start-here.md](00-start-here.md) is one Ava, with both hospitals, after match. That needs sessions 9 through 12, and those need Multidomain MDM. Read those chapters in [15-concepts-admin-developer.md](15-concepts-admin-developer.md). Do not click them in this org. Do not use Customer 360 to force it.
