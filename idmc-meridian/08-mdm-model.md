@@ -73,7 +73,17 @@ The yellow warning only means the record type locks after you add a record. That
 
 The left list is **Basic Fields**. It shows **Text** and **Integer** first. Scroll that list until you see **Date**. Do not use **Date and Time**.
 
-For each field below, double-click the type so it drops on the canvas. Click the new box. The **Properties** panel at the bottom becomes active. Set **Display Name** to the name in the table. Leave the generated **Internal ID** if it matches that name. If it does not match, change it before you save. Click **Save** after every two or three fields so a mistake does not wipe the canvas.
+A new field lands on the canvas with an empty name. The header turns **Invalid** and **Properties** says **Enter a value.** That is expected. Do not delete the field. Do not open the top **Data Quality**, **Match**, or **Survivorship** tabs.
+
+Click the new box. In **Properties**, stay on **General**.
+
+1. **Status** stays **Enabled**.
+2. **Display Name:** type the name from the table, for this first Date field `birth_date`. The red X goes away when you leave the box.
+3. **Internal ID:** type the same name, `birth_date`. If the box fills itself from the display name, leave that value. Do not add spaces. Lower case and the underscore only.
+4. Scroll **General** if you see **Required**. Turn it on only for `first_name` and `last_name`. Leave it off for `birth_date`.
+5. Do not open **Data Quality** or **Survivorship** inside Properties.
+6. For `last_name` only, after the name is set, click **Search and Reports** in the left of Properties and turn on **Searchable**. Leave Facetable and Reportable off. Every other field stays not searchable.
+7. Click **Save**. The header must say **Valid** before you double-click the next type. If it stays Invalid, one field still has an empty Display Name. Click that box and fill it. Do not add the next field while the header says Invalid.
 
 | Display Name | Double-click | Required | Search |
 |---|---|---|---|
@@ -90,7 +100,7 @@ For each field below, double-click the type so it drops on the canvas. Click the
 
 To mark required, select the field and turn on **Required** (or **Mandatory**) in Properties. Leave the text length at the default.
 
-To make `last_name` searchable: select that field, open **Search** inside Properties, and turn on **Searchable**. One searchable field is enough. Do not turn on Facetable or Reportable.
+To make `last_name` searchable: select that field, click **Search and Reports** on the left of Properties, and turn on **Searchable**. One searchable field is enough. Do not turn on Facetable or Reportable.
 
 `mrn` is the hospital number. It is not the MDM id. Do not add a field named source primary key, source system, or business ID. MDM already stores those.
 
