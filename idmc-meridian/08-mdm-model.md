@@ -54,8 +54,22 @@ In the MDM org, start at step 1. You do not need the mappings. You also do not c
 
 **Goal: the Patient entity, flat.**
 
-7. **New** → **Business entity** (may be under Model). Name: `Patient`. Internal name if asked: `patient`. Location: `Test_Pract` if asked.
-8. Add fields. Use string unless noted. Mark the ones that must show on the create page.
+7. **New** → **Model** → **Business Entity** → **Create**. Fill the dialog, then click **OK**. Do not click OK until Subscribed Record Type is set. After the first patient exists, that value cannot be changed.
+
+| Field on the dialog | What to enter |
+|---|---|
+| Display Name | `Patient` |
+| Internal ID | `patient`. Do not edit it after it fills in. It cannot be changed later. |
+| Description | Leave blank. |
+| Location | `Test_Pract` |
+| Icon | Any person icon. Optional. |
+| Subscribed Record Type | `Customer B2C`. A patient is a person. Do not pick Healthcare Professional (that is the doctor). Do not pick Assign Later. |
+| Data Domain Tags | Leave blank. Tags are labels only and do not change the data. |
+| Error Remediation | Leave **Enable** unchecked. A bad value should not save from the screen. |
+
+The yellow warning only means the record type locks after you add a record. That is expected. Click **OK**.
+
+8. On the blank canvas, add fields. Use text unless noted. Mark `first_name` and `last_name` required. Make `last_name` searchable if the field properties have a search checkbox. Without a searchable field, search in session 9 finds nothing.
 
 | Field | Notes |
 |---|---|
@@ -75,9 +89,9 @@ In the MDM org, start at step 1. You do not need the mappings. You also do not c
 
 **Goal: Provider and Location, still flat, still no match rules.**
 
-11. Entity `Provider` with fields `npi`, `full_name`, `specialty`, `hospital_code`.
-12. Entity `Location` with fields `hospital_code`, `hospital_name`, `city`, `state`, `parent_code`.
-13. Save and publish if required.
+11. Repeat the same dialog for `Provider`. Internal ID `provider`. Subscribed Record Type: `Healthcare Professional`. Same blank description, same location `Test_Pract`, Error Remediation unchecked. Fields: `npi`, `full_name`, `specialty`, `hospital_code`. Make `full_name` searchable.
+12. Repeat for `Location`. Internal ID `location`. Subscribed Record Type: `Custom Domain`. The product lists locations as a custom domain, not as a customer. Fields: `hospital_code`, `hospital_name`, `city`, `state`, `parent_code`. Make `hospital_name` searchable.
+13. Save each. Publish if the button is there. Do not create the test patient until all three entities are saved. The record type locks on the first record.
 
 **Goal: an application so you can click Create.**
 
