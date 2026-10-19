@@ -157,7 +157,7 @@ Then check the three fields, not only `mrn`. Click `first_name` and confirm **Se
 
 This org has no **Business Application** under **User Interface**. Do not create one, and do not create another business entity. **Customer 360** is the application.
 
-22. You must be in the design screen, not the end-user search screen. The design screen has tabs named **Model**, **Pages**, and **Search**. If you only see a search box, go back to **Business 360 Console** → **Explore** → open **Customer 360**. Leave every predefined entity (Person, Organization, and the rest) where it is. Do not edit them.
+22. The screen at `/app/c360/home` with **Build your dashboard** is the user app. Do not click **New Dashboard** or **Add Existing Dashboard**. Do not use **New**, **Search**, or **File Import** yet. Click the application name at the top left and switch back to **Business 360 Console**. Then **Explore**, search `Customer 360`, and open the **business application** asset. The design screen has tabs named **Model**, **Pages**, and **Search**. Leave every predefined entity (Person, Organization, Claim, and the rest) where it is. Do not edit them.
 23. Open the **Model** tab. In **Business Entities**, click **Add Business Entity**. The asset picker opens. Select `Patient` from `Test_Pract`. Do not select a predefined Person or Organization. Click **Select**.
 24. For the display field, pick `last_name`. Click **Done**. If it asks for a URL field, click **Done** without choosing one.
 25. Add `Provider` the same way. Display field `full_name`. Add `Location`. Display field `hospital_name`.
