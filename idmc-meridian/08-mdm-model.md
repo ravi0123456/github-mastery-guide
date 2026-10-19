@@ -45,16 +45,17 @@ In the MDM org, start at step 1. You do not need the mappings. You also do not c
 1. Leave the org where you built the mappings. Log into the org from the service list that shows **Business 360**, **Customer 360**, and **Data Quality**. That is the MDM org. Do not import `MERIDIAN_PRACTICE`. Do not recreate `m_land_north`, the taskflow, or `rl_dob_is_iso_new`.
 2. In that org, open **My Services**. Open **Business 360**. Do not open Customer 360 unless Business 360 is absent. Do not open Data Integration.
 3. If Business 360 is not in this org either, write `MDM NOT LICENSED` and stop. Do not build a fake MDM in CDI.
+4. The project `Test_Pract` is the folder for this org. Do not create `MERIDIAN_PRACTICE` here, and do not rename `Test_Pract`. If a save dialog asks for a project, pick `Test_Pract`. If **New** does not ask for a project, that is normal for source systems and entities. Leave `Test_Pract` empty of mappings.
 
 **Goal: three source systems, before records exist.**
 
-4. Find **Source systems** (Explore, or New, or the model section).
-5. Create `EPIC_NORTH`, `EPIC_SOUTH`, and `CRED`. Display names can match the codes. Save each. These names must match the `source_system` values in the CSV later, same spelling, same case.
+5. Find **Source systems** (Explore, or New, or the model section). If it asks where to save, choose `Test_Pract`.
+6. Create `EPIC_NORTH`, `EPIC_SOUTH`, and `CRED`. Display names can match the codes. Save each. These names must match the `source_system` values in the CSV later, same spelling, same case.
 
 **Goal: the Patient entity, flat.**
 
-6. **New** → **Business entity** (may be under Model). Name: `Patient`. Internal name if asked: `patient`.
-7. Add fields. Use string unless noted. Mark the ones that must show on the create page.
+7. **New** → **Business entity** (may be under Model). Name: `Patient`. Internal name if asked: `patient`. Location: `Test_Pract` if asked.
+8. Add fields. Use string unless noted. Mark the ones that must show on the create page.
 
 | Field | Notes |
 |---|---|
@@ -69,21 +70,21 @@ In the MDM org, start at step 1. You do not need the mappings. You also do not c
 | `postal_code` | Text |
 | `mrn` | Text. This is the hospital number, **not** the MDM id |
 
-8. Do **not** add a field called source primary key if the product already has a system field for it. MDM keeps source system and source primary key as system values on the cross-reference. You will supply them at load time in session 9.
-9. Save the entity. If the release has **Publish** on the model, publish. An unpublished model often lets you save and then fails on import.
+9. Do **not** add a field called source primary key if the product already has a system field for it. MDM keeps source system and source primary key as system values on the cross-reference. You will supply them at load time in session 9.
+10. Save the entity. If the release has **Publish** on the model, publish. An unpublished model often lets you save and then fails on import.
 
 **Goal: Provider and Location, still flat, still no match rules.**
 
-10. Entity `Provider` with fields `npi`, `full_name`, `specialty`, `hospital_code`.
-11. Entity `Location` with fields `hospital_code`, `hospital_name`, `city`, `state`, `parent_code`.
-12. Save and publish if required.
+11. Entity `Provider` with fields `npi`, `full_name`, `specialty`, `hospital_code`.
+12. Entity `Location` with fields `hospital_code`, `hospital_name`, `city`, `state`, `parent_code`.
+13. Save and publish if required.
 
 **Goal: an application so you can click Create.**
 
-13. New **Business application** (or add to the existing sandbox application if you are not allowed to create one). Name: `Meridian Practice`.
-14. Add Patient, Provider, and Location to it.
-15. Open the application as a user would. Open **Create** on Patient. You should see first name, last name, birth date, and the other fields.
-16. Create **one** patient by hand: first name `Test`, last name `DeleteMe`, birth date `2000-01-01`, mrn `MRNTEST`. Save. Search `DeleteMe` and find it. Then delete that record if the UI allows, or leave it and remember it is not Ava.
+14. New **Business application** (or add to the existing sandbox application if you are not allowed to create one). Name: `Meridian Practice`. Location: `Test_Pract` if asked.
+15. Add Patient, Provider, and Location to it.
+16. Open the application as a user would. Open **Create** on Patient. You should see first name, last name, birth date, and the other fields.
+17. Create **one** patient by hand: first name `Test`, last name `DeleteMe`, birth date `2000-01-01`, mrn `MRNTEST`. Save. Search `DeleteMe` and find it. Then delete that record if the UI allows, or leave it and remember it is not Ava.
 
 Do not import the CSV in this sitting. Do not open Match.
 
@@ -107,6 +108,7 @@ Do not import the CSV in this sitting. Do not open Match.
 
 ```text
 MDM console used:
+Project: Test_Pract
 Source systems created:
 Patient entity published: yes/no
 Test record searched: yes/no
