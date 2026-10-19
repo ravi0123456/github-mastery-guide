@@ -171,32 +171,34 @@ Adding Patient would not rewrite those five entities. It would still change the 
 **Goal: leave Customer 360 untouched.**
 
 22. You are on the right designer (tabs **Model**, **Pages**, **Search**). Do not click **+** next to **Business Entities (5)**. Do not click **Save**. Close the Customer 360 tab.
-23. Open **My Services**. **Multidomain MDM** is present but grey, with a lock. A lock means this user cannot open it. Do not click it. The same lock is on **Product 360**, **Supplier 360**, and **Human Tasks**. Do not click those either. Orange tiles you may open later are **Business 360 Console** and **Reference 360**. Do not open **Customer 360**.
-24. Session 8 is complete. The assets in `Test_Pract` are the practice. Do not attach them to Customer 360, and do not create a test patient. Sessions 9, 10, 11, and 12 stay closed until an administrator enables **Multidomain MDM**. Those sittings load and match records, and the only open application that can hold them is the live Customer 360.
+23. Open **My Services**. **Multidomain MDM** is grey, with a lock. The license is not on this org, and it cannot be assigned from **Administrator**. Do not click the tile. The same lock is on **Product 360**, **Supplier 360**, and **Human Tasks**. Do not click those either. Do not accept a trial. Do not open **Customer 360**.
+24. Session 8 is complete. The assets in `Test_Pract` are the practice. Do not attach them to Customer 360, and do not create a test patient. Sessions 9, 10, 11, and 12 stay closed. Those sittings load and match records, and the only open application that can hold them is the live Customer 360.
 
-**Goal: only if Multidomain MDM exists, attach the entities there.**
+**Goal: one code list in Reference 360, then stop.**
 
-25. From **My Services**, open **Multidomain MDM**. If you land on a home page, switch the top-left menu to **Business 360 Console**, click **Explore**, search `Multidomain`, and open the asset whose type is **Business Application**.
-26. On **Model**, click **Add Business Entity**. Select `Patient` from `Test_Pract`. Display field `last_name`. Skip the URL field. Add `Provider` with `full_name` and `Location` with `hospital_name`. Click **Save**.
-27. **Pages** → **Patient**. **Create** row → `Patient Create`. **View and edit** row → `Patient View`. Assign only your own role. Do not select every role.
-28. **Search** → **Patient** → **Add Search Result Layout** → `Patient Search` → same single role. Click **Save**.
-29. Open **Multidomain MDM** as a user. **New** → **Patient** → **Create**. Enter first name `Test`, last name `DeleteMe`, birth date `2000-01-01`, mrn `MRNTEST`. Save, search `DeleteMe`, open the row, and delete it if the screen allows. This person is not Ava.
+25. Close the Customer 360 designer if it is still open. Do not click **Save**.
+26. **My Services** → **Reference 360**. It is the orange tile. Do not click a grey tile.
+27. Click **New**. If the list says **Code List**, choose that. If it says **Reference Data Set**, choose that. Do not open an existing list.
+28. Name `gender_practice`. Internal ID `gender_practice` if the dialog asks. Location `Test_Pract` if the picker allows it. If the only locations are shared folders, click **Cancel** and write `SKIP` in the log. Do not save into a shared folder.
+29. Add two values only. Code `F`, name `Female`. Code `M`, name `Male`. Do not add a third value.
+30. Save. Do not edit any list that already existed, including country, state, or gender lists other projects use. Do not attach `gender_practice` to the Patient entity.
 
-Do not import the CSV in this sitting. Do not open Match. Do not configure survivorship.
+Do not import the CSV. Do not open Match. Do not configure survivorship. Do not open sessions 9, 10, 11, or 12.
 
 ## What you should see
 
 - Source systems `EPIC_NORTH`, `EPIC_SOUTH`, `CRED`.
 - Three entities, two pages, and `Patient Search` in `Test_Pract`.
 - Customer 360 still lists only its original five entities.
-- A test patient only if Multidomain MDM exists. If it does not, no test patient is expected.
+- No test patient.
+- Code list `gender_practice` with `F` and `M`, or `SKIP` if Reference 360 would not save it into `Test_Pract`.
 
 ## If it fails
 
 | What you see | What it usually means |
 |---|---|
 | No MDM in My Services | License or a different org. Stop. |
-| Create shows no fields | You attached Patient to Multidomain MDM, but the page is not assigned to your role. Repeat steps 27 and 28 there. Do not add the fields again on the entity, and do not switch to Customer 360. |
+| Create shows no fields | You are in the wrong application. Close it. Do not add Patient to Customer 360. |
 | Cannot publish | A required system field or privilege. You need a role that can configure the model. Admin usually can. Read the red message; do not create a second entity with a near name. |
 | Yellow bar about survivorship | Expected. Close it. Do not configure survivorship in this sitting. Session 10 does that after two sources exist. |
 | Green bar says a reindex job started | Expected after you turn **Searchable** on. Do not cancel it. Go back to Patient Search. |
@@ -209,8 +211,9 @@ Project: Test_Pract
 Source systems created: EPIC_NORTH, EPIC_SOUTH, CRED
 Patient entity published: yes
 Customer 360 changed: no
-Multidomain MDM: locked
+Multidomain MDM: cannot enable
 Test record searched: no
+Code list: gender_practice or SKIP
 ```
 
 ## Answer before the next sitting
@@ -221,14 +224,4 @@ Test record searched: no
 
 ## Stop
 
-Do not open [09-mdm-load-and-search.md](09-mdm-load-and-search.md) while Multidomain MDM is locked.
-
-Next sitting, only if you want more practice today: **Reference 360**, a new code list that nothing else uses.
-
-1. Close the Customer 360 designer if it is still open. Do not save it.
-2. **My Services** → **Reference 360**. Do not click a grey tile.
-3. **New**. If the list says **Code List**, choose that. If it says **Reference Data Set**, choose that. Do not open an existing list.
-4. Name `gender_practice`. Internal ID `gender_practice` if asked. Location `Test_Pract` if the picker allows it. If it forces a shared folder, click **Cancel** and write `SKIP` in the log.
-5. Add two values only. Code `F`, name `Female`. Code `M`, name `Male`. Do not add a third value.
-6. Save. Do not edit any list that already existed, including country, state, or gender lists other projects use.
-7. Write `gender_practice created` in the log. Stop. Do not connect this list to the Patient entity in this sitting.
+Do not open [09-mdm-load-and-search.md](09-mdm-load-and-search.md). The license cannot be added on this org. The next clicks are steps 25 to 30 above, then stop.

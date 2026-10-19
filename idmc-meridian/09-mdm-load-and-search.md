@@ -2,7 +2,7 @@
 
 **Time:** 60 minutes. **Requires:** Multidomain MDM enabled, and session 8 create page works. **Do not** configure match in this sitting.
 
-**Do not start this file yet.** On 19 Oct 2026, **Multidomain MDM** was grey with a lock. **Customer 360** is live and must not receive these patients. Come back only after an administrator enables Multidomain MDM. Until then, the next sitting is the Reference 360 code list at the end of [08-mdm-model.md](08-mdm-model.md).
+**Do not start this file.** Multidomain MDM cannot be enabled on this org. **Customer 360** is live and must not receive these patients. The next sitting is steps 25 to 30 in [08-mdm-model.md](08-mdm-model.md), then stop.
 
 ## The idea in one minute
 
