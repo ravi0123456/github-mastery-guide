@@ -34,7 +34,14 @@ If you are an IDMC admin who wants to practice the product, start at [idmc-merid
 | 5 | [05-office-playbook.md](05-office-playbook.md) | Daily office checklist: branch, commit, PR, review, hotfix habits |
 | 6 | [06-idmc-cicd-picture.md](06-idmc-cicd-picture.md) | Our IDMC source control vs Jenkins CI/CD, org by org |
 | 7 | [07-idmc-dev-to-sit-practice.md](07-idmc-dev-to-sit-practice.md) | Safe first steps to deploy a few tagged assets from DEV to SIT |
-| 8 | [idmc-meridian/README.md](idmc-meridian/README.md) | Meridian story as hands-on IDMC and MDM SaaS practice, one session at a time |
+| 8 | [08-github-end-to-end-practice.md](08-github-end-to-end-practice.md) | The whole GitHub day in one loop, plus a 4-week hands-on practice plan |
+| 9 | [09-yaml-basics.md](09-yaml-basics.md) | YAML from zero: keys, lists, indentation, checking files |
+| 10 | [10-ansible-awx-basics.md](10-ansible-awx-basics.md) | Ansible and AWX: playbooks, inventories, credentials, projects, job templates |
+| 11 | [11-jenkins-groovy-basics.md](11-jenkins-groovy-basics.md) | Jenkins and Groovy: Jenkinsfile, stages, credentials, GitHub webhooks |
+| 12 | [12-github-jenkins-awx-together.md](12-github-jenkins-awx-together.md) | GitHub + Jenkins + AWX end to end, with a full sample Jenkinsfile and playbook |
+| 13 | [13-idmc-with-github.md](13-idmc-with-github.md) | IDMC with GitHub: check in, pull a commit Dev to QA/Prod, export/import, Jenkins + REST API |
+| 14 | [14-glossary-cicd-idmc.md](14-glossary-cicd-idmc.md) | One-line meanings of CI/CD, Ansible, Jenkins, API and IDMC words |
+| M | [idmc-meridian/README.md](idmc-meridian/README.md) | Meridian story as hands-on IDMC and MDM SaaS practice, one session at a time |
 | — | [glossary.md](glossary.md) | One-line definitions of every important term |
 
 ---
@@ -51,6 +58,9 @@ If you are an IDMC admin who wants to practice the product, start at [idmc-merid
 | **Office day** | 05 | 1–2 hours | Reusable playbook every workday |
 | **IDMC practice** | [idmc-meridian](idmc-meridian/README.md) sessions 0–14 | one sitting each | Understand IDMC and MDM by running jobs, not by reading only |
 | **IDMC admin** | 06 then 07, after meridian session 14 | 1–2 hours | See how our orgs deploy, then try one small DEV to SIT test |
+| **End to end** | 08 | 1 hour + 4 weeks practice | Do the full GitHub loop without help |
+| **Automation** | 09, 10, 11, 12 + 14 | 4–5 hours | Read YAML, playbooks and Jenkinsfiles; see GitHub → Jenkins → AWX |
+| **IDMC + GitHub** | 13 | 1–2 hours | Know how check in, pull and API promotion work in general |
 
 ---
 
@@ -101,6 +111,14 @@ If you are an IDMC admin who wants to practice the product, start at [idmc-merid
 - [ ] I have a named test tag ready before I commit `flo_dev.yml`
 - [ ] I did not tag `MERIDIAN_PRACTICE` or edit a flow YAML for it
 
+### Automation and IDMC + GitHub
+- [ ] I finished weeks 1–4 of the practice plan in chapter 08
+- [ ] I wrote a valid YAML file and checked it
+- [ ] I can explain playbook, inventory, credential, project and job template
+- [ ] I can read a Jenkinsfile and point to each stage and credential
+- [ ] I can draw GitHub → Jenkins → AWX on paper
+- [ ] I can explain check in, pull of a commit, and why connections are created per org
+
 ---
 
 ## Your links (bookmark these)
@@ -110,6 +128,9 @@ If you are an IDMC admin who wants to practice the product, start at [idmc-merid
 - Practice repo: https://github.com/ravi0123456/hello-world
 - IDMC picture: https://github.com/ravi0123456/github-mastery-guide/blob/main/06-idmc-cicd-picture.md
 - DEV to SIT practice: https://github.com/ravi0123456/github-mastery-guide/blob/main/07-idmc-dev-to-sit-practice.md
+- GitHub end to end: https://github.com/ravi0123456/github-mastery-guide/blob/main/08-github-end-to-end-practice.md
+- GitHub + Jenkins + AWX: https://github.com/ravi0123456/github-mastery-guide/blob/main/12-github-jenkins-awx-together.md
+- IDMC with GitHub: https://github.com/ravi0123456/github-mastery-guide/blob/main/13-idmc-with-github.md
 - Meridian practice (start here for IDMC/MDM hands-on): https://github.com/ravi0123456/github-mastery-guide/blob/main/idmc-meridian/README.md
 
 ---
