@@ -177,107 +177,222 @@ If the profile will not run, check the Data Quality license and that Data Integr
 
 ## 7. MDM SaaS from the beginning
 
-This is the part that felt missing. Read it even though you could not load a patient.
+Read this section slowly. It uses the same fake rows you already put in the CSV files. You do not need a second example.
 
-### What "master data" means
+You are supporting this as an administrator. You will not be asked to invent a match rule on a Friday night. You will be asked why search is empty, why two Avas exist, or why the phone is wrong. Those tickets look like infrastructure. Most of them are not. The development knowledge below is how you tell a developer which screen to open, instead of restarting the Secure Agent and closing nothing.
 
-Not every file is master data. A visit, a claim line, and a payment are transactions. They happen, and they pile up. **Master data** is the noun those transactions point at: the person, the doctor, the hospital, the product, the supplier. The business wants one trusted copy of each noun, because every other system refers to it.
+Do not click these steps in Customer 360. Multidomain MDM is locked. This section is the paper version of the job you could not run.
 
-Ava is master data. Her three visits are transactions that should hang off the one Ava. If you match the visits to each other, you have asked the wrong question. You match the people. You keep the visits.
+### The morning the ticket is about
 
-### Three layers, and they are not the same thing
+Ava Shah goes to the Hackensack hospital on Monday. Epic North stores her as:
 
-Use Ava and only Ava.
+```text
+source_pk N1001
+name      Ava Shah
+dob       1984-03-12
+gender    F
+phone     (201) 555-0101
+address   10 River Rd, Hackensack, NJ 07601
+mrn       MRN1001
+```
 
-| Layer | What it is | Ava's example |
+On Friday she goes to a different hospital in the same company. Epic South stores her as:
+
+```text
+source_pk S2001
+name      Ava S Shah
+dob       1984-03-12
+gender    Female
+phone     2015550101
+address   10 River Road, Hackensack, NJ 07601
+mrn       MRN1001
+```
+
+A doctor on Friday cannot see Monday's lab. The computer thinks these are two people. A human can see they are one person: same birth date, same house, same medical-record number, and a first name that was abbreviated.
+
+That is the whole of MDM. Every other word in this section is a piece of that morning.
+
+### Master data is the noun, not the event
+
+A visit, a lab, a payment, and a claim line are events. They pile up. Master data is the noun those events point at.
+
+| Kind | In this story | What you do with it |
 |---|---|---|
-| Source system | The application that sent the row. A label, not a Secure Agent and not a connection. | `EPIC_NORTH` and `EPIC_SOUTH` |
-| Source record | That application's own row, stored under the master so you can still see it. | North row key `N1001`, name `Ava`. South row key `S2001`, name `Ava S`. |
-| Master, also called the golden record | The one trusted person MDM shows to a user after match and survivorship. | One Ava Shah. Both visits still listed underneath. |
+| Master data | Ava the person, Dr Kim Alvarez, Hackensack hospital | One trusted copy. Match duplicates. |
+| Transaction | Ava's Monday visit, Friday visit | Keep them. Hang them off the one Ava. Do not match the visits to each other. |
+| Reference data | `F` means Female, `NJ` means New Jersey | A short shared list. Not a person. |
 
-Until a match job runs, MDM treats the North row and the South row as two masters. That looks wrong to a human and it is still the correct product behavior. Match is a separate step. Loading data does not silently merge people.
+A bank has the same shape. "Priya Rao" is the noun. Her card swipe at 2pm is an event. The bank does not want two Priyas because the savings system and the card system spelled her name differently. The bank still wants every swipe. MDM is that idea, sold as a product.
 
-### What you actually created in `Test_Pract`
+If a ticket says "merge these two claims," stop. Claims are events. You match the people, the doctors, or the hospitals. You keep the claims.
 
-You did not create patients. You created the empty form and the labels.
+### Four pieces, and only one of them is the form you built
 
-**Source systems** `EPIC_NORTH`, `EPIC_SOUTH`, and `CRED` are the labels a future load will stamp on each row. Creating the label does not connect to Epic and does not read a file.
+People say "MDM" and mean four different things. Separate them or every ticket sounds the same.
 
-A **business entity** is the form. Patient has fields such as first name, last name, birth date, and `mrn`. Provider and Location are two more forms because a doctor and a hospital are not patients. Putting a hospital name on the Patient form would mix the nouns.
+1. **The model.** The empty form. Patient has first name, last name, birth date, phone, `mrn`. You built this in `Test_Pract`, inside Business 360 Console. An empty form stores no Ava.
+2. **The application.** The door a business user walks through to type and search. Customer 360 is one door. Multidomain MDM would have been another. Your Patient form is not behind either door. That is why a user cannot create a patient. The form exists. The door was not opened. You left Customer 360 shut on purpose.
+3. **The jobs.** Load, match, and merge. These are what turn the two CSV rows into one Ava. You have not run them.
+4. **The trust rule.** When North and South disagree, which value wins. Noah's two phones are this rule. You have not configured it.
 
-Each field has a **display name** (what a person reads) and an **internal ID** (what the system stores). You saw the entity go **Invalid** when a field's display name was empty. Fill the name before you add the next field. **Required** means a user cannot save a patient without it. **Searchable** means the search index will include it. Turning Searchable on starts a reindex job. That job is expected. Do not cancel it.
+An admin ticket almost always names piece 2 or piece 3 and the user thinks piece 1 is broken. Open the right piece.
 
-A **page** is the screen: Patient Create, Patient View. A **search layout** is the table of results. These do nothing for a business user until some **business application** lists the Patient entity and your role is allowed to open that screen.
+### What you built, said as the form on the desk
 
-### The application is not the entity
+Business 360 Console is the back office. It is not the screen a nurse uses.
 
-This distinction is the one that blocked the rest of the practice.
+**Source system** is a stamp, not a connection. `EPIC_NORTH`, `EPIC_SOUTH`, and `CRED` do not log into Epic. They are the words a future load will write on each row so you can still answer "who sent this?" Creating the stamp reads no file. `CRED` is the stamp for the doctor file, because doctors are not patients and they did not come from Epic.
 
-The entity is the form, sitting in Business 360 Console. The application is the product a user opens to create and search records. Customer 360, Supplier 360, Product 360, and Multidomain MDM are applications on the same MDM base. Customer 360 arrives with its own forms already: Person, Organization, Policy, Claim, and others. Those are in use at this company.
+**Business entity** is the blank form. Patient, Provider, and Location are three forms because a doctor and a hospital are not patients. If you had put hospital name on the Patient form, a search for a person would also return buildings.
 
-Your Patient form is not on that list. You could have clicked **Add Business Entity** and attached Patient to Customer 360. The moment you saved, Patient would show up on the live **New** and **Search** menus, and a test row would be stored in the customer master the company already uses. You did not do that. That was the right stop.
+Each field has two names. The **display name** is what a person reads, such as Birth Date. The **internal ID** is what jobs store, such as `birth_date`. You saw the canvas say **Invalid** when a display name was empty. That is a form error, not an agent error. Fill the name. Do not restart anything.
 
-**Multidomain MDM** is the application meant for a domain the prebuilt apps do not cover, such as a patient who is not a Customer 360 person. It is grey and locked here. The license cannot be added from Administrator. Sessions 9 through 12 stay closed. Do not practice them inside Customer 360.
+**Required** means the nurse cannot save a patient with that box empty. **Searchable** means "include this box in the search index." Turning it on starts a reindex job in the background. A green bar about reindex is normal. Cancelling it is why the next search finds nobody.
 
-### Three different ids, because tickets mix them up
+**Pages** (Patient Create, Patient View) are the paper layout of that form. **Search layout** is the columns in the result table. They sit in the drawer until an application lists Patient and a role is allowed to open them.
 
-| Name | Example | Who made it | What happens if you load the same person again |
+### Why the door matters more than the form
+
+Customer 360, Supplier 360, Product 360, and Multidomain MDM are applications. They sit on the same MDM base. Customer 360 already has Person, Organization, Policy, and Claim, and people at this company use those. Attaching Patient to that list would put Patient on the live New menu. A test Ava would be stored next to real customer masters. You did not attach it. That was correct.
+
+Multidomain MDM is the door for a noun the prebuilt apps do not cover. It is grey and locked. Administrator cannot assign a product the org has not bought. Do not click Enable. Do not click Start trial.
+
+When a user says "I cannot see Patient," the admin checks, in this order:
+
+1. Are they in Business 360 Console, looking at the model, or in an application, looking for a New button? The model will show Patient. The application will not.
+2. Is Multidomain MDM grey for every admin? Then it is a license. Stop. Do not rebuild the entity.
+3. If the application exists and is orange, is Patient added on its Model tab, and is the user's role on the Create page and the Search layout? A missing role looks exactly like a missing patient.
+
+### Three ids, because the ticket will use the wrong one
+
+Take Ava's North row only.
+
+| What people say | The actual value | Who owns it | Second load of the same North row |
 |---|---|---|---|
-| `mrn` | a hospital medical-record number you put on the form | the hospital, stored as an ordinary field | Nothing special. It is just a value. A second load can create a second master that happens to show the same mrn. |
-| Source primary key | `N1001` inside Epic North | Epic | If you mapped this column to the source primary key, the second load **updates** the same source record. If you mapped it to an ordinary field, the second load **inserts** another master. This is the usual "we loaded it twice" ticket. |
-| Business id | a long id Informatica generates | MDM | You never type it. It identifies the master. It is not the mrn. |
+| MRN | `MRN1001` | The hospital. You stored it as an ordinary field. | Nothing special. A second load can create a second master that also says `MRN1001`. |
+| Source primary key | `N1001` | Epic North's own key for this row. | If the load mapped `N1001` to the source primary key, MDM **updates** the same source record. If it mapped `N1001` to a normal field, MDM **inserts** a new master. |
+| Business id | a long id you never type | Informatica, after the row exists | This is the master's id. It is not the MRN and not `N1001`. |
 
-`N1001` and `S2001` are allowed to be different. They are keys inside two different source systems. Match is what ties them to one business id. The cross-reference is that tie: "business id X came from Epic North key `N1001` and from Epic South key `S2001`."
+South's key is `S2001`, not `N1001`. That is not a bug. Two source systems are allowed to number the same human differently. Match is the step that says both keys belong to one business id. The **cross-reference** is the sentence MDM stores: "this business id came from Epic North `N1001` and from Epic South `S2001`."
 
-### Load, also called ingress
+The most common load ticket is "we ran it twice and now there are two Avas from North." Ask the developer one question: on the second run, was `source_pk` mapped to the source primary key, and was the value still `N1001`? If they generated `N1001-new` or mapped the column to `mrn`, MDM did what it was told. It created another person. Do not merge those two by hand until you know which key is the practice row.
 
-Ingress means "into MDM."
+### Load, walked with the real rows
 
-The small version is a file import. You upload the clean North CSV, pick the source system `EPIC_NORTH`, map `N1001` to the source primary key, map the name and birth date to the Patient fields, and run. Search then finds Ava from North. Ava from South is not there yet. You repeat the import with the South file and source system `EPIC_SOUTH`.
+Load is also called **ingress**. It means "into MDM." It does not mean "figure out they are the same person."
 
-The production version is a Data Integration mapping that uses the Business 360 connection. An Application Integration process often starts that job and passes a `jobInstanceId`. If the mapping refuses to run without that id, do not invent one. The process is supposed to create it. Inventing an id is how a practice load becomes an untraceable job.
+Imagine the North file arrives with four rows: Ava, Noah, Mia, and Bad Date. The Data Integration job should already have sent Bad Date to the error file. MDM should receive three people.
 
-A bad date must already have been removed by the CDI job. MDM should not be the first place that discovers `NOT_A_DATE`.
+After a correct North load, search shows three masters:
 
-### Match
+| What a user sees | Why |
+|---|---|
+| Ava Shah, from `EPIC_NORTH` / `N1001` | One source row became one master, because nobody has matched yet. |
+| Noah Patel, from `N1002` | Same. |
+| Mia Chen, from `N1003` | She exists only in North. She will never match. That is correct. |
 
-A **match rule** says which fields must agree. For this story: birth date is equal, and the name is similar enough that `Ava` and `Ava S` propose a pair. Mia does not pair with anyone. That is the result you want.
+Then the South file is loaded with source system `EPIC_SOUTH`. Search now shows more masters, not fewer:
 
-A **match population** is the comparison method. Person-name logic is different from company-name logic. Using the company population on patients misses obvious pairs or pairs strangers.
+| New master | Key | Why she is not folded into the North person yet |
+|---|---|---|
+| Ava S Shah | `S2001` | Load does not compare names. |
+| Noah Patel | `S2002` | A second Noah. Match has not run. |
+| Leo Nguyen | `S2003` | South only. No pair. |
 
-A **match job** does the comparison. It does not always merge. A rule can be "auto-merge when the score is very high" or "put the pair in a queue for a person." That person is a **steward**. The queue is how a hospital avoids merging two different babies who share a birthday and a similar name.
+A ticket opened at this moment that says "MDM duplicated Ava" is early. The load succeeded. Match has not been asked to run. Restarting the agent does not merge them.
 
-### Merge
+The small ingress is a person uploading the CSV in the MDM screen and mapping columns. The production ingress is a Data Integration mapping that uses a Business 360 connection. An Application Integration process often starts that mapping and passes a `jobInstanceId`. If the task demands that id and you are clicking Run yourself, do not type one. A made-up id is a job nobody can trace. Leave Process Server on Restart Required until a real process needs it. Mappings do not use Process Server.
 
-Merge collapses the pair into one master. It does not delete the source rows. North's `N1001` and South's `S2001` both remain as cross-references. The visits remain. This is why a real project can turn 6.5 million source rows into 3.2 million masters. The extra 3.3 million were duplicates. The history did not disappear.
+### Match, which is the first time the product agrees with the human
 
-If a third Ava appears after a merge, someone loaded the same Epic row again with a new source primary key. Do not merge at random to "clean up." Note the key. A wrong merge of two real people is harder to undo than a duplicate.
+A **match rule** is a sentence the developer writes. For this story the sentence is: birth date is the same, and the name is close.
 
-### Survivorship
+Compare the pairs yourself.
 
-After the merge, Noah has two phones. The master can hold only one "current phone" if that is how the form was built. **Survivorship** is the rule that picks the winner.
+| Left | Right | Birth date | Name | Should match? |
+|---|---|---|---|---|
+| Ava Shah `N1001` | Ava S Shah `S2001` | both `1984-03-12` | Ava versus Ava S | Yes. Propose a pair. |
+| Noah Patel `N1002` | Noah Patel `S2002` | both `1979-11-02` | exact | Yes. |
+| Mia Chen | anyone in South | no | no | No. Leave her alone. |
+| Leo Nguyen | anyone in North | no | no | No. |
 
-A source ranking that puts Epic North above Epic South makes the golden phone `201-555-0102`. The South phone `9735550199` stays on the South source record. A user who opens the master sees the winner. A user who opens the source records still sees both.
+A **match population** is the method used to compare the text. Person names and company names are not compared the same way. "Ava S" against "Ava" needs person-name logic. Company logic can miss that pair, or it can pair two different companies that share a short word. If a ticket says "obvious duplicates are not pairing," ask which population the rule uses before anyone loosens the rule. Loosening a rule is how two different babies with the same birthday get merged.
 
-A ticket that says "MDM has the old phone" is usually this rank, or a later load that was allowed to overwrite the winner. It is rarely a failed agent. Read the rank before you reload the file. Reloading with a new key makes a third Noah.
+A **match job** runs the comparison. It does not always merge. The rule can say "if the score is very high, merge" or "put the pair in a queue." The person who works the queue is a **steward**. The queue exists so a human can refuse a bad pair. An admin does not clear that queue by deleting masters.
 
-### Search
+### Merge, which keeps the history
 
-Search does not read the database row by row in front of you. It reads an index of the fields you marked **Searchable**. If you search before the reindex job finishes, you get no rows even though the patient exists. If you search inside Customer 360 for a Patient that was never added to Customer 360, you also get no rows. Both look like "the load failed." Check the import job, then the index, then that you opened the application that actually lists this entity.
+Merge turns the pair into one master. It does not delete Monday's row or Friday's row.
 
-### Hierarchy is not match, and it is not a relationship
+After Ava's merge, a user who opens the master sees one person. Underneath, MDM still holds:
 
-A **hierarchy** is a tree of "belongs to." Meridian Health sits at the top. Hospital North and Hospital South sit underneath. You use this when the question is "which hospitals are in this system?" You do not match Hospital North to Hospital South. They are not the same place.
+```text
+business id   (generated, you never type it)
+name          Ava Shah
+cross-ref     EPIC_NORTH  N1001
+cross-ref     EPIC_SOUTH  S2001
+```
 
-A **relationship** links two masters of different kinds. Ava is a patient of Dr Kim Alvarez. Both already exist as masters. The relationship is the link. It is not a column you typed on the Patient form, and it is not a CDI lookup.
+Both visits can now be listed on that one person. That is the original question, answered. The real hospital's 6.5 million rows became 3.2 million masters for the same reason: the extra rows were duplicates, and the history stayed as cross-references.
 
-A **lookup** in Data Integration is only a dictionary used while a file job runs. `NJ` becomes `New Jersey`, and the result is written to a file. Nothing about that lookup is a golden record.
+Mia stays one master with one cross-reference. Leo stays one master with one cross-reference. They are not failures.
 
-### Egress
+If a third Ava appears after this, someone loaded North or South again and the source primary key was new. Stop. Do not merge at random to tidy the screen. A wrong merge of two real people is harder to undo than a duplicate. Write down the new key and ask.
 
-Egress means "out of MDM." After one Ava exists, a job reads masters and writes `patients_golden.csv`. That file should contain one Ava, not two, and Noah's winning phone. Another system can load that file without knowing anything about Epic.
+### Survivorship, which is Noah's phone and not Ava's name
 
-If the egress mapping demands a `jobInstanceId` and you are not running it from the MDM job, stop. Do not type a random id. Use the file-export path the product allows for a one-off read, or let the process start the job.
+Ava's two phones are the same number written two ways, `(201) 555-0101` and `2015550101`. A cleanse step should have made those identical before load. Noah is the interesting case, because the numbers really differ.
+
+```text
+North N1002   201-555-0102
+South S2002   9735550199
+```
+
+The master has one Current Phone box. It cannot show both and still be one box. **Survivorship** is the rule that picks the winner. A source rank that says Epic North beats Epic South writes `201-555-0102` on the master. `9735550199` is not deleted. It remains on the South source record. Open the master and you see the winner. Open the source records and you see both.
+
+Other rules exist. "Prefer the most recently updated value" is one. "Prefer a value that is not blank" is another. The admin's job on a "wrong phone" ticket is to ask which rule is published, not to reload the file. Reloading with a new source key creates a third Noah. A developer changes the rank. An admin confirms the match-and-merge job that applies the rank actually finished, and that a later load was not allowed to overwrite the winner.
+
+### Search, which lies when the index is behind
+
+The search box does not walk every patient at the moment you type. It reads an index of fields marked Searchable. Three empty searches have three different causes.
+
+| What you see | What it usually is | What you do not do |
+|---|---|---|
+| Import job says 3 success, search says 0, a reindex bar is still running | The index is late. The rows exist. | Do not import again. |
+| Import succeeded yesterday, search in Customer 360 says 0 | You are in the wrong door. Patient was never added to Customer 360. | Do not add Patient to Customer 360 to prove the row. |
+| Import job says 0 success | The file, the column mapping, or the source system on the job is wrong. | Do not restart the agent until the session log names the agent. |
+
+### Hierarchy, relationship, and lookup are three different "links"
+
+Use one sentence each, with the people you already know.
+
+**Hierarchy** answers "belongs to." Hackensack Meridian is the parent. Hospital North and Hospital South are the children. You do not match the two hospitals. They are not the same building. A ticket about "the org chart of hospitals" is a hierarchy, not a match rule.
+
+**Relationship** answers "is connected to," across two forms. Ava is a patient of Dr Kim Alvarez. Both are already masters. The relationship is the line between them. It is not a column you type on Ava's form, and it is not a parent-child tree.
+
+**Lookup**, in Data Integration, answers a file job's dictionary question. `NJ` becomes `New Jersey` while the CSV is being written. Nothing about that lookup is stored as a golden person. If a developer says "we looked up the patient in MDM" they mean a different transformation, one that calls MDM. The state-file lookup you built does not.
+
+### Egress, the file that leaves
+
+After one Ava exists, some other system still wants a file. **Egress** is "out of MDM." The file `patients_golden.csv` should contain one Ava, not two, and Noah's winning phone `201-555-0102`. The other system never learns about Epic.
+
+If that mapping asks for a `jobInstanceId` and you are not starting it from the MDM job, stop. Do not invent the id. The process creates it so the run can be found later.
+
+### What you check, and what you hand to a developer
+
+Keep this list. It is the admin's half of MDM support.
+
+| The user says | You check | You hand to a developer when |
+|---|---|---|
+| I cannot open the MDM tile | My Services. Grey lock for every admin means license. | The tile is orange for you and locked for one user. That is a role or an assigned service. |
+| I cannot create a Patient | Which application they opened. Patient is in `Test_Pract` only. | The right application is open and the Create page is not assigned to their role. |
+| The load job failed before any row | The ingress job's session log, then the Business 360 connection test, then Data Integration Server. | The log names a column, a source primary key, or a validation error on the entity. |
+| We have two Avas | Has match been run? Are both keys from North, or one North and one South? | One North and one South, and match did not propose them. That is the rule or the population. Two North keys means the source primary key mapping. |
+| The phone on the golden record is wrong | Which source rank is published, and whether a later load overwrote it. | The rank itself is wrong. Do not reload. |
+| Search is empty | Reindex still running, wrong application, or the import success count is 0. | The field is not marked Searchable, or the search layout does not include it. |
+
+You do not fix a match rule by restarting the Secure Agent. You do not fix a stopped Data Integration Server by editing the match rule. That split is the development knowledge an administrator uses.
 
 ## 8. Reference 360, and why you closed it
 
