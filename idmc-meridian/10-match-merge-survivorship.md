@@ -4,6 +4,8 @@
 
 ## The idea in one minute
 
+The plain-English explanation is section 7 of [15-concepts-admin-developer.md](15-concepts-admin-developer.md). Read that. This file stays closed because match cannot be turned on here.
+
 **Match** answers "are these the same real-world person?" **Merge** collapses the matched records into **one master** and keeps every source row underneath as a cross-reference. **Survivorship** answers "when the two source rows disagree, which value do we keep?"
 
 The real program went from 6.5 million rows to 3.2 million masters. Your version:

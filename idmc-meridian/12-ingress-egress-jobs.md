@@ -4,6 +4,8 @@
 
 ## The idea in one minute
 
+The plain-English explanation of ingress, cleanse, and egress is section 7 of [15-concepts-admin-developer.md](15-concepts-admin-developer.md). Read that. This file stays closed.
+
 Session 9 was a **manual** ingress (file import clicked by you). A production hospital cannot do that every night. The night path is:
 
 ```text
