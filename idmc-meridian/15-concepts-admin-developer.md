@@ -187,9 +187,9 @@ You created three source systems in `Test_Pract`: `EPIC_NORTH`, `EPIC_SOUTH`, an
 
 They do not hold the CSV data. They are not folders. They are not tables. Ava's name is not stored inside them. Opening a source system and expecting to see rows will show you nothing, and that is correct.
 
-A source system is only a name. It is a stamp. It tells MDM which system typed this person.
+A source system is only a name. It is a stamp, meaning a label, not a container. It tells MDM which system typed this person.
 
-The CSV file sits on the Secure Agent, or in cloud storage, or on the laptop only when a screen asks you to upload a file. A job reads that file. The job writes the rows into the Patient model. On every row, it stamps the source system name. The people live in the Patient records. The stamp only answers "who sent this row?"
+The CSV file sits on the Secure Agent, or in cloud storage, or on the laptop only when a screen asks you to upload a file. A job reads that file. The job writes the rows into the Patient model. On every row, it writes the source system name into one box on that Patient row. The people live in the Patient records. The label only answers "who sent this row?"
 
 `CRED` is the stamp for the doctor file. Doctors are not patients, and they did not come from Epic. Creating the stamp does not read a file and does not log into Epic.
 
@@ -197,9 +197,37 @@ The CSV file sits on the Secure Agent, or in cloud storage, or on the laptop onl
 
 North hospital gives Ava the key `N1001`. South hospital gives her the key `S2001`. This is not a typing mistake. Two hospitals are allowed to number the same woman differently.
 
-Because each row carries a source system, MDM can remember: `N1001` belongs to Epic North, and `S2001` belongs to Epic South. After the two rows are joined into one person, both keys remain. A North clerk can search with `N1001`. A South clerk can search with `S2001`. Both find the same Ava.
+A stamp is not a place that holds Ava. A stamp is one extra label written on her Patient row. The source system screen only stores that label's name. It never stores her.
 
-You create a source system once. You do not type patients into it every day. When a job runs, it uses that name as the stamp.
+After a North job, the Patient row looks like this. This is the only place Ava lives:
+
+```text
+first name       Ava
+last name        Shah
+birth date       1984-03-12
+source system    EPIC_NORTH
+source key       N1001
+```
+
+`Ava` is in the Patient row. `EPIC_NORTH` is only the label in one box on that same row. Open the source system named `EPIC_NORTH` and you still see no patients. That screen is a list of label names: `EPIC_NORTH`, `EPIC_SOUTH`, `CRED`. Nothing else.
+
+You create each label once. You never open `EPIC_NORTH` and type Ava into it. Not once, and not every day. A job writes Ava into the Patient form. While it writes her, it also copies the words `EPIC_NORTH` into the source-system box on her row. That copy is the stamp. The job is not loading patients into the source system.
+
+South is a second Patient row, with a different label:
+
+```text
+first name       Ava S
+last name        Shah
+birth date       1984-03-12
+source system    EPIC_SOUTH
+source key       S2001
+```
+
+Two Patient rows. Two stamps. Still zero patients inside the source system screens.
+
+Because each row carries its own label, MDM can remember: `N1001` belongs to Epic North, and `S2001` belongs to Epic South. After the two rows are joined into one person, both keys remain. A North clerk can search with `N1001`. A South clerk can search with `S2001`. Both find the same Ava.
+
+Think of a parcel. The letter inside is Ava. The rubber stamp on the outside says `FROM EPIC_NORTH`. The stamp office keeps a list of stamps it is allowed to use. It does not keep the letters.
 
 ### The model is an empty form
 
@@ -211,7 +239,20 @@ You design this form once, in the UI, in Business 360 Console. You do not open t
 
 Thousands of patients come through jobs. An ingress job, or a mapping job, reads the CSV and writes the rows in this shape.
 
-Each field has two names. The **display name** is what a person reads, such as Birth Date. The **internal id** is what a job stores, such as `birth_date`. If the canvas says **Invalid** because a display name is empty, that is a form error. Fill the name. Do not restart the agent.
+Each field on the form is one box, but that box has two names. A person and a job do not read the box the same way.
+
+The **display name** is the words a clerk reads on the screen, such as `Birth Date`. You can later change those words to `Date of birth`. The job does not break, because the job never reads those words.
+
+The **internal id** is the computer name of the same box, such as `birth_date`. The CSV column and the mapping point at `birth_date`. They do not point at the words `Birth Date`. You choose this id once, when you add the field. Do not rename it later. A job that still says `birth_date` would miss the box.
+
+| Who is looking | Which name they use | Example |
+|---|---|---|
+| A clerk, reading the form | Display name | Birth Date |
+| A job, a script, or a mapping | Internal id | `birth_date` |
+
+The CSV might have a column called `dob`. In the mapping you say: put `dob` into `birth_date`. On the screen the clerk still sees **Birth Date**. Three words, one box.
+
+If the canvas says **Invalid** because the display name is empty, the human label is missing. Type `Birth Date` in that box and save. The data was not lost. The agent is not down. Do not restart it.
 
 **Required** means a person cannot save a patient with that box empty. **Searchable** means "put this box in the search index." Turning it on starts a reindex in the background. A bar that says reindex is running is normal. Cancelling it is why the next search finds nobody.
 
