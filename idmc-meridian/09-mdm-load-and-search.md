@@ -6,6 +6,8 @@
 
 ## The idea in one minute
 
+The plain-English explanation is section 7 of [15-concepts-admin-developer.md](15-concepts-admin-developer.md). Read that. This file is only the click list, and it stays closed.
+
 **Ingress** means data going **into** MDM. The smallest ingress is a **file import**: you upload a CSV, map columns, pick a source system, and run a job. No CDI, no Application Integration, no `jobInstanceId`. Those belong to the automated ingress in session 12.
 
 Until match exists, MDM will treat every source row as its own master. You **want** that today. If you loaded North and South now, you would see two Avas. That is the "before" picture. This sitting loads **North only** (3 good people — do not load `Bad Date`).

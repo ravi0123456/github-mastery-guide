@@ -4,6 +4,8 @@
 
 ## The idea in one minute
 
+The plain-English explanation of hierarchy, relationship, and lookup is section 7 of [15-concepts-admin-developer.md](15-concepts-admin-developer.md). Read that. This file stays closed.
+
 A master patient is still not the episode of care. The episode needs **places** and **people**.
 
 A **hierarchy** is a tree of the same kind of thing. Locations: a health system contains hospitals. Parent `HMH-SYS`, children `HMH-HACK` and `HMH-JERSEY`. You do not model this by stuffing `parent_code` only into a text field and hoping. The text field is how the file **says** the parent. The hierarchy is how MDM **stores** the tree so a search for the system can show both hospitals.
