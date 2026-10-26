@@ -181,78 +181,147 @@ Read this section instead of the video. It is the same lesson, in simple English
 
 You have not loaded the CSV into MDM. Multidomain MDM is locked, so do not click load, match, or merge. Read this so that, when a ticket arrives, you know which screen is actually broken.
 
-### A source system does not hold the CSV
+### What a source system actually contains
 
-You created three source systems in `Test_Pract`: `EPIC_NORTH`, `EPIC_SOUTH`, and `CRED`.
-
-They do not hold the CSV data. They are not folders. They are not tables. Ava's name is not stored inside them. Opening a source system and expecting to see rows will show you nothing, and that is correct.
-
-A source system is only a name. It is a stamp, meaning a label, not a container. It tells MDM which system typed this person.
-
-The CSV file sits on the Secure Agent, or in cloud storage, or on the laptop only when a screen asks you to upload a file. A job reads that file. The job writes the rows into the Patient model. On every row, it writes the source system name into one box on that Patient row. The people live in the Patient records. The label only answers "who sent this row?"
-
-`CRED` is the stamp for the doctor file. Doctors are not patients, and they did not come from Epic. Creating the stamp does not read a file and does not log into Epic.
-
-### Why the stamp is needed
-
-North hospital gives Ava the key `N1001`. South hospital gives her the key `S2001`. This is not a typing mistake. Two hospitals are allowed to number the same woman differently.
-
-A stamp is not a place that holds Ava. A stamp is one extra label written on her Patient row. The source system screen only stores that label's name. It never stores her.
-
-After a North job, the Patient row looks like this. This is the only place Ava lives:
+You already created three source systems. Open one of them. This is the whole thing you saved. There is no second page and no hidden table.
 
 ```text
-first name       Ava
-last name        Shah
-birth date       1984-03-12
+name           EPIC_NORTH
+description    blank
+```
+
+The other two are the same kind of card:
+
+```text
+name           EPIC_SOUTH
+name           CRED
+```
+
+Count what is on the card. One name. No first name, no phone, no birth date, no MRN, and no CSV row. Ava is not inside `EPIC_NORTH`. She was never stored there. If the screen looks empty apart from the name, that is correct.
+
+These three cards are only an allowed list of hospital names. Like a dropdown that offers three choices. A dropdown of hospital names does not contain the patients.
+
+The CSV from the earlier file jobs is still a file. It belongs to the Data Integration practice. It was not copied into these cards. You are not going to run an MDM load on this org, because Multidomain MDM is locked. Do not try to force one. The picture below is what you study, not what you click.
+
+### What you have now, before any MDM load
+
+This is your screen today.
+
+| What you open | What is inside it |
+|---|---|
+| Source system `EPIC_NORTH` | the name `EPIC_NORTH` only |
+| Source system `EPIC_SOUTH` | the name `EPIC_SOUTH` only |
+| Source system `CRED` | the name `CRED` only |
+| Patient form | empty boxes only: `first_name`, `last_name`, `birth_date`, `gender`, `phone`, `address`, `city`, `state`, `postal_code`, `mrn`. Zero people. |
+| Search for Shah | nobody. That is correct. |
+
+The North file, which is **not** inside MDM, looks like this. It stays a file.
+
+```text
+source_pk   first_name   last_name   birth_date    phone
+N1001       Ava          Shah        1984-03-12    201-555-0101
+N1002       Noah         Patel       1979-11-02    201-555-0102
+N1003       Mia          Chen        1991-07-19    2015550103
+```
+
+A bad row with birth date `NOT_A_DATE` must never be in this file when it reaches MDM. That row was already rejected by the file job.
+
+### What a load would add, and what it would not touch
+
+You will not run this load. Read it so a future ticket makes sense.
+
+After a North load, the three source-system cards are **unchanged**. Open `EPIC_NORTH` and it is still only the name. Ava is still not inside it.
+
+The new rows appear under **Patient**, not under the source system:
+
+```text
+first_name       Ava
+last_name        Shah
+birth_date       1984-03-12
+phone            201-555-0101
+mrn              MRN1001
 source system    EPIC_NORTH
 source key       N1001
 ```
 
-`Ava` is in the Patient row. `EPIC_NORTH` is only the label in one box on that same row. Open the source system named `EPIC_NORTH` and you still see no patients. That screen is a list of label names: `EPIC_NORTH`, `EPIC_SOUTH`, `CRED`. Nothing else.
+Noah and Mia would be two more Patient rows, also labelled `EPIC_NORTH`, with keys `N1002` and `N1003`. Search would show 3 people. The source-system list would still show 3 names.
 
-You create each label once. You never open `EPIC_NORTH` and type Ava into it. Not once, and not every day. A job writes Ava into the Patient form. While it writes her, it also copies the words `EPIC_NORTH` into the source-system box on her row. That copy is the stamp. The job is not loading patients into the source system.
+The words `EPIC_NORTH` then exist in two places. They are not the same object.
 
-South is a second Patient row, with a different label:
+| Place | What `EPIC_NORTH` is there | Does Ava live here? |
+|---|---|---|
+| The source-system card you created | the allowed name itself | No. Never. |
+| One box on Ava's Patient row | a copy of that name, so you can see who sent her | Yes. This row is Ava. |
+
+A South load would add three more Patient rows. It would not add rows into the source-system card.
 
 ```text
-first name       Ava S
-last name        Shah
-birth date       1984-03-12
+first_name       Ava S
+last_name        Shah
+birth_date       1984-03-12
+phone            201-555-0101
 source system    EPIC_SOUTH
 source key       S2001
 ```
 
-Two Patient rows. Two stamps. Still zero patients inside the source system screens.
+Search would show 6 people. Still only 3 name cards if you open Source Systems. Six is correct, because load does not merge.
 
-Because each row carries its own label, MDM can remember: `N1001` belongs to Epic North, and `S2001` belongs to Epic South. After the two rows are joined into one person, both keys remain. A North clerk can search with `N1001`. A South clerk can search with `S2001`. Both find the same Ava.
+`CRED` is the name card for a doctor file, not for Ava. A doctor would be a Provider row with source system `CRED`. You have not loaded doctors. The `CRED` card is still only the name `CRED`.
 
-Think of a parcel. The letter inside is Ava. The rubber stamp on the outside says `FROM EPIC_NORTH`. The stamp office keeps a list of stamps it is allowed to use. It does not keep the letters.
+North can call her `N1001` and South can call her `S2001`. The copied name on the Patient row is how MDM tells those keys apart. A later North file that uses `N1001` again updates Ava's North row. It does not update the South row, and it does not type her into the source-system card.
 
-### The model is an empty form
+### One field, two names, one value
 
-The product name for the form is **business entity**. The one you created is Patient. Provider and Location are two other forms, because a doctor and a hospital are not patients.
+This is not two pieces of data. Ava does not get two birth dates because the field has two names.
 
-A model is the empty form: name, birth date, phone, MRN. Ava is not in it yet. Only the shape is there. An empty form stores no patient, no matter how many fields you added.
+When you added the date field, Properties showed two boxes. The steps told you to type the same word in both, so on your screen they look identical:
 
-You design this form once, in the UI, in Business 360 Console. You do not open the form again and again to type every patient.
+```text
+Display Name     birth_date
+Internal ID      birth_date
+```
 
-Thousands of patients come through jobs. An ingress job, or a mapping job, reads the CSV and writes the rows in this shape.
+Same word. Two different settings. One box.
 
-Each field on the form is one box, but that box has two names. A person and a job do not read the box the same way.
+- **Display Name** is the label a person reads above the box.
+- **Internal ID** is the code a job uses to find that box.
+- The **value** is what would be written inside the box later, such as `1984-03-12`. Today the value is empty, because no patient was loaded.
 
-The **display name** is the words a clerk reads on the screen, such as `Birth Date`. You can later change those words to `Date of birth`. The job does not break, because the job never reads those words.
+You were allowed to type `Birth Date` in Display Name and `birth_date` in Internal ID. A clerk would then read "Birth Date", and a job would still look for `birth_date`. You typed `birth_date` in both, so the label and the code happen to be the same word. That did not create a second field.
 
-The **internal id** is the computer name of the same box, such as `birth_date`. The CSV column and the mapping point at `birth_date`. They do not point at the words `Birth Date`. You choose this id once, when you add the field. Do not rename it later. A job that still says `birth_date` would miss the box.
+One packet of sugar:
 
-| Who is looking | Which name they use | Example |
-|---|---|---|
-| A clerk, reading the form | Display name | Birth Date |
-| A job, a script, or a mapping | Internal id | `birth_date` |
+```text
+Words on the shelf card          Sugar
+Barcode the machine scans        SUG01
+What is inside the packet        1 kg of sugar
+```
 
-The CSV might have a column called `dob`. In the mapping you say: put `dob` into `birth_date`. On the screen the clerk still sees **Birth Date**. Three words, one box.
+The shelf card and the barcode are two names for one packet. The sugar is the data. Changing the shelf card to "Sugar 1kg" does not create a second packet. If you change the barcode, the billing machine cannot find the packet.
 
-If the canvas says **Invalid** because the display name is empty, the human label is missing. Type `Birth Date` in that box and save. The data was not lost. The agent is not down. Do not restart it.
+Same three lines for this field:
+
+```text
+Display Name, the shelf card     birth_date
+                                 You may later change only this label to Birth Date.
+Internal ID, the barcode         birth_date
+                                 Do not change this after a job exists.
+Value inside the box             empty today
+                                 After a North load it would be 1984-03-12.
+                                 One value. Not two.
+```
+
+Every other Patient box works the same way. `phone` as the label, `phone` as the code, and later one number such as `201-555-0101` as the value.
+
+If the canvas says **Invalid** and Properties says **Enter a value**, the Display Name box is empty. The label is missing. Type `birth_date` or `Birth Date` into Display Name and save. No patient was lost, because no patient is in the form yet. The agent is not down. Do not restart it.
+
+A later ticket that says "birth date did not load" is a different problem. The job must send the CSV column into the internal id `birth_date`. If the job sends it to some other code, the date is dropped and the label on the screen still looks fine. Changing the display name from `birth_date` to `Birth Date` does not fix that. The job never reads the display name.
+
+### The model is the empty form those values would fill
+
+The product name for the form is **business entity**. Yours is Patient. Provider and Location are two other empty forms, because a doctor and a hospital are not patients.
+
+Today the form has the boxes and no values. You draw the boxes once in Business 360 Console. You do not open the form again to type every patient. A job would fill the values. You are not running that job here.
 
 **Required** means a person cannot save a patient with that box empty. **Searchable** means "put this box in the search index." Turning it on starts a reindex in the background. A bar that says reindex is running is normal. Cancelling it is why the next search finds nobody.
 

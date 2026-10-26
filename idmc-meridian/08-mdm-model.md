@@ -6,7 +6,9 @@
 
 CDI moves rows. **MDM SaaS** decides which of those rows are the same real person, and which value to trust when the hospitals disagree.
 
-A **source system** (`EPIC_NORTH`, `EPIC_SOUTH`, `CRED`) is only a stamp. It does not hold the CSV. It is not a folder and not a table. The file stays on the Secure Agent, or you upload it later in a load screen. A job reads the file and writes the rows into the model. The stamp on each row answers "which system typed this?"
+A **source system** (`EPIC_NORTH`, `EPIC_SOUTH`, `CRED`) is a name card. Open it and the only thing stored is that name. It does not hold Ava, the CSV, or any patient column. Section 7 of [15-concepts-admin-developer.md](15-concepts-admin-developer.md) shows the card you have now, and the Patient row a load would create later. Do not run that load.
+
+A **field** has two settings and one value. Display Name is the label. Internal ID is the code a job looks up. On your Patient form both say `birth_date` because you typed the same word in both boxes. The value, such as `1984-03-12`, is a third thing, and it is empty until a load. Two names does not mean two birth dates.
 
 A **business entity** is the empty form: Patient, Provider, Location. You design that form once in Business 360 Console. You do not type every patient into the UI. A **record** is one patient, and it appears only after a load job, or after someone creates one row by hand. A **source primary key** (`source_pk`, such as `N1001`) is that system's own id. Two different keys can still be the same person. That decision is match, and you will **not** turn match on in this sitting.
 
