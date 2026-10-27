@@ -281,41 +281,81 @@ Display Name     birth_date
 Internal ID      birth_date
 ```
 
-Same word. Two different settings. One box.
+Same word. Two different settings. One box. The titles of the boxes are what matter, not the fact that you typed `birth_date` in both.
 
-- **Display Name** is the label a person reads above the box.
-- **Internal ID** is the code a job uses to find that box.
-- The **value** is what would be written inside the box later, such as `1984-03-12`. Today the value is empty, because no patient was loaded.
+Use a phone contact, not a shop.
 
-You were allowed to type `Birth Date` in Display Name and `birth_date` in Internal ID. A clerk would then read "Birth Date", and a job would still look for `birth_date`. You typed `birth_date` in both, so the label and the code happen to be the same word. That did not create a second field.
-
-One packet of sugar:
+You save a doctor on your phone:
 
 ```text
-Words on the shelf card          Sugar
-Barcode the machine scans        SUG01
-What is inside the packet        1 kg of sugar
+Name on the screen     Dr Kim
+Number the phone dials 201-555-0140
 ```
 
-The shelf card and the barcode are two names for one packet. The sugar is the data. Changing the shelf card to "Sugar 1kg" does not create a second packet. If you change the barcode, the billing machine cannot find the packet.
+You can rename the contact to `Dr Kim Alvarez`. The next call still goes to `201-555-0140`, because the phone dials the number. It does not dial the name.
 
-Same three lines for this field:
+If someone edits the number and leaves the name as `Dr Kim`, you call the wrong person. The screen still looks right.
+
+| On the phone | On the Patient field | What it is |
+|---|---|---|
+| Name on the screen, `Dr Kim` | Display Name, `birth_date` | Words a person reads. Safe to change. |
+| Number, `201-555-0140` | Internal ID, `birth_date` | Code the machine uses. Do not change it after a job exists. |
+| The call itself | The date `1984-03-12` | The value. One value. You have none yet. |
+
+Your two boxes both say `birth_date` for the same reason a contact could be saved with the name `201-555-0140`. The name and the number would look alike, but the phone would still dial the number and show the name. Two settings. One contact.
+
+### What you already clicked
+
+1. You dropped a Date box on the Patient canvas. Display Name was empty.
+2. The header turned **Invalid**. Properties said **Enter a value.**
+3. That sentence means "this box has no label." It does not mean the agent stopped. It does not mean a birth date was deleted. No patient is in the form.
+4. You typed `birth_date` in Display Name. The red mark went away.
+5. Internal ID became `birth_date` too, because you typed it or the screen copied the label.
+6. You clicked **Save**. The header said **Valid**.
+
+If you see **Invalid** and **Enter a value** again, click the box with the empty Display Name, type `birth_date` or `Birth Date`, and save. Do not restart the agent. The agent runs jobs. This message is only a missing label.
+
+### What a person sees, and what a job uses
+
+You are not loading patients. Read this as the screen a ticket will describe.
+
+Today the box is an empty line under a label:
 
 ```text
-Display Name, the shelf card     birth_date
-                                 You may later change only this label to Birth Date.
-Internal ID, the barcode         birth_date
-                                 Do not change this after a job exists.
-Value inside the box             empty today
-                                 After a North load it would be 1984-03-12.
-                                 One value. Not two.
+birth_date
+[ empty ]
 ```
 
-Every other Patient box works the same way. `phone` as the label, `phone` as the code, and later one number such as `201-555-0101` as the value.
+The word above the line is the Display Name. The empty line is the value.
 
-If the canvas says **Invalid** and Properties says **Enter a value**, the Display Name box is empty. The label is missing. Type `birth_date` or `Birth Date` into Display Name and save. No patient was lost, because no patient is in the form yet. The agent is not down. Do not restart it.
+After a North load, that same box would show one date:
 
-A later ticket that says "birth date did not load" is a different problem. The job must send the CSV column into the internal id `birth_date`. If the job sends it to some other code, the date is dropped and the label on the screen still looks fine. Changing the display name from `birth_date` to `Birth Date` does not fix that. The job never reads the display name.
+```text
+birth_date
+[ 1984-03-12 ]
+```
+
+The job does not read the word above the line. In the mapping, a line is drawn from the CSV column `dob` to the code `birth_date`. That code is the Internal ID.
+
+Now change only the label, from `birth_date` to `Birth Date`, and save. The clerk sees:
+
+```text
+Birth Date
+[ 1984-03-12 ]
+```
+
+The mapping still points at `birth_date`. The date still arrives. This change is safe. It is the same as renaming `Dr Kim` to `Dr Kim Alvarez`.
+
+Now the unsafe change. Someone renames the Internal ID from `birth_date` to `date_of_birth` and leaves the label as `Birth Date`. The old mapping still looks for `birth_date`. That code is gone. The job can say Success, and the box stays empty:
+
+```text
+Birth Date
+[ empty ]
+```
+
+The screen looks like a normal form, so this ticket is easy to misread. The label is fine. The code the job dials was changed. Put the Internal ID back to `birth_date`, or point the mapping at the new code. Do not restart the agent. Do not load Ava again under a new key. A new key would create a second Ava, and her date would still be empty.
+
+Every other box is the same. The phone label can say `phone`. The code is also `phone`. The value, after a load, would be one number, `(201) 555-0101`, not two numbers.
 
 ### The model is the empty form those values would fill
 
