@@ -2,7 +2,7 @@
 
 Study the Hackensack Meridian Health story by **doing one session in an IDMC org**, then stopping. Do not read ahead and do not run two sessions in one sitting.
 
-The session files are the buttons. [15-concepts-admin-developer.md](15-concepts-admin-developer.md) is the full explanation, written for someone new to IDMC and to MDM. Read it from the top even if you already clicked the sessions. Section 7 is the MDM lesson in simple English. Read that section instead of any video.
+The session files are the buttons. [15-concepts-admin-developer.md](15-concepts-admin-developer.md) is the full explanation, written for someone new to IDMC and to MDM. Read it from the top even if you already clicked the sessions. Section 7 is the MDM lesson in simple English. [16-customer360-developer-course.md](16-customer360-developer-course.md) is the official Informatica Customer 360 developer course, rewritten for this org. Read that before you touch Customer 360.
 
 You have admin access. Sessions 1–7 stay in the org where you already created them, even if that org has no Business 360. Sessions 8–11 start in the other org, the one whose service list shows **Business 360**. Do not export the CDI project into that org.
 
@@ -30,6 +30,7 @@ https://github.com/ravi0123456/github-mastery-guide/tree/main/idmc-meridian
 | 13 | [13-other-idmc-services.md](13-other-idmc-services.md) | one service only | You practiced **one** extra service, or skipped it on purpose |
 | 14 | [14-do-not-mix-with-work-cicd.md](14-do-not-mix-with-work-cicd.md) | 20 min | You can say what this practice is **not** allowed to touch |
 | 15 | [15-concepts-admin-developer.md](15-concepts-admin-developer.md) | read with each session | You can explain the object in the ticket without opening the designer |
+| 16 | [16-customer360-developer-course.md](16-customer360-developer-course.md) | one look-only sitting | You can say what Business 360, Customer 360, a business entity, a relationship, and a hierarchy are. Person was not edited. Nothing was purged. |
 
 ## Rules
 

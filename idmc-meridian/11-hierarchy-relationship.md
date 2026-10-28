@@ -4,7 +4,9 @@
 
 ## The idea in one minute
 
-The plain-English explanation of hierarchy, relationship, and lookup is section 7 of [15-concepts-admin-developer.md](15-concepts-admin-developer.md). Read that. This file stays closed.
+The plain-English explanation of hierarchy, relationship, and lookup is section 7 of [15-concepts-admin-developer.md](15-concepts-admin-developer.md). The official Customer 360 names are in [16-customer360-developer-course.md](16-customer360-developer-course.md). Read those. This file stays closed. Do not load Location or Provider, and do not create a hierarchy instance in Customer 360.
+
+The course splits the tree into two objects. The **hierarchy model** is the shape, drawn in Business 360 Console: one top entity, and which other entities may hang under it. The **hierarchy instance** is the real tree of records, created later in the front-end app. A **relationship** is the named line those records use, such as Organization Employs Person. Your `parent_code` column only says what the file claims. It is not the hierarchy instance.
 
 A master patient is still not the episode of care. The episode needs **places** and **people**.
 

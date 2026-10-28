@@ -472,13 +472,17 @@ The word **id** is used for three different numbers. Do not mix them.
 
 ### Three kinds of link
 
-These are not duplicates, and they are not the same as each other.
+These are not duplicates, and they are not the same as each other. The official Customer 360 course (October 2025 developer guide) uses four designer assets. [16-customer360-developer-course.md](16-customer360-developer-course.md) is the full map. The short version is here.
 
-**Hierarchy** is a tree. The company is the parent. The region is under the company. The hospital is under the region. Hospital North and Hospital South are not duplicates. They are two buildings. A ticket about "the org chart of hospitals" is a hierarchy, not a match rule.
+**Business entity** is the form. In Customer 360 the product already gives you **Person** and **Organization**. Patient in `Test_Pract` is a custom form you drew. The **data model** is the whole set: those forms, their fields, the reference lists, the relationships, the match rules, and the survivorship ranks. One form is not the whole model.
 
-**Relationship** is a line between two real people who are already masters. Ava is a patient of Dr Kim Alvarez. Do not merge a patient and a doctor. The line is not a column you type on Ava's form, and it is not a parent-child tree.
+**Relationship** is a named line between two forms, or from a form back to itself. Official examples on Organization are Employs, Contact, and Subsidiary. In your story the line is Patient treated by Provider. You design the line in Business 360 Console. A user later attaches two real records to that line in the front-end app. Do not merge the patient and the doctor.
 
-**Lookup** is a small allowed list, such as Female or Active. You do not merge that word. If the file says `F` and the list only has `Female`, the row fails validation. It is not a duplicate person. In Data Integration, the state lookup you already built turns `NJ` into `New Jersey` while the CSV is being written. That lookup does not create a golden person. Do not edit a shared list, such as `AccountStatus`, just to practice. People across the company already use those lists.
+**Hierarchy model** is the tree shape, designed in Business 360 Console. It has one top business entity, other entities under it, and hierarchy relationships that say who can be the parent. Organization on top and Person underneath is the course example. Your hospital tree is the same idea: the health system is the parent, Hackensack and Jersey City are children. Hospital North and Hospital South are not duplicates.
+
+**Hierarchy instance** is one real tree of records, created in the front-end app (Customer 360), not on the designer canvas. The model says "a hospital can sit under a health system." The instance says "Hackensack sits under Meridian Practice Health." You do not create that instance in live Customer 360.
+
+**Reference data** is a small allowed list, such as Female or Active. The course calls this the picklist. You do not merge that word. If the file says `F` and the list only has `Female`, the row fails validation. It is not a duplicate person. In Data Integration, the state lookup you already built turns `NJ` into `New Jersey` while the CSV is being written. That lookup does not create a golden person. Do not edit a shared list, such as `AccountStatus`, just to practice. People across the company already use those lists.
 
 ### Search, cleanse, and data leaving
 
