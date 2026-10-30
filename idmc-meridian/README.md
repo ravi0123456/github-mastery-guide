@@ -31,6 +31,7 @@ https://github.com/ravi0123456/github-mastery-guide/tree/main/idmc-meridian
 | 14 | [14-do-not-mix-with-work-cicd.md](14-do-not-mix-with-work-cicd.md) | 20 min | You can say what this practice is **not** allowed to touch |
 | 15 | [15-concepts-admin-developer.md](15-concepts-admin-developer.md) | read with each session | You can explain the object in the ticket without opening the designer |
 | 16 | [16-customer360-developer-course.md](16-customer360-developer-course.md) | one look-only sitting | You can say what Business 360, Customer 360, a business entity, a relationship, and a hierarchy are. Person was not edited. Nothing was purged. |
+| 17 | [17-safe-practice-in-this-org.md](17-safe-practice-in-this-org.md) | one sitting, `Test_Pract` only | Survivorship, a match model, a relationship, and a hierarchy model exist on Patient or Location. No live entity was saved. File import ran only if the target was Patient. |
 
 ## Rules
 
