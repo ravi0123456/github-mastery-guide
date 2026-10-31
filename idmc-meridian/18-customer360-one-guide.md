@@ -47,13 +47,15 @@ Same workshop. Different shop.
 
 | | Customer 360 | Multidomain MDM |
 |---|---|---|
-| Forms on day one | Person and Organization are already there | None. You draw every form |
-| Match model on day one | Yes, for the predefined forms | No |
-| Pages and search on day one | Yes | No |
-| Reports on day one | Yes | No |
-| Your org | Open. Live data. Do not practice inside it | Locked. Do not enable it |
+| What the product loads once, when an admin first sets the application up | Person and Organization, with their fields, match model, pages, search, and reports | Nothing. You draw every form |
+| What this company added later | Claim, Policy, and Commercial Client. They are live. You did not draw them | Still nothing, because the tile is locked |
+| Your login | You see those five forms every time you open the shop. The product does not create them again | Locked. Do not enable it |
 
-Your Patient, Provider, and Location forms are the Multidomain style of work, done inside the workshop, without opening the locked shop. You can design them. You cannot open a clerk screen for them unless you attach them to live Customer 360. Do not attach them.
+Person and Organization are not drawn by you, and they are not created again each time you open Customer 360. An admin sets the Customer 360 application up **once**. Informatica then loads those two forms into the org. After that, every user who opens the shop sees the same forms.
+
+Your Workflow Inbox list is Claim, Commercial Client, Organization, Person, and Policy. The first, second, and last of those five are not part of the day-one pair. Someone in this company added them to the live Customer 360 application before you started `Test_Pract`. Leave all five alone. Do not open one and click Save.
+
+Your Patient, Provider, and Location forms are the Multidomain style of work, done inside the workshop, without opening the locked shop. You drew those. They are not in the Workflow Inbox list. That is the proof. You can keep designing them in `Test_Pract`. You cannot open a clerk screen for them unless you attach them to live Customer 360. Do not attach them.
 
 ## Who is allowed to do what
 
