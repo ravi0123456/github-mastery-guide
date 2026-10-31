@@ -38,7 +38,7 @@ https://github.com/ravi0123456/github-mastery-guide/tree/main/idmc-meridian
 
 1. One file per sitting. If a job is still running, wait. Do not start the next file.
 2. CDI org project: `MERIDIAN_PRACTICE`. MDM org project: `Test_Pract`. Do not create a second project in the MDM org.
-3. Sessions 1–7 stay in the org where you already created them, even if that org has no Business 360. Sessions 8–11 start in the other org, the one whose service list shows **Business 360**. Never Production. Do not copy the jobs across.
+3. Sessions 1–7: the org that already has the jobs. Sessions 8–11: the org that has **Business 360**. Never Production. Do not copy the jobs across.
 4. Data: only the fake rows in session 00. No real patient, member, or employee data.
 5. Do not tag these assets. Do not edit `flo_dev.yml` or any work YAML.
 6. If Business 360 is missing in the job org, do not write `NOT LICENSED` and skip sessions 8–11. Log into the org that has it and start [08-mdm-model.md](08-mdm-model.md). Skip a session only when **no** org you admin has that service.
