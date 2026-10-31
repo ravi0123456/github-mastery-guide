@@ -2,7 +2,7 @@
 
 Study the Hackensack Meridian Health story by **doing one session in an IDMC org**, then stopping. Do not read ahead and do not run two sessions in one sitting.
 
-The session files are the buttons. [15-concepts-admin-developer.md](15-concepts-admin-developer.md) is the full explanation, written for someone new to IDMC and to MDM. Read it from the top even if you already clicked the sessions. Section 7 is the MDM lesson in simple English. [16-customer360-developer-course.md](16-customer360-developer-course.md) is the official Informatica Customer 360 developer course, rewritten for this org. Read that before you touch Customer 360.
+The session files are the buttons. [15-concepts-admin-developer.md](15-concepts-admin-developer.md) section 7 is the Ava story. [18-customer360-one-guide.md](18-customer360-one-guide.md) is the Customer 360 course in simple English, including the sample project. Read 18 for the course. Do not study files 16 and 17. They only point to 18.
 
 You have admin access. Sessions 1–7 stay in the org where you already created them, even if that org has no Business 360. Sessions 8–11 start in the other org, the one whose service list shows **Business 360**. Do not export the CDI project into that org.
 
@@ -30,14 +30,15 @@ https://github.com/ravi0123456/github-mastery-guide/tree/main/idmc-meridian
 | 13 | [13-other-idmc-services.md](13-other-idmc-services.md) | one service only | You practiced **one** extra service, or skipped it on purpose |
 | 14 | [14-do-not-mix-with-work-cicd.md](14-do-not-mix-with-work-cicd.md) | 20 min | You can say what this practice is **not** allowed to touch |
 | 15 | [15-concepts-admin-developer.md](15-concepts-admin-developer.md) | read with each session | You can explain the object in the ticket without opening the designer |
-| 16 | [16-customer360-developer-course.md](16-customer360-developer-course.md) | one look-only sitting | You can say what Business 360, Customer 360, a business entity, a relationship, and a hierarchy are. Person was not edited. Nothing was purged. |
-| 17 | [17-safe-practice-in-this-org.md](17-safe-practice-in-this-org.md) | one sitting, `Test_Pract` only | Survivorship, a match model, a relationship, and a hierarchy model exist on Patient or Location. No live entity was saved. File import ran only if the target was Patient. |
+| 16 | [16-customer360-developer-course.md](16-customer360-developer-course.md) | do not study | Points to file 18 |
+| 17 | [17-safe-practice-in-this-org.md](17-safe-practice-in-this-org.md) | do not study | Points to file 18 |
+| 18 | [18-customer360-one-guide.md](18-customer360-one-guide.md) | read, then one `Test_Pract` sitting | You can explain every course idea in the Ava example, and the sample assets are saved only inside `Test_Pract` |
 
 ## Rules
 
 1. One file per sitting. If a job is still running, wait. Do not start the next file.
 2. CDI org project: `MERIDIAN_PRACTICE`. MDM org project: `Test_Pract`. Do not create a second project in the MDM org.
-3. Sessions 1–7: the org that already has the jobs. Sessions 8–11: the org that has **Business 360**. Never Production. Do not copy the jobs across.
+3. Sessions 1–7 stay in the org where you already created them, even if that org has no Business 360. Sessions 8–11 start in the other org, the one whose service list shows **Business 360**. Never Production. Do not copy the jobs across.
 4. Data: only the fake rows in session 00. No real patient, member, or employee data.
 5. Do not tag these assets. Do not edit `flo_dev.yml` or any work YAML.
 6. If Business 360 is missing in the job org, do not write `NOT LICENSED` and skip sessions 8–11. Log into the org that has it and start [08-mdm-model.md](08-mdm-model.md). Skip a session only when **no** org you admin has that service.
